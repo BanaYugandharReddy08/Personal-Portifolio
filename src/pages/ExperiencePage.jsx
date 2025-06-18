@@ -229,10 +229,18 @@ const ExperiencePage = () => {
                         style={{ width: '100%', height: '60vh', border: 'none' }}
                       />
                     ) : (
-                      <p className="no-preview">
-                        Your browser can’t display PDFs inline.  
-                        Use the button below to download the report.
-                      </p>
+                      <div className="no-preview-wrapper">
+                        <p className="no-preview">
+                          Your browser can’t display PDFs inline.
+                        </p>
+                        <a
+                          href={selectedProject.reportFile}
+                          download
+                          className="button outline download-report-btn"
+                        >
+                          Download Report
+                        </a>
+                      </div>
                     )
                   }
                 </div>
