@@ -1,8 +1,11 @@
-# React + Vite
+# React Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a personal portfolio built with plain React using `react-scripts`. The application does not rely on Vite, Next.js or TypeScript. All components use the `.js` extension and standard CSS for styling.
 
-Currently, two official plugins are available:
+## Available Scripts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- `npm start` – start the development server
+- `npm run build` – build the production assets
+- `npm test` – run tests
+
+The app entry point is `src/index.js` and routing is handled with `react-router-dom`.
