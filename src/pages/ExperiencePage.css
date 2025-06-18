@@ -335,6 +335,16 @@
   color: var(--primary);
 }
 
+/* fallback when PDF embedding isn’t supported */
+.no-preview-wrapper {
+  text-align: center;
+  margin: 2rem 0;
+}
+.no-preview-wrapper .download-report-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
