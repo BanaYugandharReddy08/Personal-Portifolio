@@ -66,6 +66,15 @@ const projects = [
     imageUrl: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg",
     featured: true,
     reportFile: report
+  },
+  {
+    id: 2,
+    title: "React Portfolio Site",
+    description:
+      "This very portfolio—built with plain React and CSS without relying on frameworks like Next.js or Vite. It showcases my work, CV and contact details in a responsive, animated interface.",
+    technologies: ["React", "React Router", "Framer Motion", "CSS"],
+    imageUrl: "https://images.pexels.com/photos/11035535/pexels-photo-11035535.jpeg",
+    featured: true
   }
 ];
 
@@ -218,10 +227,10 @@ const ExperiencePage = () => {
                     </span>
                   ))}
                 </div>
-                <div className="project-report-details">
-                  <h3>Report Details</h3>
-                  {
-                    canEmbed ? (
+                {selectedProject.reportFile && (
+                  <div className="project-report-details">
+                    <h3>Report Details</h3>
+                    {canEmbed ? (
                       <iframe
                         title={selectedProject.title}
                         src={`${selectedProject.reportFile}#toolbar=0&view=FitH`}
@@ -241,9 +250,9 @@ const ExperiencePage = () => {
                           Download Report
                         </a>
                       </div>
-                    )
-                  }
-                </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
