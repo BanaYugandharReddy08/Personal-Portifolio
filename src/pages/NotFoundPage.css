@@ -1,0 +1,38 @@
+.not-found-page {
+  padding-top: 120px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.not-found-content {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: var(--space-8);
+}
+
+.not-found-content h1 {
+  font-size: 120px;
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+  color: var(--primary);
+  line-height: 1;
+}
+
+.not-found-content h2 {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-6);
+}
+
+.not-found-content p {
+  font-size: var(--text-lg);
+  color: var(--muted-foreground);
+  margin-bottom: var(--space-8);
+}
+
+.not-found-content .button {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-lg);
+}

@@ -1,0 +1,255 @@
+.contact-page {
+  padding-top: 120px;
+  min-height: 100vh;
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.contact-header h1 {
+  font-size: var(--text-4xl);
+  margin-bottom: var(--space-4);
+}
+
+.contact-intro {
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--muted-foreground);
+  font-size: var(--text-lg);
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: var(--space-8);
+  margin-bottom: var(--space-16);
+}
+
+.contact-info-card, .contact-form-card {
+  background-color: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+  padding: var(--space-6);
+  height: 100%;
+}
+
+.contact-info-card h2, .contact-form-card h2 {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-6);
+  color: var(--primary);
+}
+
+.contact-detail {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--space-6);
+}
+
+.contact-icon {
+  font-size: var(--text-2xl);
+  margin-right: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background-color: var(--primary-50);
+  color: var(--primary);
+  border-radius: var(--radius-full);
+}
+
+.contact-detail h3 {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-2);
+}
+
+.contact-detail a, .contact-detail p {
+  color: var(--muted-foreground);
+  transition: color var(--transition-fast);
+}
+
+.contact-detail a:hover {
+  color: var(--primary);
+}
+
+.social-links {
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-6);
+}
+
+.social-links h3 {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-3);
+}
+
+.social-icons {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: var(--muted);
+  border-radius: var(--radius-full);
+  color: var(--foreground);
+  transition: all var(--transition-fast);
+}
+
+.social-icon:hover {
+  background-color: var(--primary);
+  color: white;
+  transform: translateY(-3px);
+}
+
+.chat-option {
+  margin-top: var(--space-8);
+  padding: var(--space-4);
+  background-color: var(--muted);
+  border-radius: var(--radius-md);
+}
+
+.chat-option h3 {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-2);
+}
+
+.chat-option p {
+  margin-bottom: var(--space-4);
+  color: var(--muted-foreground);
+}
+
+.contact-form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-message {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+}
+
+.form-message.success {
+  background-color: var(--success-50);
+  border: 1px solid var(--success-200);
+  color: var(--success-700);
+}
+
+.form-message.error {
+  background-color: var(--error-50);
+  border: 1px solid var(--error-200);
+  color: var(--error-700);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.form-group {
+  margin-bottom: var(--space-4);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-weight: 500;
+}
+
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--background);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-group input:focus, .form-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-200);
+  outline: none;
+}
+
+.contact-form button {
+  align-self: flex-start;
+  padding: var(--space-3) var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-info-card, .contact-form-card {
+    margin-bottom: var(--space-6);
+  }
+}
+
+
+/* ===== basic keyframes ===== */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== helper classes ===== */
+.fade-in-up    { opacity: 0; }
+.slide-in-left { opacity: 0; }
+.slide-in-right{ opacity: 0; }
+
+/* run the keyframe once the .run flag is present */
+.run.fade-in-up       { animation: fadeUp     0.5s ease-out forwards; }
+.run.slide-in-left    { animation: slideLeft  0.5s ease-out forwards; }
+.run.slide-in-right   { animation: slideRight 0.5s ease-out forwards; }
+
+/* staggered delays that mimic framer-motion’s delay prop */
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+
+/* --------- (keep the rest of your existing styles) --------- */

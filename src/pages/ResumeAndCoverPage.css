@@ -1,0 +1,92 @@
+.resume-page {
+  padding-top: 120px;
+  min-height: 100vh;
+}
+
+.resume-header {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.resume-header h1 {
+  font-size: var(--text-4xl);
+  margin-bottom: var(--space-4);
+}
+
+.resume-intro {
+  max-width: 800px;
+  margin: 0 auto var(--space-8);
+  color: var(--muted-foreground);
+  font-size: var(--text-lg);
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.tab {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  border: none;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: var(--text-base);
+  font-weight: 500;
+}
+
+.tab:hover {
+  background-color: var(--muted-foreground);
+  color: var(--muted);
+}
+
+.tab.active {
+  background-color: var(--primary);
+  color: white;
+}
+
+
+/* keyframes */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* helper */
+.fade-in-up { opacity: 0; }
+.run.fade-in-up { animation: fadeUp 0.5s ease-out forwards; }
+
+/* …optionally keep .slide-in-left/right if you need them elsewhere… */
+
+
+/* modal quick pop */
+.project-modal-content {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.run.project-modal-content {
+  animation: fadeModal 0.35s ease-out forwards;
+}
+
+@keyframes fadeModal {
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* reuse your global .tabs / .tab pill-style rules */
+
+/* PDF viewer frame */
+.pdf-frame {
+  border: 1px solid #3f3f46;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* fallback when embedding isn’t supported */
+.no-preview { text-align: center; margin: 2rem 0; }
+
+/* download button */
+.download-btn { display: inline-block; margin-top: 1.5rem; }

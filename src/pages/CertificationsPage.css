@@ -1,0 +1,359 @@
+.certifications-page {
+  padding-top: 120px;
+  min-height: 100vh;
+}
+
+.certifications-header {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.certifications-header h1 {
+  font-size: var(--text-4xl);
+  margin-bottom: var(--space-4);
+}
+
+.intro-text {
+  max-width: 800px;
+  margin: 0 auto var(--space-8);
+  color: var(--muted-foreground);
+  font-size: var(--text-lg);
+}
+
+.guest-notice {
+  background-color: var(--primary-50);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-8);
+  color: var(--primary-700);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.filter-controls {
+  margin-bottom: var(--space-8);
+}
+
+.categories-filter {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.filter-button {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  border: none;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-button:hover {
+  background-color: var(--muted-foreground);
+  color: var(--muted);
+}
+
+.filter-button.active {
+  background-color: var(--primary);
+  color: white;
+}
+
+.certificates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-12);
+}
+
+.certificate-card {
+  background-color: var(--card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  cursor: pointer;
+}
+
+.certificate-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.certificate-image {
+  height: 160px;
+  overflow: hidden;
+  background-color: var(--muted);
+}
+
+.certificate-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.certificate-card:hover .certificate-image img {
+  transform: scale(1.05);
+}
+
+.certificate-placeholder {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.certificate-details {
+  padding: var(--space-4);
+}
+
+.certificate-details h3 {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-2);
+}
+
+.certificate-issuer {
+  color: var(--muted-foreground);
+  margin-bottom: var(--space-2);
+  font-weight: 500;
+}
+
+.certificate-date {
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-3);
+}
+
+.certificate-ongoing {
+  color: red;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-3);
+}
+
+.certificate-completed {
+  color: blue;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-3);
+}
+
+.certificate-category {
+  display: inline-block;
+  background-color: var(--primary-100);
+  color: var(--primary-800);
+  padding: 4px 8px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-12);
+  background-color: var(--card);
+  border-radius: var(--radius-lg);
+  color: var(--muted-foreground);
+}
+
+.certificate-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-50);
+  padding: var(--space-4);
+  animation: fadeIn var(--transition-fast);
+}
+
+.certificate-modal-content {
+  background-color: var(--background);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  max-width: 900px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: scaleIn var(--transition-normal);
+}
+
+.close-button {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  background-color: var(--muted);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xl);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transform: none;
+}
+
+.close-button:hover {
+  background-color: var(--muted-foreground);
+  color: var(--background);
+}
+
+.certificate-modal-image {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.certificate-modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.certificate-placeholder.large {
+  height: 300px;
+}
+
+.certificate-modal-details {
+  padding: var(--space-6);
+}
+
+.certificate-modal-details h2 {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-4);
+}
+
+.certificate-takeaway-section {
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+}
+
+.certificate-takeaway-section h3 {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-3);
+  color: var(--primary);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .certifications-header h1 {
+    font-size: var(--text-3xl);
+  }
+  
+  .intro-text {
+    font-size: var(--text-base);
+  }
+  
+  .certificate-modal-content {
+    width: 95%;
+  }
+  
+  .certificate-modal-image {
+    height: 200px;
+  }
+}
+
+/* ───────── Course-certifications block inside the modal ───────── */
+.course-certifications {
+  margin-top: 2rem;
+  padding: 1.25rem 1rem;
+  background: #1e1e1e;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.course-certifications h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.course-certifications p:first-of-type {
+  margin: 0 0 1.5rem;
+  color: #9ca3af;               /* muted subtitle */
+}
+
+/* grid of child certificates */
+.course-cert-list {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+/* individual course card */
+.course-card {
+  background: #27272a;
+  border-radius: 6px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s ease;
+  cursor: pointer;              /* optional: looks clickable */
+}
+
+.course-card:hover {
+  transform: translateY(-4px);
+}
+
+.course-card h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.course-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  color: #d4d4d8;
+}
+
+.course-card a {
+  margin-top: auto;             /* push link to bottom */
+  align-self: flex-start;
+  font-size: 0.9rem;
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.course-card a:hover {
+  text-decoration: underline;
+}
