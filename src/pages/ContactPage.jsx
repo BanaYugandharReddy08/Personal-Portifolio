@@ -43,7 +43,7 @@ const ContactPage = () => {
       return;
     }
 
-    console.log('Form data submitted:', formData);
+    // console.log('Form data submitted:', formData);
 
     setFormStatus({
       type: 'success',
