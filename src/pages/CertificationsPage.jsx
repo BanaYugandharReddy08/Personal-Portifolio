@@ -332,7 +332,7 @@ const CertificationsPage = () => {
                     })}
                     { certificate.status === 'In Progress' ? ' (Expected Finish Date)' : ''}
                   </p>
-                  <p className={`certificate-${certificate.status===`In Progress`?`ongoing`: `completed`}`}>{certificate.status}</p>
+                  <p className={'certificate-' + (certificate.status === 'In Progress' ? 'ongoing' : 'completed')}>{certificate.status}</p>
                   <span className="certificate-category">{certificate.category}</span>
                 </div>
               </div>
