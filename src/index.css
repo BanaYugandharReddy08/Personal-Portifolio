@@ -180,13 +180,13 @@
   --card: var(--neutral-800);
   --card-foreground: var(--neutral-50);
   --primary: var(--primary-500);
-  --primary-foreground: var(--primary-950);
+  --primary-foreground: var(--primary-50);
   --secondary: var(--secondary-500);
-  --secondary-foreground: var(--secondary-950);
+  --secondary-foreground: var(--secondary-50);
   --accent: var(--accent-500);
-  --accent-foreground: var(--accent-950);
+  --accent-foreground: var(--accent-50);
   --destructive: var(--error-500);
-  --destructive-foreground: var(--error-950);
+  --destructive-foreground: var(--error-50);
   --ring: var(--primary-600);
 }
 
