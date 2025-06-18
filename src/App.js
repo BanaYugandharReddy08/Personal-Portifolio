@@ -38,14 +38,13 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/resume-and-cover" element={<ResumeAndCoverPage />} />
 
-          <Route 
-            path="/dashboard" 
+          <Route
+            path="/dashboard"
             element={
-              // <ProtectedRoute>
-              //   <DashboardPage />
-              // </ProtectedRoute>
-              <DashboardPage />
-            } 
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
           />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
