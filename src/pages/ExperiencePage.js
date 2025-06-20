@@ -1,5 +1,4 @@
 import { useState,useEffect } from 'react';
-import portfolioImage from '../assets/portfolioImage';
 // import { motion } from 'framer-motion';
 import './ExperiencePage.css';
 import report from './report.pdf'; // Import the report file
@@ -74,7 +73,7 @@ const projects = [
     description:
       "This very portfolio—built with plain React and CSS without relying on frameworks like Next.js or Vite. It showcases my work, CV and contact details in a responsive, animated interface.",
     technologies: ["React", "React Router", "Framer Motion", "CSS"],
-    imageUrl: portfolioImage,
+    imageUrl: "https://images.pexels.com/photos/11035535/pexels-photo-11035535.jpeg",
     featured: true
   }
 ];
