@@ -58,7 +58,6 @@ export const AuthProvider = ({ children }) => {
       } else {
         // Send verification code (simulate email)
         const code = generateVerificationCode();
-        console.log(`Verification code: ${code}`); // In a real app, this would be sent via email
         return { success: true, requireVerification: true };
       }
     } else if (email && password) {

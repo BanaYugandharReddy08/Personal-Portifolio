@@ -1,8 +1,7 @@
 import { useState,useEffect } from 'react';
 import portfolioImage from '../assets/portfolioImage';
-// import { motion } from 'framer-motion';
 import './ExperiencePage.css';
-import report from './report.pdf'; // Import the report file
+import report from './report.pdf';
 
 const experiences = [
   {

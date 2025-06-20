@@ -25,7 +25,6 @@ const ResumeAndCoverPage = () => {
   /* 3️⃣ handy references */
   const { label, file } = DOCS[activeTab];
   const fileURL = './' + file;
-  // console.log("The File URL is:", fileURL);
 
   return (
     <div className="resume-page">
