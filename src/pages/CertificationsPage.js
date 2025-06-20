@@ -205,7 +205,7 @@ const initialCertificates = [
                • Built dashboards, cleaned large datasets and automated tasks with advanced formulas & macros
                • Applied data-validation, what-if analysis, forecasting and modelling techniques
                • Completed real-world business case projects using full downloadable workbooks`,
-    status: 'In Progress',
+    status: 'Completed',
     children: [
       { id: '4-1',
         title: 'Excel Skills for Business: Essentials',
@@ -232,8 +232,8 @@ const initialCertificates = [
         title: 'Excel Skills for Business: Advanced',
         imageUrl: 'https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg',
         takeaway: 'Power-user techniques: advanced lookups, data cleaning, professional dashboards.',
-        certificateLink: 'https://coursera.org/share/<CERT-LINK-E4>',
-        status: 'In Progress'
+        certificateLink: 'https://coursera.org/share/0368fc9498f32572d799b0b75c0ed176',
+        status: 'Completed'
       }
     ]
   },
@@ -245,7 +245,7 @@ const initialCertificates = [
     category: 'Academic',
     imageUrl: 'https://images.pexels.com/photos/669610/pexels-photo-669610.jpeg',
     takeaway: 'Learned end-to-end analytics process from asking questions to driving decisions with data.',
-    status: 'Finished',
+    status: 'Completed',
   },
   {
     id: '6',
@@ -255,7 +255,7 @@ const initialCertificates = [
     category: 'Academic',
     imageUrl: 'https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg',
     takeaway: 'Learned end-to-end analytics process from asking questions to driving decisions with data.',
-    status: 'Finished'
+    status: 'Completed'
   },
 ];
 
