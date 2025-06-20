@@ -8,4 +8,6 @@ This project is a personal portfolio built with plain React using `react-scripts
 - `npm run build` – build the production assets
 - `npm test` – run tests
 
+Run `npm install` to install dev dependencies, then `npm test` to execute the Jest test suite.
+
 The app entry point is `src/index.js` and routing is handled with `react-router-dom`.
