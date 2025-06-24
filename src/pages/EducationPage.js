@@ -10,7 +10,7 @@ const EducationPage = () => {
   }, []);
 
   return (
-    <div className="education-page">
+    <div id="education" className="education-page">
       <div className="container">
         {/* ───── header ───── */}
         <div className={`education-header fade-in-up ${animate ? 'run' : ''}`}>
@@ -138,6 +138,10 @@ const EducationPage = () => {
             </p>
           </div>
         </div>
+        <section id="skills" className="sr-only">
+          Python R SQL TensorFlow scikit-learn Tableau Power BI Java C++ HTML/CSS
+          JavaScript MySQL Software Design
+        </section>
       </div>
     </div>
   );

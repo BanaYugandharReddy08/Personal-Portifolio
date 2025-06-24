@@ -1,5 +1,5 @@
 export function extractKnowledgeBase() {
-  const ids = ['about', 'projects', 'experience', 'skills', 'contact'];
+  const ids = ['about', 'education', 'projects', 'experience', 'skills', 'contact'];
   const data = [];
   ids.forEach((id) => {
     const el = document.getElementById(id);

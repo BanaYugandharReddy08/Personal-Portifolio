@@ -64,7 +64,7 @@ const ContactPage = () => {
 
   /* ─────────────────────────── render ─────────────────────────── */
   return (
-    <div className="contact-page">
+    <div id="contact" className="contact-page">
       <div className="container">
         {/* header */}
         <div className={`contact-header fade-in-up ${animate ? 'run' : ''}`}>

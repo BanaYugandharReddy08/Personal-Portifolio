@@ -92,7 +92,7 @@ const ExperiencePage = () => {
   }, []);
 
   return (
-    <div className="experience-page">
+    <div id="experience" className="experience-page">
       <div className="container">
         {/* ───────── header + tabs ───────── */}
         <div className={`experience-header fade-in-up ${animate ? 'run' : ''}`}>
@@ -153,7 +153,7 @@ const ExperiencePage = () => {
             ))}
           </div>
         ) : (
-          <div className="projects-grid">
+          <div id="projects" className="projects-grid">
             {projects.map((proj, i) => (
               <div
                 key={proj.id}
