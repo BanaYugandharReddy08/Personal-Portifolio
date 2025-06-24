@@ -11,7 +11,7 @@ const AboutPage = () => {
   }, []);
 
   return (
-    <div className="about-page">
+    <div id="about" className="about-page">
       <div className="container">
         {/* ───── header ───── */}
         <div className={`about-header fade-in-up ${animate ? 'run' : ''}`}>

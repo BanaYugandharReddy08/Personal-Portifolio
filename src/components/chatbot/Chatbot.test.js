@@ -6,6 +6,7 @@ describe('Chatbot', () => {
     render(
       <>
         <section id="skills">Skilled in React and Node.js.</section>
+        <section id="education">Completed MSc in Data Analytics.</section>
         <Chatbot />
       </>
     );
@@ -14,6 +15,20 @@ describe('Chatbot', () => {
     });
     fireEvent.click(screen.getByRole('button', { name: /send/i }));
     expect(screen.getByText(/Skilled in React/i)).toBeInTheDocument();
+  });
+
+  test('responds to education question', () => {
+    render(
+      <>
+        <section id="education">Completed MSc in Data Analytics.</section>
+        <Chatbot />
+      </>
+    );
+    fireEvent.change(screen.getByLabelText(/type your question/i), {
+      target: { value: 'What education do you have?' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /send/i }));
+    expect(screen.getByText(/Completed MSc/i)).toBeInTheDocument();
   });
 
   test('falls back when no match', () => {
