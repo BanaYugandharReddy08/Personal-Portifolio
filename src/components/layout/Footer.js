@@ -27,6 +27,7 @@ const Footer = () => {
                 <li><Link to="/education">Education</Link></li>
                 <li><Link to="/certifications">Certifications</Link></li>
                 <li><Link to="/experience">Experience</Link></li>
+                <li><Link to="/chat">Chatbot</Link></li>
                 <li><Link to="/resume-and-cover">Cv & Cover Letter</Link></li>
                 <li><Link to="/contact">Contact</Link></li>
               </ul>
