@@ -9,7 +9,6 @@ const YugiQuestPage = () => (
         loading="lazy"
       />
     </div>
-  </div>
 );
 
 export default YugiQuestPage;
