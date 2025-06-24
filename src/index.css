@@ -271,7 +271,7 @@ button, .button {
 }
 
 button:hover, .button:hover {
-  background-color: var(--primary-700);
+  background-color: var(--primary-300);
   transform: translateY(-1px);
 }
 

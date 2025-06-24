@@ -83,11 +83,9 @@ const HomePage = () => {
 
           <div className="home-about-content">
             <p>
-              A former chef turned software craftsman, I blend the discipline of
-              a commercial kitchen with the creativity of modern web
-              engineering. Between React components and regression models, I
-              chase one goal: experiences that feel effortless and perform
-              flawlessly.
+              From software developer to data analyst — with a chef’s discipline in between. 
+              I build fast, user-friendly interfaces with React and uncover insights through data.
+               Whether it's code or cuisine, I focus on precision, creativity, and delivering great experiences.
             </p>
             <Link to="/about" className="button">
               Learn more about me
