@@ -1,14 +1,19 @@
 import { render, screen, fireEvent } from '../../test-utils';
-import Chatbot from './Chatbot';
+import Chatbot from './Chatbot.jsx';
 
 describe('Chatbot', () => {
   test('responds with matching answer', () => {
-    render(<Chatbot />);
+    render(
+      <>
+        <section id="skills">Skilled in React and Node.js.</section>
+        <Chatbot />
+      </>
+    );
     fireEvent.change(screen.getByLabelText(/type your question/i), {
       target: { value: 'Tell me about your skills' },
     });
     fireEvent.click(screen.getByRole('button', { name: /send/i }));
-    expect(screen.getByText(/react, node\.js/i)).toBeInTheDocument();
+    expect(screen.getByText(/Skilled in React/i)).toBeInTheDocument();
   });
 
   test('falls back when no match', () => {
@@ -18,7 +23,7 @@ describe('Chatbot', () => {
     });
     fireEvent.click(screen.getByRole('button', { name: /send/i }));
     expect(
-      screen.getByText(/i'm not sure how to answer that/i)
+      screen.getByText(/please feel free to email me/i)
     ).toBeInTheDocument();
   });
 });
