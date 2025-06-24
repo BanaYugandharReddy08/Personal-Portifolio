@@ -46,6 +46,7 @@
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-lg);
   background-color: var(--muted);
+  color: #5e3aed;
 }
 
 .message.user .message-text {
