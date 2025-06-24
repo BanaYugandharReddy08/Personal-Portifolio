@@ -120,7 +120,7 @@ const EducationPage = () => {
         {/* ───── continuing education ───── */}
         <div
           className={`continuing-education fade-in-up ${animate ? 'run' : ''}`}
-          style={{ animationDelay: '0.6s' }}
+          style={{ animationDelay: '0.6s', marginLeft:'242px'}}
         >
           <h2>Continuing Education</h2>
           <p>

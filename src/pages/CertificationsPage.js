@@ -5,45 +5,46 @@ import './CertificationsPage.css';
 
 // Reuse the same mock certificate data from DashboardPage
 const initialCertificates = [
-  {
-    id: '1',
-    title: 'AWS Cloud Practitioner',
-    issuer: 'Amazon Web Services',
-    date: '2025-06-20',
-    category: 'Cloud',
-    imageUrl: 'https://images.pexels.com/photos/325111/pexels-photo-325111.jpeg',
-    takeaway: 'Gained foundational knowledge of AWS services, security, and architecture concepts.',
-    status: 'In Progress',
-    children: [
-    { id: '1-1',
-      title: 'AWS Cloud Technical Essentials',
-      imageUrl: 'https://images.pexels.com/photos/325111/pexels-photo-325111.jpeg',
-      takeaway: 'Core AWS terminology, compute, storage, database and security basics.',
-      certificateLink: 'https://coursera.org/share/<CERT-LINK-A1>',
-      status: 'In Progress'
-    },
-    { id: '1-2',
-      title: 'Migrating to the AWS Cloud',
-      imageUrl: 'https://images.pexels.com/photos/325111/pexels-photo-325111.jpeg',
-      takeaway: 'Assess–Mobilise–Migrate framework, tools & best practices for cloud migration.',
-      certificateLink: 'https://coursera.org/share/<CERT-LINK-A2>',
-      status: 'In Progress'
-    },
-    { id: '1-3',
-      title: 'Architecting Solutions on AWS',
-      imageUrl: 'https://images.pexels.com/photos/325111/pexels-photo-325111.jpeg',
-      takeaway: 'Solution-architect thinking, designing resilient & secure AWS architectures.',
-      certificateLink: 'https://coursera.org/share/<CERT-LINK-A3>',
-      status: 'In Progress'
-    }
-  ]
-  },
+  // {
+  //   id: '1',
+  //   title: 'AWS Cloud Practitioner',
+  //   issuer: 'Amazon Web Services',
+  //   date: '2025-06-20',
+  //   category: 'Cloud',
+  //   imageUrl: 'https://images.pexels.com/photos/325111/pexels-photo-325111.jpeg',
+  //   takeaway: 'Gained foundational knowledge of AWS services, security, and architecture concepts.',
+  //   status: 'In Progress',
+  //   children: [
+  //   { id: '1-1',
+  //     title: 'AWS Cloud Technical Essentials',
+  //     imageUrl: 'https://images.pexels.com/photos/325111/pexels-photo-325111.jpeg',
+  //     takeaway: 'Core AWS terminology, compute, storage, database and security basics.',
+  //     certificateLink: 'https://coursera.org/share/<CERT-LINK-A1>',
+  //     status: 'In Progress'
+  //   },
+  //   { id: '1-2',
+  //     title: 'Migrating to the AWS Cloud',
+  //     imageUrl: 'https://images.pexels.com/photos/325111/pexels-photo-325111.jpeg',
+  //     takeaway: 'Assess–Mobilise–Migrate framework, tools & best practices for cloud migration.',
+  //     certificateLink: 'https://coursera.org/share/<CERT-LINK-A2>',
+  //     status: 'In Progress'
+  //   },
+  //   { id: '1-3',
+  //     title: 'Architecting Solutions on AWS',
+  //     imageUrl: 'https://images.pexels.com/photos/325111/pexels-photo-325111.jpeg',
+  //     takeaway: 'Solution-architect thinking, designing resilient & secure AWS architectures.',
+  //     certificateLink: 'https://coursera.org/share/<CERT-LINK-A3>',
+  //     status: 'In Progress'
+  //   }
+  // ]
+  // },
   {
     id: '2',
     title: 'Meta Front-End Development',
     issuer: 'Meta',
     date: '2023-11-22',
     category: 'Development',
+    status: 'In Progress',
     imageUrl: 'https://images.pexels.com/photos/92904/pexels-photo-92904.jpeg',
     /* master-programme summary shown when this parent cert is opened */
     takeaway: `Built a full front-end stack: HTML5, modern CSS (Flexbox, Grid), Mastered JavaScript ES6+, DOM manipulation & debugging techniques, learned React component model, hooks & routing; authored a capstone SPA  
@@ -238,7 +239,27 @@ const initialCertificates = [
     ]
   },
   {
-    id: '5',
+  id: '5',
+  title: 'AWS Cloud Practitioner Essentials',
+  issuer: 'Coursera',
+  date: '2025-06-20',
+  category: 'Cloud',
+  imageUrl: 'https://images.pexels.com/photos/325111/pexels-photo-325111.jpeg',
+  takeaway: 'Gaining foundational knowledge of AWS services, cloud concepts, security, and architecture best practices.',
+  status: 'In Progress',
+  children: [
+    {
+      id: '5-1',
+      title: 'AWS Cloud Technical Essentials',
+      imageUrl: 'https://images.pexels.com/photos/325111/pexels-photo-325111.jpeg',
+      takeaway: 'Learning core AWS services, terminology, compute, storage, database, and security basics.',
+      certificateLink: 'https://coursera.org/share/<CERT-LINK-A1>',
+      status: 'In Progress'
+    }
+    ]
+  },
+  {
+    id: '6',
     title: 'Masters in Data Analytics',
     issuer: 'National College of Ireland (NCI)',
     date: '2025-02-06',
@@ -248,7 +269,7 @@ const initialCertificates = [
     status: 'Completed',
   },
   {
-    id: '6',
+    id: '7',
     title: 'Bachelors in Computer Science',
     issuer: 'SASTRA University',
     date: '2023-08-10',
