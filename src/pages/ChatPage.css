@@ -1,0 +1,8 @@
+.chat-page {
+  padding-top: 120px;
+}
+
+.chat-page h1 {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}

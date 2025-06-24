@@ -8,6 +8,7 @@ import EducationPage from './pages/EducationPage';
 import CertificationsPage from './pages/CertificationsPage';
 import ExperiencePage from './pages/ExperiencePage';
 import ContactPage from './pages/ContactPage';
+import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -35,6 +36,7 @@ function App() {
           <Route path="/certifications" element={<CertificationsPage />} />
           <Route path="/experience" element={<ExperiencePage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/chat" element={<ChatPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/resume-and-cover" element={<ResumeAndCoverPage />} />
 

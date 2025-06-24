@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './ContactPage.css';
 
 const ContactPage = () => {
@@ -168,7 +169,7 @@ const ContactPage = () => {
                 <p>
                   Live chat is <strong>on the way</strong> – in the meantime feel free to email, phone, or connect on LinkedIn.
                 </p>
-                <button className="button outline">Coming Soon</button>
+                <Link to="/chat" className="button outline">Start Chat</Link>
               </div>
             </div>
           </div>
