@@ -79,6 +79,11 @@ const Header = () => {
                 </NavLink>
               </li>
               <li className="nav-item">
+                <NavLink to="/yugi-quest" className={({ isActive }) => isActive ? 'active' : ''}>
+                  Yugi Quest
+                </NavLink>
+              </li>
+              <li className="nav-item">
                 <NavLink to="/resume-and-cover" className={({ isActive }) => isActive ? 'active' : ''}>
                   CV & Cover Letter
                 </NavLink>
