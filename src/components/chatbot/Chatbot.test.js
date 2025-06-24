@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '../../test-utils';
-import Chatbot from './Chatbot.jsx';
+import Chatbot from './Chatbot.js';
 
 describe('Chatbot', () => {
   test('responds with matching answer', () => {

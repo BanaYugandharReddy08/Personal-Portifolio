@@ -1,4 +1,4 @@
-import Chatbot from '../components/chatbot/Chatbot.jsx';
+import Chatbot from '../components/chatbot/Chatbot.js';
 import './ChatPage.css';
 
 const ChatPage = () => (
