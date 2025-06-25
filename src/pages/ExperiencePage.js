@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 // import { motion } from 'framer-motion';
 import './ExperiencePage.css';
 import report from './report.pdf'; // Import the report file
