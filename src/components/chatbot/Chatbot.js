@@ -17,7 +17,12 @@ const Chatbot = () => {
   }, []);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const node = endRef.current;
+    if (!node) return;
+    const parent = node.parentElement;
+    if (parent && parent.scrollHeight > parent.clientHeight) {
+      node.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   const handleSubmit = (e) => {
