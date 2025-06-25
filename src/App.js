@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
+import FloatingChatbot from './components/chatbot/FloatingChatbot';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import EducationPage from './pages/EducationPage';
@@ -52,6 +53,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      <FloatingChatbot />
     </div>
   );
 }
