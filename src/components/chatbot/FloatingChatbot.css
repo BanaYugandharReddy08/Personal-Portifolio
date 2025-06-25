@@ -39,7 +39,6 @@
   flex-direction: column;
   transform: translateY(100%);
   transition: transform 0.3s;
-  overflow: hidden;
   font-family: Arial, sans-serif;
   z-index: 999;
 }
@@ -55,6 +54,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 0;
 }
 
 .chat-header button {
@@ -69,4 +70,9 @@
 .chat-bubble:focus,
 .chat-header button:focus {
   outline: 2px solid #4e54c8;
+}
+
+
+.chat-close {
+  z-index: 1000;
 }

@@ -5,7 +5,7 @@ export default [
   },
   {
     question: 'education',
-    answer: "I hold a Master's degree in Data Analytics from DCU."
+    answer: "I hold a Master's degree in Data Analytics from NCI."
   },
   {
     question: 'experience',

@@ -17,7 +17,8 @@ const FloatingChatbot = () => {
         </button>
       )}
 
-      <div className={`chat-panel ${isOpen ? 'open' : ''}`}>
+      {
+        isOpen && <div className={`chat-panel ${isOpen ? 'open' : ''}`}>
         <div className="chat-header">
           <span>Chat with Yugi</span>
           <button
@@ -30,6 +31,9 @@ const FloatingChatbot = () => {
         </div>
         <Chatbot />
       </div>
+      }
+
+      
     </div>
   );
 };

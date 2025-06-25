@@ -12,7 +12,12 @@ const Chatbot = () => {
   const endRef = useRef(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const node = endRef.current;
+    if (!node) return;
+    const parent = node.parentElement;
+    if (parent && parent.scrollHeight > parent.clientHeight) {
+      parent.scrollTop = parent.scrollHeight - parent.clientHeight;
+    }
   }, [messages]);
 
   const findAnswer = (q) => {
