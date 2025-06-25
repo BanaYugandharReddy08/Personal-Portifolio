@@ -41,4 +41,14 @@ describe('Chatbot', () => {
       screen.getByText(/please feel free to email me/i)
     ).toBeInTheDocument();
   });
+
+  test('does not scroll when chat is not overflowed', async () => {
+    const original = Element.prototype.scrollIntoView;
+    const spy = jest.fn();
+    Element.prototype.scrollIntoView = spy;
+    render(<Chatbot />);
+    await screen.findByText(/ask me anything/i);
+    expect(spy).not.toHaveBeenCalled();
+    Element.prototype.scrollIntoView = original;
+  });
 });
