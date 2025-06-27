@@ -41,14 +41,15 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/resume-and-cover" element={<ResumeAndCoverPage />} />
 
-          <Route
+          {/* <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
                 <DashboardPage />
               </ProtectedRoute>
             }
-          />
+          /> */}
+          <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
