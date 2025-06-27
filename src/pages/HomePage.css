@@ -41,13 +41,23 @@
 }
 
 .achievements {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--space-6);
+  overflow: hidden;
   margin: var(--space-10) 0;
 }
 
+.achievements-scroller {
+  display: flex;
+  gap: var(--space-6);
+  width: max-content;
+  animation: scroll-left 25s linear infinite;
+}
+
+.achievements:hover .achievements-scroller {
+  animation-play-state: paused;
+}
+
 .achievement-card {
+  min-width: 280px;
   background-color: var(--card);
   border: 1px solid var(--border);
   padding: var(--space-6);
@@ -256,3 +266,8 @@
 
 .fade-in-up { opacity: 0; }
 .run.fade-in-up { animation: fadeUp 0.5s ease-out forwards; }
+
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
