@@ -10,6 +10,39 @@ const HomePage = () => {
     requestAnimationFrame(() => setAnimate(true));
   }, []);
 
+  const achievements = [
+    {
+      title: 'Results that ship',
+      copy:
+        'Cut page-load times by 30% in a SaaS revamp and slashed a legacy telecom portal\u2019s latency from 30 s to <10 s.',
+    },
+    {
+      title: 'Code you can trust',
+      copy:
+        'Boosted automated-test coverage from 30% \u2192 90% and built zero-downtime CI/CD pipelines.',
+    },
+    {
+      title: 'Insights that matter',
+      copy:
+        'Created ensemble ML models (RF, XGBoost, LightGBM) that predict Dublin housing prices with 88% accuracy.',
+    },
+    {
+      title: 'Agile leadership',
+      copy:
+        'Led Scrum ceremonies, mentored juniors and coordinated cross-functional teams to deliver on time.',
+    },
+    {
+      title: 'Full-stack foundations',
+      copy:
+        'Integrated REST APIs and Node services, building reliable data flows from PostgreSQL to React UIs.',
+    },
+    {
+      title: 'User-first mindset',
+      copy:
+        'Crafted responsive interfaces and accessibility features that keep users engaged across devices.',
+    },
+  ];
+
   return (
     <div className="home-page">
       {/* ───────── HERO ───────── */}
@@ -24,37 +57,14 @@ const HomePage = () => {
 
             {/* achievements */}
             <div className="achievements">
-              {[
-                {
-                  title: 'Results that ship',
-                  copy:
-                    'Cut page-load times by 30% in a SaaS revamp and slashed a legacy telecom portal’s latency from 30 s to <10 s.',
-                  delay: 0.2,
-                },
-                {
-                  title: 'Code you can trust',
-                  copy:
-                    'Boosted automated-test coverage from 30% → 90% and built zero-downtime CI/CD pipelines.',
-                  delay: 0.4,
-                },
-                {
-                  title: 'Insights that matter',
-                  copy:
-                    'Created ensemble ML models (RF, XGBoost, LightGBM) that predict Dublin housing prices with 88% accuracy.',
-                  delay: 0.6,
-                },
-              ].map(({ title, copy, delay }, i) => (
-                <div
-                  key={i}
-                  className={`achievement-card fade-in-up ${
-                    animate ? 'run' : ''
-                  }`}
-                  style={{ animationDelay: `${delay}s` }}
-                >
-                  <h3>{title}</h3>
-                  <p>{copy}</p>
-                </div>
-              ))}
+              <div className="achievements-scroller">
+                {achievements.concat(achievements).map(({ title, copy }, i) => (
+                  <div key={i} className={`achievement-card fade-in-up ${animate ? "run" : ""}`}>
+                    <h3>{title}</h3>
+                    <p>{copy}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <p className="hero-cta">
