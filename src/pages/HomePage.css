@@ -45,11 +45,19 @@
   margin: var(--space-10) 0;
 }
 
+
 .achievements-scroller {
   display: flex;
   gap: var(--space-6);
   width: max-content;
   animation: scroll-left 25s linear infinite;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.achievements-scroller > li {
+  list-style: none;
 }
 
 .achievements:hover .achievements-scroller {
