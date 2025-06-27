@@ -42,7 +42,9 @@ const DashboardPage = () => {
     date: '',
     category: 'Development',
     imageUrl: '',
-    takeaway: ''
+    takeaway: '',
+    status: 'In Progress',
+    children: []
   });
   const [isAddingCertificate, setIsAddingCertificate] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -79,6 +81,25 @@ const DashboardPage = () => {
     }
   };
 
+  const handleModuleChange = (index, e) => {
+    const { name, value } = e.target;
+    const modules = newCertificate.children ? [...newCertificate.children] : [];
+    modules[index] = { ...modules[index], [name]: value };
+    setNewCertificate({ ...newCertificate, children: modules });
+  };
+
+  const handleAddModuleField = () => {
+    const modules = newCertificate.children ? [...newCertificate.children] : [];
+    modules.push({ id: '', title: '', takeaway: '', certificateLink: '', status: 'In Progress' });
+    setNewCertificate({ ...newCertificate, children: modules });
+  };
+
+  const handleRemoveModuleField = (index) => {
+    const modules = newCertificate.children ? [...newCertificate.children] : [];
+    modules.splice(index, 1);
+    setNewCertificate({ ...newCertificate, children: modules });
+  };
+
   const handleAddCertificate = () => {
     // Simple validation
     if (!newCertificate.title || !newCertificate.issuer || !newCertificate.date) {
@@ -98,7 +119,9 @@ const DashboardPage = () => {
       date: '',
       category: 'Development',
       imageUrl: '',
-      takeaway: ''
+      takeaway: '',
+      status: 'In Progress',
+      children: []
     });
     setIsAddingCertificate(false);
     showNotification('Certificate published—nice one! It\'s now visible on your Certifications page.');
@@ -107,7 +130,41 @@ const DashboardPage = () => {
   const handleEditCertificate = (id) => {
     setEditingId(id);
     const certificate = certificates.find((cert) => cert.id === id);
-    setNewCertificate(certificate);
+    setNewCertificate({
+      status: 'In Progress',
+      children: [],
+      ...certificate
+    });
+    setIsAddingCertificate(true);
+  };
+
+  const handleAddModuleClick = (id) => {
+    const certificate = certificates.find((cert) => cert.id === id);
+    const modules = certificate.children ? [...certificate.children] : [];
+    modules.push({
+      id: '',
+      title: '',
+      takeaway: '',
+      certificateLink: '',
+      status: 'In Progress'
+    });
+    setEditingId(id);
+    setNewCertificate({
+      status: 'In Progress',
+      children: modules,
+      ...certificate
+    });
+    setIsAddingCertificate(true);
+  };
+
+  const handleEditModulesClick = (id) => {
+    const certificate = certificates.find((cert) => cert.id === id);
+    setEditingId(id);
+    setNewCertificate({
+      status: 'In Progress',
+      children: certificate.children ? [...certificate.children] : [],
+      ...certificate
+    });
     setIsAddingCertificate(true);
   };
 
@@ -125,7 +182,9 @@ const DashboardPage = () => {
       date: '',
       category: 'Development',
       imageUrl: '',
-      takeaway: ''
+      takeaway: '',
+      status: 'In Progress',
+      children: []
     });
     showNotification('Certificate updated successfully');
   };
@@ -166,7 +225,9 @@ const DashboardPage = () => {
                 date: '',
                 category: 'Development',
                 imageUrl: '',
-                takeaway: ''
+                takeaway: '',
+                status: 'In Progress',
+                children: []
               });
             }}
           >
@@ -262,6 +323,19 @@ const DashboardPage = () => {
                   placeholder="https://example.com/image.jpg"
                 />
               </div>
+
+              <div className="form-group">
+                <label htmlFor="status">Status</label>
+                <select
+                  id="status"
+                  name="status"
+                  value={newCertificate.status}
+                  onChange={handleInputChange}
+                >
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
               
               <div className="form-group">
                 <label htmlFor="takeaway">
@@ -276,6 +350,64 @@ const DashboardPage = () => {
                   maxLength={140}
                   rows={3}
                 />
+              </div>
+
+              <div className="modules-section">
+                <h3>Modules</h3>
+                {newCertificate.children && newCertificate.children.length > 0 && (
+                  <div className="module-list">
+                    {newCertificate.children.map((mod, idx) => (
+                      <div className="module-item" key={idx}>
+                        <input
+                          type="text"
+                          name="id"
+                          placeholder="Module ID"
+                          value={mod.id}
+                          onChange={(e) => handleModuleChange(idx, e)}
+                        />
+                        <input
+                          type="text"
+                          name="title"
+                          placeholder="Title"
+                          value={mod.title}
+                          onChange={(e) => handleModuleChange(idx, e)}
+                        />
+                        <input
+                          type="text"
+                          name="takeaway"
+                          placeholder="Takeaway"
+                          value={mod.takeaway}
+                          onChange={(e) => handleModuleChange(idx, e)}
+                        />
+                        <input
+                          type="text"
+                          name="certificateLink"
+                          placeholder="Certificate Link"
+                          value={mod.certificateLink}
+                          onChange={(e) => handleModuleChange(idx, e)}
+                        />
+                        <select
+                          name="status"
+                          value={mod.status}
+                          onChange={(e) => handleModuleChange(idx, e)}
+                        >
+                          <option value="In Progress">In Progress</option>
+                          <option value="Completed">Completed</option>
+                        </select>
+                        <button
+                          type="button"
+                          className="button outline"
+                          onClick={() => handleRemoveModuleField(idx)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <button type="button" className="button secondary add-module-field" onClick={handleAddModuleField}>
+                  Add Module
+                </button>
               </div>
               
               <div className="form-actions">
@@ -348,6 +480,20 @@ const DashboardPage = () => {
                         aria-label="Delete certificate"
                       >
                         🗑️
+                      </button>
+                    </div>
+                    <div className="module-card-actions">
+                      <button
+                        className="button outline"
+                        onClick={() => handleAddModuleClick(certificate.id)}
+                      >
+                        Add Module
+                      </button>
+                      <button
+                        className="button outline"
+                        onClick={() => handleEditModulesClick(certificate.id)}
+                      >
+                        Edit Modules
                       </button>
                     </div>
                   </div>
