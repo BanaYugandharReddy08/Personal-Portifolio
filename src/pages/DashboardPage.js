@@ -2,40 +2,19 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './DashboardPage.css';
 
-// Mock certificate data
-const initialCertificates = [
-  {
-    id: '1',
-    title: 'AWS Cloud Practitioner',
-    issuer: 'Amazon Web Services',
-    date: '2024-03-15',
-    category: 'Cloud',
-    imageUrl: 'https://images.pexels.com/photos/325111/pexels-photo-325111.jpeg',
-    takeaway: 'Gained foundational knowledge of AWS services, security, and architecture concepts.'
-  },
-  {
-    id: '2',
-    title: 'Meta Front-End Development',
-    issuer: 'Meta',
-    date: '2023-11-22',
-    category: 'Development',
-    imageUrl: 'https://images.pexels.com/photos/92904/pexels-photo-92904.jpeg',
-    takeaway: 'Mastered React, responsive design principles, and modern front-end build pipelines.'
-  },
-  {
-    id: '3',
-    title: 'Google Data Analytics',
-    issuer: 'Google',
-    date: '2023-08-10',
-    category: 'Data',
-    imageUrl: 'https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg',
-    takeaway: 'Learned end-to-end analytics process from asking questions to driving decisions with data.'
-  }
-];
+import defaultCertificates from '../data/certificates';
 
 const DashboardPage = () => {
   const { user } = useAuth();
-  const [certificates, setCertificates] = useState(initialCertificates);
+  const [certificates, setCertificates] = useState(() => {
+    try {
+      const saved = localStorage.getItem('certificates');
+      return saved ? JSON.parse(saved) : defaultCertificates;
+    } catch (e) {
+      console.error('Failed to parse certificates', e);
+      return defaultCertificates;
+    }
+  });
   const [newCertificate, setNewCertificate] = useState({
     title: '',
     issuer: '',
@@ -52,6 +31,9 @@ const DashboardPage = () => {
   const [confirmDelete, setConfirmDelete] = useState(null);
 
   const categories = ['Development', 'Data', 'Cloud', 'Design', 'Other'];
+  useEffect(() => {
+    localStorage.setItem("certificates", JSON.stringify(certificates));
+  }, [certificates]);
   
   const currentDate = new Date();
   const hours = currentDate.getHours();
