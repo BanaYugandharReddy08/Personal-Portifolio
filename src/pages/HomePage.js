@@ -57,14 +57,20 @@ const HomePage = () => {
 
             {/* achievements */}
             <div className="achievements">
-              <div className="achievements-scroller">
+              <ul
+                aria-label="Career highlights"
+                className="achievements-scroller"
+              >
                 {achievements.concat(achievements).map(({ title, copy }, i) => (
-                  <div key={i} className={`achievement-card fade-in-up ${animate ? "run" : ""}`}>
+                  <li
+                    key={i}
+                    className={`achievement-card fade-in-up ${animate ? 'run' : ''}`}
+                  >
                     <h3>{title}</h3>
                     <p>{copy}</p>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
 
             <p className="hero-cta" style={{ textAlign: 'justify' }}>
