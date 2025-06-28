@@ -1,6 +1,6 @@
 {
   "name": "yugandhar-portfolio",
-  "homepage": "https://<username>.github.io/<repo>",
+  "homepage": "https://banayugandharreddy08.github.io/Personal-Portifolio",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,8 +13,8 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@testing-library/react": "^14.2.1",
     "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.4.3",
     "gh-pages": "^5.0.0"
   },
