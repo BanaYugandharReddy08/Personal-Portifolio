@@ -1,5 +1,6 @@
 {
   "name": "yugandhar-portfolio",
+  "homepage": "https://<username>.github.io/<repo>",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,11 +15,14 @@
   "devDependencies": {
     "@testing-library/react": "^14.2.1",
     "@testing-library/jest-dom": "^6.1.5",
-    "@testing-library/user-event": "^14.4.3"
+    "@testing-library/user-event": "^14.4.3",
+    "gh-pages": "^5.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test --coverage --watchAll=false",
     "coverage": "npm test",
     "eject": "react-scripts eject"

@@ -13,3 +13,31 @@ Run `npm install` before executing any other scripts, especially prior to runnin
 For CI environments a simple helper script is provided at `ci/setup.sh` which installs the dependencies before tests are executed.
 
 The app entry point is `src/index.js` and routing is handled with `react-router-dom`.
+
+## Deploying to GitHub Pages
+
+1. Ensure the `homepage` field in `package.json` points to your repository URL, for example:
+
+   ```json
+   "homepage": "https://<username>.github.io/<repo>"
+   ```
+
+2. Install the `gh-pages` package as a development dependency and add the following scripts:
+
+   ```json
+   "predeploy": "npm run build",
+   "deploy": "gh-pages -d build"
+   ```
+
+3. Run `npm run deploy` after pushing changes to publish the contents of the `build/` folder to the `gh-pages` branch.
+
+### Continuous deployment
+
+Integrate your repository with GitHub Actions so that each push runs the test suite and deploys automatically. The helper script at `ci/setup.sh` installs dependencies in CI environments.
+
+### Keeping dependencies secure
+
+- Enable Dependabot (or a similar tool) to receive pull requests for outdated packages.
+- Include `npm audit` in your CI workflow to detect vulnerable dependencies.
+
+By combining automatic builds, tests and security checks you can maintain the portfolio with frequent updates while hosting it for free.
