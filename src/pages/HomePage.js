@@ -12,31 +12,37 @@ const HomePage = () => {
 
   const achievements = [
     {
+      id: 'ship',
       title: 'Results that ship',
       copy:
         'Cut page-load times by 30% in a SaaS revamp and slashed a legacy telecom portal\u2019s latency from 30 s to <10 s.',
     },
     {
+      id: 'trust',
       title: 'Code you can trust',
       copy:
         'Boosted automated-test coverage from 30% \u2192 90% and built zero-downtime CI/CD pipelines.',
     },
     {
+      id: 'insight',
       title: 'Insights that matter',
       copy:
         'Created ensemble ML models (RF, XGBoost, LightGBM) that predict Dublin housing prices with 88% accuracy.',
     },
     {
+      id: 'leadership',
       title: 'Agile leadership',
       copy:
         'Led Scrum ceremonies, mentored juniors and coordinated cross-functional teams to deliver on time.',
     },
     {
+      id: 'foundations',
       title: 'Full-stack foundations',
       copy:
         'Integrated REST APIs and Node services, building reliable data flows from PostgreSQL to React UIs.',
     },
     {
+      id: 'mindset',
       title: 'User-first mindset',
       copy:
         'Crafted responsive interfaces and accessibility features that keep users engaged across devices.',
@@ -61,9 +67,9 @@ const HomePage = () => {
                 aria-label="Career highlights"
                 className="achievements-scroller"
               >
-                {achievements.concat(achievements).map(({ title, copy }, i) => (
+                {achievements.concat(achievements).map(({ id, title, copy }) => (
                   <li
-                    key={i}
+                    key={id}
                     className={`achievement-card fade-in-up ${animate ? 'run' : ''}`}
                   >
                     <h3>{title}</h3>
