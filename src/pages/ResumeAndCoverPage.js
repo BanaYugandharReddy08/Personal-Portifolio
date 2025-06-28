@@ -24,7 +24,7 @@ const ResumeAndCoverPage = () => {
 
   /* 3️⃣ handy references */
   const { label, file } = DOCS[activeTab];
-  const fileURL = './' + file;
+  const fileURL = `${process.env.PUBLIC_URL}/${file}`;
   // console.log("The File URL is:", fileURL);
 
   return (
