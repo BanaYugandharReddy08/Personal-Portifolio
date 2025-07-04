@@ -244,7 +244,7 @@ const LeetCodePage = () => {
           Add New Problem
         </button>
 
-        <div className="filter-controls">
+        <div className="filter-controls--leetcode">
           <div className="difficulty-filter">
             {['Easy', 'Medium', 'Hard'].map((diff) => (
               <label key={diff}>

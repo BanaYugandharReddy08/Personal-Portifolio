@@ -248,7 +248,7 @@
   gap: var(--space-6);
 }
 
-.filter-controls {
+.filter-controls-leetcode {
   margin: var(--space-6) 0;
   display: flex;
   gap: var(--space-4);
