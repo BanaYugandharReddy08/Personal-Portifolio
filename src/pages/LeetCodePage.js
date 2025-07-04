@@ -58,20 +58,24 @@ const ProblemModal = ({ problem, onClose, onEdit }) => {
             </pre>
           </div>
         )}
-        {problem.link && (
-          <a
-            href={problem.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="leetcode-link"
-          >
-            View on LeetCode
-          </a>
-        )}
-        {onEdit && (
-          <button type="button" className="button" onClick={() => onEdit(problem.id)}>
-            Edit Problem
-          </button>
+        {(problem.link || onEdit) && (
+          <div className="modal-actions">
+            {problem.link && (
+              <a
+                href={problem.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="leetcode-link"
+              >
+                View on LeetCode
+              </a>
+            )}
+            {onEdit && (
+              <button type="button" className="button" onClick={() => onEdit(problem.id)}>
+                Edit Problem
+              </button>
+            )}
+          </div>
         )}
       </div>
     </div>
