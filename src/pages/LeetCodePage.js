@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './LeetCodePage.css';
 import defaultProblems from '../data/leetcodeProblems';
 
+
 const ProblemCard = ({ problem, onSelect }) => (
   <div className="problem-card" onClick={() => onSelect(problem)}>
     <h3>{problem.title}</h3>
@@ -60,6 +61,41 @@ const ProblemModal = ({ problem, onClose }) => {
           </a>
         )}
       </div>
+    <div className="problem-card">
+      <h3>
+        <a href={problem.link} target="_blank" rel="noopener noreferrer">
+          {problem.title}
+        </a>
+      </h3>
+      <p className={`difficulty ${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</p>
+      {problem.notes && <p className="notes">{problem.notes}</p>}
+      {showSolution && (
+        <div className="solution-section">
+          <div className="solution-tabs">
+            {solution.javascript && (
+              <button
+                type="button"
+                className={lang === 'javascript' ? 'active' : ''}
+                onClick={() => setLang('javascript')}
+              >
+                JavaScript
+              </button>
+            )}
+            {solution.python && (
+              <button
+                type="button"
+                className={lang === 'python' ? 'active' : ''}
+                onClick={() => setLang('python')}
+              >
+                Python
+              </button>
+            )}
+          </div>
+          <pre>
+            <code>{solution[lang]}</code>
+          </pre>
+        </div>
+      )}
     </div>
   );
 };
