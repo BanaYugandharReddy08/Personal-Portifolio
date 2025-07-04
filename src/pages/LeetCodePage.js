@@ -3,18 +3,6 @@ import './LeetCodePage.css';
 import defaultProblems from '../data/leetcodeProblems';
 
 
-const ProblemCard = ({ problem, onSelect }) => (
-  <div className="problem-card" onClick={() => onSelect(problem)}>
-    <h3>{problem.title}</h3>
-    <p className={`difficulty ${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</p>
-    {problem.dateSolved && (
-      <p className="date">
-        {new Date(problem.dateSolved).toLocaleDateString()}
-      </p>
-    )}
-    {problem.notes && <p className="notes">{problem.notes}</p>}
-  </div>
-);
 
 const ProblemModal = ({ problem, onClose, onEdit }) => {
   const { solution } = problem;
@@ -403,25 +391,30 @@ const LeetCodePage = () => {
           <table className="problems-table">
             <thead>
               <tr>
+                <th>#</th>
                 <th>Title</th>
-                <th>Difficulty</th>
-                <th>Statement</th>
                 <th>Date Solved</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredProblems.map((p) => (
+              {filteredProblems.map((p, idx) => (
                 <tr key={p.id}>
+                  <td>{idx + 1}</td>
                   <td>
                     <a href={p.link} target="_blank" rel="noopener noreferrer">
                       {p.title}
                     </a>
                   </td>
-                  <td>{p.difficulty}</td>
-                  <td>{p.statement}</td>
                   <td>{new Date(p.dateSolved).toLocaleDateString()}</td>
                   <td>
+                    <button
+                      className="button outline"
+                      onClick={() => setSelectedProblem(p)}
+                      aria-label={`View ${p.title}`}
+                    >
+                      View
+                    </button>
                     <button
                       className="button outline"
                       onClick={() => handleEditProblem(p.id)}
@@ -436,21 +429,11 @@ const LeetCodePage = () => {
           </table>
         </div>
 
-        <div className="problems-list">
-          {filteredProblems.length > 0 ? (
-            filteredProblems.map((p) => (
-              <ProblemCard
-                key={p.id}
-                problem={p}
-                onSelect={setSelectedProblem}
-              />
-            ))
-          ) : (
-            <div className="no-results">
-              <p>No problems found for these filters.</p>
-            </div>
-          )}
-        </div>
+        {filteredProblems.length === 0 && (
+          <div className="no-results">
+            <p>No problems found for these filters.</p>
+          </div>
+        )}
 
         {selectedProblem && (
           <ProblemModal
