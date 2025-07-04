@@ -108,11 +108,7 @@ const LeetCodePage = () => {
   const [formMessage, setFormMessage] = useState('');
   const [selectedProblem, setSelectedProblem] = useState(null);
 
-  const [selectedDifficulties, setSelectedDifficulties] = useState({
-    Easy: true,
-    Medium: true,
-    Hard: true,
-  });
+  const [difficultyFilter, setDifficultyFilter] = useState('all');
 
   const [dateRange, setDateRange] = useState('all');
 
@@ -129,7 +125,7 @@ const LeetCodePage = () => {
   const filteredProblems = useMemo(() => {
     const now = new Date();
     return problems.filter((p) => {
-      if (!selectedDifficulties[p.difficulty]) return false;
+      if (difficultyFilter !== 'all' && p.difficulty !== difficultyFilter) return false;
 
       if (dateRange !== 'all') {
         const solved = new Date(p.dateSolved);
@@ -139,7 +135,7 @@ const LeetCodePage = () => {
       }
       return true;
     });
-  }, [problems, selectedDifficulties, dateRange]);
+  }, [problems, difficultyFilter, dateRange]);
 
   useEffect(() => {
     localStorage.setItem('leetcodeProblems', JSON.stringify(problems));
@@ -204,8 +200,9 @@ const LeetCodePage = () => {
     setTimeout(() => setFormMessage(''), 3000);
   };
 
-  const toggleDifficulty = (diff) => {
-    setSelectedDifficulties((prev) => ({ ...prev, [diff]: !prev[diff] }));
+
+  const handleDifficultyChange = (e) => {
+    setDifficultyFilter(e.target.value);
   };
 
   const handleDateRangeChange = (e) => {
@@ -244,25 +241,73 @@ const LeetCodePage = () => {
           Add New Problem
         </button>
 
-        <div className="filter-controls--leetcode">
-          <div className="difficulty-filter">
-            {['Easy', 'Medium', 'Hard'].map((diff) => (
-              <label key={diff}>
-                <input
-                  type="checkbox"
-                  checked={selectedDifficulties[diff]}
-                  onChange={() => toggleDifficulty(diff)}
-                />
-                {diff}
-              </label>
-            ))}
+        <div className="results-grid">
+          <div className="filter-controls">
+            <div className="difficulty-filter">
+              <select value={difficultyFilter} onChange={handleDifficultyChange}>
+                <option value="all">All Difficulties</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
+            <div className="date-filter">
+              <select value={dateRange} onChange={handleDateRangeChange}>
+                <option value="all">All Dates</option>
+                <option value="week">Last Week</option>
+                <option value="month">Last Month</option>
+              </select>
+            </div>
           </div>
-          <div className="date-filter">
-            <select value={dateRange} onChange={handleDateRangeChange}>
-              <option value="all">All Dates</option>
-              <option value="week">Last Week</option>
-              <option value="month">Last Month</option>
-            </select>
+
+          <div>
+            <div className="problems-table-wrapper">
+              <table className="problems-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Date Solved</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredProblems.map((p, idx) => (
+                    <tr key={p.id}>
+                      <td>{idx + 1}</td>
+                      <td>
+                        <a href={p.link} target="_blank" rel="noopener noreferrer">
+                          {p.title}
+                        </a>
+                      </td>
+                      <td>{new Date(p.dateSolved).toLocaleDateString()}</td>
+                      <td>
+                        <button
+                          className="button outline"
+                          onClick={() => setSelectedProblem(p)}
+                          aria-label={`View ${p.title}`}
+                        >
+                          View
+                        </button>
+                        <button
+                          className="button outline"
+                          onClick={() => handleEditProblem(p.id)}
+                          aria-label={`Edit ${p.title}`}
+                        >
+                          Edit
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {filteredProblems.length === 0 && (
+              <div className="no-results">
+                <p>No problems found for these filters.</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -369,54 +414,6 @@ const LeetCodePage = () => {
                 </button>
               </form>
             </div>
-          </div>
-        )}
-
-        <div className="problems-table-wrapper">
-          <table className="problems-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Date Solved</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredProblems.map((p, idx) => (
-                <tr key={p.id}>
-                  <td>{idx + 1}</td>
-                  <td>
-                    <a href={p.link} target="_blank" rel="noopener noreferrer">
-                      {p.title}
-                    </a>
-                  </td>
-                  <td>{new Date(p.dateSolved).toLocaleDateString()}</td>
-                  <td>
-                    <button
-                      className="button outline"
-                      onClick={() => setSelectedProblem(p)}
-                      aria-label={`View ${p.title}`}
-                    >
-                      View
-                    </button>
-                    <button
-                      className="button outline"
-                      onClick={() => handleEditProblem(p.id)}
-                      aria-label={`Edit ${p.title}`}
-                    >
-                      Edit
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {filteredProblems.length === 0 && (
-          <div className="no-results">
-            <p>No problems found for these filters.</p>
           </div>
         )}
 
