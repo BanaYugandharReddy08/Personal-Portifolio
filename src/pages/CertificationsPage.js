@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCategory } from '../redux/actions/filterActions';
 import './CertificationsPage.css';
 
 import defaultCertificates from '../data/certificates';
@@ -16,7 +18,8 @@ const CertificationsPage = () => {
     }
   });
   const [selectedCertificate, setSelectedCertificate] = useState(null);
-  const [filter, setFilter] = useState('All');
+  const filter = useSelector((state) => state.filter);
+  const dispatch = useDispatch();
   const { user } = useAuth();
   
   const categories = ['All', 'Development', 'Data', 'Cloud', 'Design', 'Academic'];
@@ -46,7 +49,7 @@ const CertificationsPage = () => {
                 <button
                   key={category}
                   className={`filter-button ${filter === category ? 'active' : ''}`}
-                  onClick={() => setFilter(category)}
+                  onClick={() => dispatch(setCategory(category))}
                 >
                   {category}
                 </button>

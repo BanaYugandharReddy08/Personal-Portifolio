@@ -1,33 +1,34 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTheme } from '../redux/actions/themeActions';
 
 const ThemeContext = createContext();
 
 export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  });
+  const theme = useSelector((state) => state.theme);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // Apply theme to document
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('neon');
+    } else if (theme === 'neon') {
+      document.documentElement.classList.add('neon');
+      document.documentElement.classList.remove('dark');
     } else {
       document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove('neon');
     }
-    
-    // Save theme preference
-    localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+  const handleToggle = () => {
+    dispatch(toggleTheme());
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme: handleToggle }}>
       {children}
     </ThemeContext.Provider>
   );

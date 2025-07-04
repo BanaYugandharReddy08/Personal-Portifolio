@@ -7,12 +7,25 @@
   display: flex;
   align-items: center;
   position: relative;
-  background: linear-gradient(
-    135deg,
-    var(--primary-50) 0%,
-    var(--background) 100%
-  );
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.2), transparent),
+    radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.15), transparent),
+    linear-gradient(135deg, var(--background) 0%, var(--neutral-900) 100%);
   padding: var(--space-24) 0 var(--space-16);
+  animation: gradientMove 10s linear infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0 0, 100% 100%, 0 0;
+  }
+  50% {
+    background-position: 50% 50%, 50% 50%, 0 0;
+  }
+  100% {
+    background-position: 0 0, 100% 100%, 0 0;
+  }
 }
 
 .hero-content {
@@ -104,6 +117,38 @@
   display: flex;
   gap: var(--space-4);
   animation: fadeIn 0.8s ease-out 0.6s backwards;
+}
+
+.hero-image {
+  width: 160px;
+  height: 160px;
+  margin-bottom: var(--space-6);
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+  transition: transform 0.3s;
+}
+
+.hero-image:hover {
+  transform: rotateY(10deg) rotateX(10deg);
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid var(--primary);
+  white-space: nowrap;
+  display: inline-block;
+  animation: typing 3s steps(30, end), blink 0.7s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--primary); }
 }
 
 .section-heading {

@@ -1,6 +1,6 @@
 # React Portfolio
 
-This project is a personal portfolio built with plain React using `react-scripts`. The application does not rely on Vite, Next.js or TypeScript. All components use the `.js` extension and standard CSS for styling.
+This project is a personal portfolio built with plain React and Redux using `react-scripts`. The application does not rely on Vite, Next.js or TypeScript. All components use the `.js` extension and standard CSS for styling.
 
 ## Available Scripts
 
@@ -26,6 +26,7 @@ This installs all dependencies and then starts the Jest runner, generating a cov
 For CI environments a helper script is provided at `ci/setup.sh` which performs the `npm install` step before tests are executed.
 
 The app entry point is `src/index.js` and routing is handled with `react-router-dom`.
+State management uses a small Redux setup located in `src/redux`.
 
 ## LeetCode Page
 

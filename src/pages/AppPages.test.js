@@ -9,7 +9,7 @@ describe('Pages', () => {
 
   test('HomePage shows hero heading', () => {
     render(<HomePage />);
-    expect(screen.getByRole('heading', { name: /yugandhar/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /frontend dev/i })).toBeInTheDocument();
   });
 
   test('LoginPage form validation', () => {
