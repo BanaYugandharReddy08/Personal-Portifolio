@@ -280,9 +280,9 @@ const LeetCodePage = () => {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>ID</th>
+                    <th>LcId</th>
                     <th>Title</th>
-                    <th>Date Solved</th>
+                    <th>Difficulty</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -296,7 +296,7 @@ const LeetCodePage = () => {
                           {p.title}
                         </a>
                       </td>
-                      <td>{new Date(p.dateSolved).toLocaleDateString()}</td>
+                      <td className={`difficulty ${p.difficulty.toLowerCase()}`}>{p.difficulty}</td>
                       <td>
                         <div className="action-buttons">
                           <button

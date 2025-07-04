@@ -13,6 +13,13 @@
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.leetcode-form button {
+  align-self: center;
 }
 
 .form-message {
@@ -148,6 +155,12 @@
   overflow-y: auto;
   position: relative;
   animation: scaleIn var(--transition-normal);
+  padding: var(--space-6);
+}
+
+.problem-modal-content h2 {
+  text-align: center;
+  margin-bottom: var(--space-6);
 }
 
 .close-button {
@@ -243,6 +256,7 @@
 .summary-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-4);
 }
 
