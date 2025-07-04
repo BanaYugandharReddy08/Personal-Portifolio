@@ -230,3 +230,36 @@
   background-color: var(--muted);
 }
 
+.difficulty-counts {
+  margin-bottom: var(--space-4);
+  display: flex;
+  gap: var(--space-4);
+  font-weight: 600;
+}
+
+.filter-controls {
+  margin: var(--space-6) 0;
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.difficulty-filter label {
+  margin-right: var(--space-2);
+  user-select: none;
+}
+
+.date-filter select {
+  padding: var(--space-1) var(--space-2);
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-12);
+  background-color: var(--card);
+  border-radius: var(--radius-lg);
+  color: var(--muted-foreground);
+}
+
