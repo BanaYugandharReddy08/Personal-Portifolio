@@ -79,3 +79,32 @@
   font-size: var(--text-sm);
   color: var(--muted-foreground);
 }
+
+.solution-section {
+  margin-top: var(--space-3);
+}
+
+.solution-tabs {
+  margin-bottom: var(--space-2);
+}
+
+.solution-tabs button {
+  margin-right: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: var(--background);
+  cursor: pointer;
+}
+
+.solution-tabs button.active {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.solution-section pre {
+  background-color: var(--muted);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  overflow: auto;
+}
