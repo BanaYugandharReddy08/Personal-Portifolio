@@ -73,7 +73,7 @@ const ProblemModal = ({ problem, onClose }) => {
           </a>
         )}
       </div>
-    <div className="problem-card">
+      <div className="problem-card">
       <h3>
         <a href={problem.link} target="_blank" rel="noopener noreferrer">
           {problem.title}
@@ -108,6 +108,7 @@ const ProblemModal = ({ problem, onClose }) => {
           </pre>
         </div>
       )}
+    </div>
     </div>
   );
 };
