@@ -69,4 +69,11 @@ describe('LeetCodePage', () => {
 
     expect(screen.getByText('Problem 1')).toBeInTheDocument();
   });
+
+  test('deletes a problem after confirmation', () => {
+    render(<LeetCodePage />);
+    fireEvent.click(screen.getByLabelText(/delete two sum/i));
+    fireEvent.click(screen.getByRole('button', { name: /^delete$/i }));
+    expect(screen.queryByText('Two Sum')).not.toBeInTheDocument();
+  });
 });
