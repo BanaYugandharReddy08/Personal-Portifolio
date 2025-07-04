@@ -12,9 +12,21 @@ const ProblemCard = ({ problem, onSelect }) => (
 );
 
 const ProblemModal = ({ problem, onClose }) => {
-  const [lang, setLang] = useState('javascript');
   const { solution } = problem;
+  const [lang, setLang] = useState(() => {
+    if (solution && solution.javascript) return 'javascript';
+    if (solution && solution.python) return 'python';
+    return 'javascript';
+  });
   const showSolution = solution && (solution.javascript || solution.python);
+
+  useEffect(() => {
+    if (solution && solution.javascript) {
+      setLang('javascript');
+    } else if (solution && solution.python) {
+      setLang('python');
+    }
+  }, [problem]);
 
   return (
     <div className="problem-modal" onClick={onClose}>
