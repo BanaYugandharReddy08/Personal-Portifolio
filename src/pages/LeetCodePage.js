@@ -2,12 +2,65 @@ import { useState, useEffect } from 'react';
 import './LeetCodePage.css';
 import defaultProblems from '../data/leetcodeProblems';
 
-const ProblemCard = ({ problem }) => {
+
+const ProblemCard = ({ problem, onSelect }) => (
+  <div className="problem-card" onClick={() => onSelect(problem)}>
+    <h3>{problem.title}</h3>
+    <p className={`difficulty ${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</p>
+    {problem.notes && <p className="notes">{problem.notes}</p>}
+  </div>
+);
+
+const ProblemModal = ({ problem, onClose }) => {
   const [lang, setLang] = useState('javascript');
   const { solution } = problem;
   const showSolution = solution && (solution.javascript || solution.python);
 
   return (
+    <div className="problem-modal" onClick={onClose}>
+      <div className="problem-modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="close-button" onClick={onClose}>×</button>
+        <h2>{problem.title}</h2>
+        <p className={`difficulty ${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</p>
+        {problem.notes && <p className="notes">{problem.notes}</p>}
+        {showSolution && (
+          <div className="solution-section">
+            <div className="solution-tabs">
+              {solution.javascript && (
+                <button
+                  type="button"
+                  className={lang === 'javascript' ? 'active' : ''}
+                  onClick={() => setLang('javascript')}
+                >
+                  JavaScript
+                </button>
+              )}
+              {solution.python && (
+                <button
+                  type="button"
+                  className={lang === 'python' ? 'active' : ''}
+                  onClick={() => setLang('python')}
+                >
+                  Python
+                </button>
+              )}
+            </div>
+            <pre>
+              <code>{solution[lang]}</code>
+            </pre>
+          </div>
+        )}
+        {problem.link && (
+          <a
+            href={problem.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="leetcode-link"
+          >
+            View on LeetCode
+          </a>
+        )}
+      </div>
     <div className="problem-card">
       <h3>
         <a href={problem.link} target="_blank" rel="noopener noreferrer">
@@ -67,6 +120,7 @@ const LeetCodePage = () => {
     solutionPython: ''
   });
   const [formMessage, setFormMessage] = useState('');
+  const [selectedProblem, setSelectedProblem] = useState(null);
 
   useEffect(() => {
     localStorage.setItem('leetcodeProblems', JSON.stringify(problems));
@@ -189,9 +243,16 @@ const LeetCodePage = () => {
 
         <div className="problems-list">
           {problems.map((p) => (
-            <ProblemCard key={p.id} problem={p} />
+            <ProblemCard key={p.id} problem={p} onSelect={setSelectedProblem} />
           ))}
         </div>
+
+        {selectedProblem && (
+          <ProblemModal
+            problem={selectedProblem}
+            onClose={() => setSelectedProblem(null)}
+          />
+        )}
       </div>
     </div>
   );
