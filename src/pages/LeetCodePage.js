@@ -106,6 +106,7 @@ const LeetCodePage = () => {
   const [editingId, setEditingId] = useState(null);
   const [formMessage, setFormMessage] = useState('');
   const [selectedProblem, setSelectedProblem] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(null);
 
   const [difficultyFilter, setDifficultyFilter] = useState('all');
 
@@ -215,6 +216,19 @@ const LeetCodePage = () => {
     setPageSize(Number(e.target.value));
   };
 
+  const handleDeleteClick = (id) => {
+    setConfirmDelete(id);
+  };
+
+  const handleConfirmDelete = () => {
+    setProblems(problems.filter((p) => p.id !== confirmDelete));
+    setConfirmDelete(null);
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmDelete(null);
+  };
+
   const handlePrevPage = () => {
     setCurrentPage((p) => Math.max(1, p - 1));
   };
@@ -311,6 +325,13 @@ const LeetCodePage = () => {
                           >
                             Edit
                           </button>
+                          <button
+                            className="button outline"
+                            onClick={() => handleDeleteClick(p.id)}
+                            aria-label={`Delete ${p.title}`}
+                          >
+                            Delete
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -345,13 +366,30 @@ const LeetCodePage = () => {
               </div>
             </div>
 
-            {filteredProblems.length === 0 && (
-              <div className="no-results">
-                <p>No problems found for these filters.</p>
-              </div>
-            )}
+        {filteredProblems.length === 0 && (
+          <div className="no-results">
+            <p>No problems found for these filters.</p>
+          </div>
+        )}
+        </div>
+      </div>
+
+      {confirmDelete && (
+        <div className="confirm-dialog">
+          <div className="confirm-dialog-content">
+            <h3>Delete this problem?</h3>
+            <p>This action can't be undone.</p>
+            <div className="confirm-dialog-actions">
+              <button onClick={handleCancelDelete} className="button outline">
+                Cancel
+              </button>
+              <button onClick={handleConfirmDelete} className="button accent">
+                Delete
+              </button>
+            </div>
           </div>
         </div>
+      )}
 
         {isFormOpen && (
           <div className="problem-modal" onClick={() => setIsFormOpen(false)}>
