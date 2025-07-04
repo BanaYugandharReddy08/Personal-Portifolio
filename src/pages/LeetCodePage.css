@@ -230,11 +230,22 @@
   background-color: var(--muted);
 }
 
-.difficulty-counts {
-  margin-bottom: var(--space-4);
+.progress-summary {
+  margin-bottom: var(--space-6);
   display: flex;
-  gap: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.total-solved {
+  font-size: var(--text-lg);
   font-weight: 600;
+}
+
+.progress-circles {
+  display: flex;
+  gap: var(--space-6);
 }
 
 .filter-controls {

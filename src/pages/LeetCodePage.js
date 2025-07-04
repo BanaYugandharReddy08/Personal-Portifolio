@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import './LeetCodePage.css';
 import defaultProblems from '../data/leetcodeProblems';
+import ProgressCircle from '../components/leetcode/ProgressCircle';
 
 
 
@@ -159,6 +160,11 @@ const LeetCodePage = () => {
     return counts;
   }, [problems]);
 
+  const totalSolved = problems.length;
+  const easyPct = totalSolved ? (difficultyCounts.Easy / totalSolved) * 100 : 0;
+  const medPct = totalSolved ? (difficultyCounts.Medium / totalSolved) * 100 : 0;
+  const hardPct = totalSolved ? (difficultyCounts.Hard / totalSolved) * 100 : 0;
+
   const filteredProblems = useMemo(() => {
     const now = new Date();
     return problems.filter((p) => {
@@ -249,10 +255,28 @@ const LeetCodePage = () => {
     <div className="leetcode-page">
       <div className="container">
         <h1>LeetCode Problems</h1>
-        <div className="difficulty-counts">
-          <span>Easy: {difficultyCounts.Easy}</span>
-          <span>Medium: {difficultyCounts.Medium}</span>
-          <span>Hard: {difficultyCounts.Hard}</span>
+        <div className="progress-summary">
+          <div className="total-solved">Total Solved: {totalSolved}</div>
+          <div className="progress-circles">
+            <ProgressCircle
+              label="Easy"
+              value={difficultyCounts.Easy}
+              total={totalSolved}
+              color="var(--success-600)"
+            />
+            <ProgressCircle
+              label="Medium"
+              value={difficultyCounts.Medium}
+              total={totalSolved}
+              color="var(--warning-600)"
+            />
+            <ProgressCircle
+              label="Hard"
+              value={difficultyCounts.Hard}
+              total={totalSolved}
+              color="var(--error-600)"
+            />
+          </div>
         </div>
 
         <button type="button" className="button" onClick={openAddForm}>

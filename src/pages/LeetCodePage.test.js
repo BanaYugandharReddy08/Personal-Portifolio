@@ -27,4 +27,16 @@ describe('LeetCodePage', () => {
     fireEvent.click(screen.getByLabelText(/edit old/i));
     expect(screen.getByDisplayValue('Old')).toBeInTheDocument();
   });
+
+  test('updates total solved count when new problem is added', () => {
+    render(<LeetCodePage />);
+    expect(screen.getByText(/total solved/i)).toHaveTextContent('3');
+
+    fireEvent.click(screen.getByRole('button', { name: /add new problem/i }));
+    fireEvent.change(screen.getByLabelText(/title/i), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByLabelText(/link/i), { target: { value: 'https://example.com' } });
+    fireEvent.click(screen.getByRole('button', { name: /add problem/i }));
+
+    expect(screen.getByText(/total solved/i)).toHaveTextContent('4');
+  });
 });
