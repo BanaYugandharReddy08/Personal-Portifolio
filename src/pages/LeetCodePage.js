@@ -393,7 +393,7 @@ const LeetCodePage = () => {
                   />
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label htmlFor="notes">Notes</label>
                   <textarea
                     id="notes"
@@ -402,7 +402,7 @@ const LeetCodePage = () => {
                     value={formData.notes}
                     onChange={handleChange}
                   />
-                </div>
+                </div> */}
                 <button type="submit" className="button">
                   {editingId ? 'Save Changes' : 'Add Problem'}
                 </button>
