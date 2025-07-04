@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCategory } from '../redux/actions/filterActions';
 import LeetCodePage from './LeetCodePage';
 // import { motion } from 'framer-motion';
 import './ExperiencePage.css';
@@ -66,6 +68,7 @@ const projects = [
     technologies: ["Python", "scikit-learn", "Pandas", "Matplotlib", "Jupyter"],
     imageUrl: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg",
     featured: true,
+    category: 'Data',
     reportFile: report
   },
   {
@@ -75,9 +78,12 @@ const projects = [
       "This very portfolio—built with plain React and CSS without relying on frameworks like Next.js or Vite. It showcases my work, CV and contact details in a responsive, animated interface.",
     technologies: ["React", "React Router", "Framer Motion", "CSS"],
     imageUrl: "https://images.pexels.com/photos/11035535/pexels-photo-11035535.jpeg",
-    featured: true
+    featured: true,
+    category: 'Development'
   }
 ];
+
+const categories = ['All', 'Development', 'Data', 'Cloud'];
 
 
 
@@ -86,6 +92,11 @@ const ExperiencePage = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [animate, setAnimate] = useState(false);          // triggers CSS keyframes
   const [canEmbed,  setCanEmbed]  = useState(true);
+  const filter = useSelector((state) => state.filter);
+  const dispatch = useDispatch();
+
+  const filteredProjects =
+    filter === 'All' ? projects : projects.filter((p) => p.category === filter);
 
   /* start animations after first paint */
   useEffect(() => {
@@ -160,8 +171,20 @@ const ExperiencePage = () => {
             ))}
           </div>
         ) : activeTab === 'projects' ? (
-          <div id="projects" className="projects-grid">
-            {projects.map((proj, i) => (
+          <>
+            <div className="filter-controls">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  className={`filter-button ${filter === cat ? 'active' : ''}`}
+                  onClick={() => dispatch(setCategory(cat))}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+            <div id="projects" className="projects-grid">
+              {filteredProjects.map((proj, i) => (
               <div
                 key={proj.id}
                 className={`project-card ${proj.featured ? 'featured' : ''} fade-in-up ${
@@ -195,8 +218,9 @@ const ExperiencePage = () => {
                   </button>
                 </div>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </>
         ) : (
           <LeetCodePage />
         )}

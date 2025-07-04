@@ -190,6 +190,15 @@
   --ring: var(--primary-600);
 }
 
+.neon {
+  --background: #0a0a0a;
+  --foreground: #e0e0e0;
+  --card: rgba(255, 255, 255, 0.05);
+  --border: #0ff;
+  --primary: #0ff;
+  --primary-foreground: #0a0a0a;
+}
+
 /* Base styles */
 * {
   margin: 0;

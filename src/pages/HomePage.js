@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Photo from '../Photo.jpg';
 import './HomePage.css';
 
 const HomePage = () => {
@@ -55,7 +56,10 @@ const HomePage = () => {
       <section className="hero">
         <div className="container">
           <div className={`hero-content fade-in-up ${animate ? 'run' : ''}`}>
-            <h1>Hi, I'm Yugandhar “Yugi” Reddy Bana</h1>
+            <div className="hero-image">
+              <img src={Photo} alt="Yugandhar Reddy Bana" />
+            </div>
+            <h1 className="typewriter">Hi, I'm Yugi — Frontend Dev + Data Analyst</h1>
             <h2>
               A data-savvy front-end engineer who turns numbers into
               pixel-perfect products.
