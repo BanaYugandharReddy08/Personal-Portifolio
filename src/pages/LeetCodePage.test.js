@@ -39,4 +39,30 @@ describe('LeetCodePage', () => {
 
     expect(screen.getByText(/total solved/i)).toHaveTextContent('4');
   });
+
+  test('pagination controls navigate through pages', () => {
+    const manyProblems = Array.from({ length: 7 }, (_, i) => ({
+      id: String(i + 1),
+      title: `Problem ${i + 1}`,
+      difficulty: 'Easy',
+      link: '#',
+      dateSolved: '2024-01-01T00:00:00.000Z'
+    }));
+    localStorage.setItem('leetcodeProblems', JSON.stringify(manyProblems));
+    render(<LeetCodePage />);
+
+    // first page shows first five problems
+    expect(screen.getByText('Problem 5')).toBeInTheDocument();
+    expect(screen.queryByText('Problem 6')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+
+    expect(screen.getByText('Problem 6')).toBeInTheDocument();
+    expect(screen.getByText('Problem 7')).toBeInTheDocument();
+    expect(screen.queryByText('Problem 1')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /prev/i }));
+
+    expect(screen.getByText('Problem 1')).toBeInTheDocument();
+  });
 });

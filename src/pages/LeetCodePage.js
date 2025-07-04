@@ -112,6 +112,9 @@ const LeetCodePage = () => {
 
   const [dateRange, setDateRange] = useState('all');
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+
   const difficultyCounts = useMemo(() => {
     const counts = { Easy: 0, Medium: 0, Hard: 0 };
     problems.forEach((p) => {
@@ -136,6 +139,17 @@ const LeetCodePage = () => {
       return true;
     });
   }, [problems, difficultyFilter, dateRange]);
+
+  const paginatedProblems = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filteredProblems.slice(start, start + pageSize);
+  }, [filteredProblems, currentPage, pageSize]);
+
+  const totalPages = Math.ceil(filteredProblems.length / pageSize) || 1;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [difficultyFilter, dateRange, pageSize]);
 
   useEffect(() => {
     localStorage.setItem('leetcodeProblems', JSON.stringify(problems));
@@ -209,6 +223,18 @@ const LeetCodePage = () => {
     setDateRange(e.target.value);
   };
 
+  const handlePageSizeChange = (e) => {
+    setPageSize(Number(e.target.value));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((p) => Math.max(1, p - 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((p) => Math.min(totalPages, p + 1));
+  };
+
   return (
     <div className="leetcode-page">
       <div className="container">
@@ -272,9 +298,9 @@ const LeetCodePage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredProblems.map((p, idx) => (
+                  {paginatedProblems.map((p, idx) => (
                     <tr key={p.id}>
-                      <td>{idx + 1}</td>
+                      <td>{(currentPage - 1) * pageSize + idx + 1}</td>
                       <td>
                         <a href={p.link} target="_blank" rel="noopener noreferrer">
                           {p.title}
@@ -301,6 +327,32 @@ const LeetCodePage = () => {
                   ))}
                 </tbody>
               </table>
+              <div className="pagination-controls">
+                <button
+                  className="button outline"
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 1}
+                >
+                  Prev
+                </button>
+                <span>{`Page ${currentPage} of ${totalPages}`}</span>
+                <button
+                  className="button outline"
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+                <select
+                  aria-label="page size"
+                  value={pageSize}
+                  onChange={handlePageSizeChange}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                </select>
+              </div>
             </div>
 
             {filteredProblems.length === 0 && (
