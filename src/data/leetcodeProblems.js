@@ -1,6 +1,7 @@
 const defaultProblems = [
   {
-    id: '1',
+    id: 'u1',
+    lcId: '1',
     title: 'Two Sum',
     difficulty: 'Easy',
     link: 'https://leetcode.com/problems/two-sum/',
@@ -13,7 +14,8 @@ const defaultProblems = [
     }
   },
   {
-    id: '2',
+    id: 'u2',
+    lcId: '2',
     title: 'Add Two Numbers',
     difficulty: 'Medium',
     link: 'https://leetcode.com/problems/add-two-numbers/',
@@ -26,7 +28,8 @@ const defaultProblems = [
     }
   },
   {
-    id: '3',
+    id: 'u3',
+    lcId: '3',
     title: 'Longest Substring Without Repeating Characters',
     difficulty: 'Medium',
     link: 'https://leetcode.com/problems/longest-substring-without-repeating-characters/',
