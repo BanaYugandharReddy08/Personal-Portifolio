@@ -8,9 +8,20 @@ This project is a personal portfolio built with plain React using `react-scripts
 - `npm run build` – build the production assets
 - `npm test` – run tests and automatically generate a coverage report
 
-Run `npm install` before executing any other scripts, especially prior to running `npm test`, to ensure all dependencies are available. The interactive Jest runner can be started with `npm test`, and a full coverage report will be generated automatically. It can be viewed at `coverage/lcov-report/index.html` after the command completes.
+Run `npm install` before executing any other scripts so that `react-scripts` and the other dev dependencies are available.
 
-For CI environments a simple helper script is provided at `ci/setup.sh` which installs the dependencies before tests are executed.
+## Running Tests
+
+Execute the following commands from the project root:
+
+```sh
+npm install
+npm test
+```
+
+This installs all dependencies and then starts the Jest runner, generating a coverage report that can be viewed at `coverage/lcov-report/index.html`.
+
+For CI environments a helper script is provided at `ci/setup.sh` which performs the `npm install` step before tests are executed.
 
 The app entry point is `src/index.js` and routing is handled with `react-router-dom`.
 
