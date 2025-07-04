@@ -248,19 +248,21 @@
   gap: var(--space-6);
 }
 
-.filter-controls-leetcode {
+.results-grid {
   margin: var(--space-6) 0;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: var(--space-6);
+  align-items: flex-start;
+}
+
+.filter-controls {
   display: flex;
+  flex-direction: column;
   gap: var(--space-4);
-  flex-wrap: wrap;
-  align-items: center;
 }
 
-.difficulty-filter label {
-  margin-right: var(--space-2);
-  user-select: none;
-}
-
+.difficulty-filter select,
 .date-filter select {
   padding: var(--space-1) var(--space-2);
 }
@@ -272,5 +274,17 @@
   background-color: var(--card);
   border-radius: var(--radius-lg);
   color: var(--muted-foreground);
+}
+
+@media (max-width: 768px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-controls {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
 }
 
