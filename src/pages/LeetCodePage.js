@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import './LeetCodePage.css';
 import defaultProblems from '../data/leetcodeProblems';
 
@@ -155,6 +155,37 @@ const LeetCodePage = () => {
   const [formMessage, setFormMessage] = useState('');
   const [selectedProblem, setSelectedProblem] = useState(null);
 
+  const [selectedDifficulties, setSelectedDifficulties] = useState({
+    Easy: true,
+    Medium: true,
+    Hard: true,
+  });
+
+  const [dateRange, setDateRange] = useState('all');
+
+  const difficultyCounts = useMemo(() => {
+    const counts = { Easy: 0, Medium: 0, Hard: 0 };
+    problems.forEach((p) => {
+      counts[p.difficulty] = (counts[p.difficulty] || 0) + 1;
+    });
+    return counts;
+  }, [problems]);
+
+  const filteredProblems = useMemo(() => {
+    const now = new Date();
+    return problems.filter((p) => {
+      if (!selectedDifficulties[p.difficulty]) return false;
+
+      if (dateRange !== 'all') {
+        const solved = new Date(p.dateSolved);
+        const diffDays = (now - solved) / (1000 * 60 * 60 * 24);
+        if (dateRange === 'week' && diffDays > 7) return false;
+        if (dateRange === 'month' && diffDays > 30) return false;
+      }
+      return true;
+    });
+  }, [problems, selectedDifficulties, dateRange]);
+
   useEffect(() => {
     localStorage.setItem('leetcodeProblems', JSON.stringify(problems));
   }, [problems]);
@@ -218,14 +249,49 @@ const LeetCodePage = () => {
     setTimeout(() => setFormMessage(''), 3000);
   };
 
+  const toggleDifficulty = (diff) => {
+    setSelectedDifficulties((prev) => ({ ...prev, [diff]: !prev[diff] }));
+  };
+
+  const handleDateRangeChange = (e) => {
+    setDateRange(e.target.value);
+  };
+
   return (
     <div className="leetcode-page">
       <div className="container">
         <h1>LeetCode Problems</h1>
+        <div className="difficulty-counts">
+          <span>Easy: {difficultyCounts.Easy}</span>
+          <span>Medium: {difficultyCounts.Medium}</span>
+          <span>Hard: {difficultyCounts.Hard}</span>
+        </div>
 
         <button type="button" className="button" onClick={openAddForm}>
           Add New Problem
         </button>
+
+        <div className="filter-controls">
+          <div className="difficulty-filter">
+            {['Easy', 'Medium', 'Hard'].map((diff) => (
+              <label key={diff}>
+                <input
+                  type="checkbox"
+                  checked={selectedDifficulties[diff]}
+                  onChange={() => toggleDifficulty(diff)}
+                />
+                {diff}
+              </label>
+            ))}
+          </div>
+          <div className="date-filter">
+            <select value={dateRange} onChange={handleDateRangeChange}>
+              <option value="all">All Dates</option>
+              <option value="week">Last Week</option>
+              <option value="month">Last Month</option>
+            </select>
+          </div>
+        </div>
 
         {isFormOpen && (
           <div className="problem-modal" onClick={() => setIsFormOpen(false)}>
@@ -345,7 +411,7 @@ const LeetCodePage = () => {
               </tr>
             </thead>
             <tbody>
-              {problems.map((p) => (
+              {filteredProblems.map((p) => (
                 <tr key={p.id}>
                   <td>
                     <a href={p.link} target="_blank" rel="noopener noreferrer">
@@ -371,9 +437,19 @@ const LeetCodePage = () => {
         </div>
 
         <div className="problems-list">
-          {problems.map((p) => (
-            <ProblemCard key={p.id} problem={p} onSelect={setSelectedProblem} />
-          ))}
+          {filteredProblems.length > 0 ? (
+            filteredProblems.map((p) => (
+              <ProblemCard
+                key={p.id}
+                problem={p}
+                onSelect={setSelectedProblem}
+              />
+            ))
+          ) : (
+            <div className="no-results">
+              <p>No problems found for these filters.</p>
+            </div>
+          )}
         </div>
 
         {selectedProblem && (
