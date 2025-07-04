@@ -2,7 +2,7 @@ import React from 'react';
 import './ProgressCircle.css';
 
 const ProgressCircle = ({ label, value, total, color }) => {
-  const radius = 30;
+  const radius = 36;
   const stroke = 6;
   const normalizedRadius = radius - stroke;
   const circumference = 2 * Math.PI * normalizedRadius;
@@ -15,6 +15,7 @@ const ProgressCircle = ({ label, value, total, color }) => {
         className="progress-svg"
         height={radius * 2}
         width={radius * 2}
+        viewBox={`0 0 ${radius * 2} ${radius * 2}`}
       >
         <circle
           stroke="var(--muted)"
@@ -35,6 +36,7 @@ const ProgressCircle = ({ label, value, total, color }) => {
           r={normalizedRadius}
           cx={radius}
           cy={radius}
+          aria-label={`${label} progress`}
         />
       </svg>
       <div className="progress-text">{value}</div>
