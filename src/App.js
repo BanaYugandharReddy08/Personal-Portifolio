@@ -9,7 +9,6 @@ import EducationPage from './pages/EducationPage';
 import CertificationsPage from './pages/CertificationsPage';
 import ExperiencePage from './pages/ExperiencePage';
 import ContactPage from './pages/ContactPage';
-import LeetCodePage from './pages/LeetCodePage';
 import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
@@ -37,7 +36,6 @@ function App() {
           <Route path="/education" element={<EducationPage />} />
           <Route path="/certifications" element={<CertificationsPage />} />
           <Route path="/experience" element={<ExperiencePage />} />
-          <Route path="/leetcode" element={<LeetCodePage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/login" element={<LoginPage />} />

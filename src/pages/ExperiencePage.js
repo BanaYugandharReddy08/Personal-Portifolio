@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import LeetCodePage from './LeetCodePage';
 // import { motion } from 'framer-motion';
 import './ExperiencePage.css';
 import report from './report.pdf'; // Import the report file
@@ -114,6 +115,12 @@ const ExperiencePage = () => {
             >
               Projects
             </button>
+            <button
+              className={`tab ${activeTab === 'leetcode' ? 'active' : ''}`}
+              onClick={() => setActiveTab('leetcode')}
+            >
+              LeetCode
+            </button>
           </div>
         </div>
 
@@ -152,7 +159,7 @@ const ExperiencePage = () => {
               </div>
             ))}
           </div>
-        ) : (
+        ) : activeTab === 'projects' ? (
           <div id="projects" className="projects-grid">
             {projects.map((proj, i) => (
               <div
@@ -190,6 +197,8 @@ const ExperiencePage = () => {
               </div>
             ))}
           </div>
+        ) : (
+          <LeetCodePage />
         )}
 
         {/* ───────── modal ───────── */}

@@ -92,6 +92,7 @@ const LeetCodePage = () => {
   });
 
   const initialForm = {
+    lcId: '',
     title: '',
     difficulty: 'Easy',
     link: '',
@@ -110,7 +111,6 @@ const LeetCodePage = () => {
 
   const [difficultyFilter, setDifficultyFilter] = useState('all');
 
-  const [dateRange, setDateRange] = useState('all');
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -126,19 +126,11 @@ const LeetCodePage = () => {
   const totalSolved = problems.length;
 
   const filteredProblems = useMemo(() => {
-    const now = new Date();
     return problems.filter((p) => {
       if (difficultyFilter !== 'all' && p.difficulty !== difficultyFilter) return false;
-
-      if (dateRange !== 'all') {
-        const solved = new Date(p.dateSolved);
-        const diffDays = (now - solved) / (1000 * 60 * 60 * 24);
-        if (dateRange === 'week' && diffDays > 7) return false;
-        if (dateRange === 'month' && diffDays > 30) return false;
-      }
       return true;
     });
-  }, [problems, difficultyFilter, dateRange]);
+  }, [problems, difficultyFilter]);
 
   const paginatedProblems = useMemo(() => {
     const start = (currentPage - 1) * pageSize;
@@ -149,7 +141,7 @@ const LeetCodePage = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [difficultyFilter, dateRange, pageSize]);
+  }, [difficultyFilter, pageSize]);
 
   useEffect(() => {
     localStorage.setItem('leetcodeProblems', JSON.stringify(problems));
@@ -170,6 +162,7 @@ const LeetCodePage = () => {
     const problem = problems.find((p) => p.id === id);
     if (!problem) return;
     setFormData({
+      lcId: problem.lcId || '',
       title: problem.title,
       difficulty: problem.difficulty,
       link: problem.link,
@@ -185,8 +178,8 @@ const LeetCodePage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.title || !formData.link) {
-      setFormMessage('Please provide a title and link.');
+    if (!formData.title || !formData.link || !formData.lcId) {
+      setFormMessage('Please provide an ID, title and link.');
       return;
     }
 
@@ -219,9 +212,6 @@ const LeetCodePage = () => {
     setDifficultyFilter(e.target.value);
   };
 
-  const handleDateRangeChange = (e) => {
-    setDateRange(e.target.value);
-  };
 
   const handlePageSizeChange = (e) => {
     setPageSize(Number(e.target.value));
@@ -240,7 +230,16 @@ const LeetCodePage = () => {
       <div className="container">
         <h1>LeetCode Problems</h1>
         <div className="progress-summary">
-          <div className="total-solved">Total Solved: {totalSolved}</div>
+          <div className="summary-header">
+            <div className="total-solved">Total Solved: {totalSolved}</div>
+            <button
+              type="button"
+              className="button add-problem-btn"
+              onClick={openAddForm}
+            >
+              Add New Problem
+            </button>
+          </div>
           <div className="progress-circles">
             <ProgressCircle
               label="Easy"
@@ -263,10 +262,6 @@ const LeetCodePage = () => {
           </div>
         </div>
 
-        <button type="button" className="button" onClick={openAddForm}>
-          Add New Problem
-        </button>
-
         <div className="results-grid">
           <div className="filter-controls">
             <div className="difficulty-filter">
@@ -277,21 +272,15 @@ const LeetCodePage = () => {
                 <option value="Hard">Hard</option>
               </select>
             </div>
-            <div className="date-filter">
-              <select value={dateRange} onChange={handleDateRangeChange}>
-                <option value="all">All Dates</option>
-                <option value="week">Last Week</option>
-                <option value="month">Last Month</option>
-              </select>
-            </div>
           </div>
 
-          <div>
+          <div className="table-section">
             <div className="problems-table-wrapper">
               <table className="problems-table">
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>ID</th>
                     <th>Title</th>
                     <th>Date Solved</th>
                     <th>Actions</th>
@@ -301,6 +290,7 @@ const LeetCodePage = () => {
                   {paginatedProblems.map((p, idx) => (
                     <tr key={p.id}>
                       <td>{(currentPage - 1) * pageSize + idx + 1}</td>
+                      <td>{p.lcId}</td>
                       <td>
                         <a href={p.link} target="_blank" rel="noopener noreferrer">
                           {p.title}
@@ -308,20 +298,22 @@ const LeetCodePage = () => {
                       </td>
                       <td>{new Date(p.dateSolved).toLocaleDateString()}</td>
                       <td>
-                        <button
-                          className="button outline"
-                          onClick={() => setSelectedProblem(p)}
-                          aria-label={`View ${p.title}`}
-                        >
-                          View
-                        </button>
-                        <button
-                          className="button outline"
-                          onClick={() => handleEditProblem(p.id)}
-                          aria-label={`Edit ${p.title}`}
-                        >
-                          Edit
-                        </button>
+                        <div className="action-buttons">
+                          <button
+                            className="button outline"
+                            onClick={() => setSelectedProblem(p)}
+                            aria-label={`View ${p.title}`}
+                          >
+                            View
+                          </button>
+                          <button
+                            className="button outline"
+                            onClick={() => handleEditProblem(p.id)}
+                            aria-label={`Edit ${p.title}`}
+                          >
+                            Edit
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -380,6 +372,18 @@ const LeetCodePage = () => {
                 {formMessage && (
                   <div className="form-message">{formMessage}</div>
                 )}
+                <div className="form-group">
+                  <label htmlFor="lcId">ID*</label>
+                  <input
+                    id="lcId"
+                    name="lcId"
+                    type="text"
+                    value={formData.lcId}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
                 <div className="form-group">
                   <label htmlFor="title">Title*</label>
                   <input

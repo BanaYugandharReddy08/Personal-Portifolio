@@ -11,6 +11,8 @@
   border: 1px solid var(--border);
   padding: var(--space-6);
   max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .form-message {
@@ -238,6 +240,16 @@
   align-items: center;
 }
 
+.summary-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.add-problem-btn {
+  margin-left: auto;
+}
+
 .total-solved {
   font-size: var(--text-lg);
   font-weight: 600;
@@ -262,8 +274,12 @@
   gap: var(--space-4);
 }
 
-.difficulty-filter select,
-.date-filter select {
+.table-section {
+  border-left: 1px solid var(--border);
+  padding-left: var(--space-6);
+}
+
+.difficulty-filter select {
   padding: var(--space-1) var(--space-2);
 }
 
@@ -276,6 +292,11 @@
 
 .pagination-controls select {
   padding: var(--space-1) var(--space-2);
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--space-2);
 }
 
 .no-results {
