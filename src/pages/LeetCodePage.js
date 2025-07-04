@@ -16,7 +16,7 @@ const ProblemCard = ({ problem, onSelect }) => (
   </div>
 );
 
-const ProblemModal = ({ problem, onClose }) => {
+const ProblemModal = ({ problem, onClose, onEdit }) => {
   const { solution } = problem;
   const [lang, setLang] = useState(() => {
     if (solution && solution.javascript) return 'javascript';
@@ -81,6 +81,11 @@ const ProblemModal = ({ problem, onClose }) => {
             View on LeetCode
           </a>
         )}
+        {onEdit && (
+          <button type="button" className="button" onClick={() => onEdit(problem.id)}>
+            Edit Problem
+          </button>
+        )}
       </div>
       <div className="problem-card">
       <h3>
@@ -133,7 +138,7 @@ const LeetCodePage = () => {
     }
   });
 
-  const [formData, setFormData] = useState({
+  const initialForm = {
     title: '',
     difficulty: 'Easy',
     link: '',
@@ -142,7 +147,11 @@ const LeetCodePage = () => {
     solutionJS: '',
     solutionPython: '',
     dateSolved: ''
-  });
+  };
+
+  const [formData, setFormData] = useState(initialForm);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingId, setEditingId] = useState(null);
   const [formMessage, setFormMessage] = useState('');
   const [selectedProblem, setSelectedProblem] = useState(null);
 
@@ -153,6 +162,29 @@ const LeetCodePage = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const openAddForm = () => {
+    setFormData(initialForm);
+    setEditingId(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEditProblem = (id) => {
+    const problem = problems.find((p) => p.id === id);
+    if (!problem) return;
+    setFormData({
+      title: problem.title,
+      difficulty: problem.difficulty,
+      link: problem.link,
+      notes: problem.notes || '',
+      statement: problem.statement || '',
+      solutionJS: problem.solution?.javascript || '',
+      solutionPython: problem.solution?.python || '',
+      dateSolved: problem.dateSolved,
+    });
+    setEditingId(id);
+    setIsFormOpen(true);
   };
 
   const handleSubmit = (e) => {
@@ -166,24 +198,23 @@ const LeetCodePage = () => {
     const newProblem = {
       ...rest,
       dateSolved: new Date().toISOString(),
-      id: Date.now().toString(),
       solution: {
         javascript: solutionJS,
         python: solutionPython,
       },
     };
-    setProblems([...problems, newProblem]);
-    setFormData({
-      title: '',
-      difficulty: 'Easy',
-      link: '',
-      notes: '',
-      statement: '',
-      solutionJS: '',
-      solutionPython: '',
-      dateSolved: '',
-    });
-    setFormMessage('Problem added successfully.');
+
+    if (editingId) {
+      setProblems(problems.map((p) => (p.id === editingId ? { ...newProblem, id: editingId } : p)));
+      setFormMessage('Problem updated successfully.');
+    } else {
+      setProblems([...problems, { ...newProblem, id: Date.now().toString() }]);
+      setFormMessage('Problem added successfully.');
+    }
+
+    setFormData(initialForm);
+    setEditingId(null);
+    setIsFormOpen(false);
     setTimeout(() => setFormMessage(''), 3000);
   };
 
@@ -192,92 +223,115 @@ const LeetCodePage = () => {
       <div className="container">
         <h1>LeetCode Problems</h1>
 
-        <form className="leetcode-form" onSubmit={handleSubmit}>
-          {formMessage && <div className="form-message">{formMessage}</div>}
-          <div className="form-group">
-            <label htmlFor="title">Title*</label>
-            <input
-              id="title"
-              name="title"
-              type="text"
-              value={formData.title}
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <button type="button" className="button" onClick={openAddForm}>
+          Add New Problem
+        </button>
 
-          <div className="form-group">
-            <label htmlFor="difficulty">Difficulty</label>
-            <select
-              id="difficulty"
-              name="difficulty"
-              value={formData.difficulty}
-              onChange={handleChange}
+        {isFormOpen && (
+          <div className="problem-modal" onClick={() => setIsFormOpen(false)}>
+            <div
+              className="problem-modal-content"
+              onClick={(e) => e.stopPropagation()}
             >
-              <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
-              <option value="Hard">Hard</option>
-            </select>
-          </div>
+              <button
+                className="close-button"
+                onClick={() => setIsFormOpen(false)}
+              >
+                ×
+              </button>
+              <h2>{editingId ? 'Edit Problem' : 'Add New Problem'}</h2>
+              <form className="leetcode-form" onSubmit={handleSubmit}>
+                {formMessage && (
+                  <div className="form-message">{formMessage}</div>
+                )}
+                <div className="form-group">
+                  <label htmlFor="title">Title*</label>
+                  <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <div className="form-group">
-            <label htmlFor="link">Link*</label>
-            <input
-              id="link"
-              name="link"
-              type="url"
-              value={formData.link}
-              onChange={handleChange}
-              required
-            />
-          </div>
+                <div className="form-group">
+                  <label htmlFor="difficulty">Difficulty</label>
+                  <select
+                    id="difficulty"
+                    name="difficulty"
+                    value={formData.difficulty}
+                    onChange={handleChange}
+                  >
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                  </select>
+                </div>
 
-          <div className="form-group">
-            <label htmlFor="statement">Problem Statement</label>
-            <textarea
-              id="statement"
-              name="statement"
-              rows="3"
-              value={formData.statement}
-              onChange={handleChange}
-            />
-          </div>
+                <div className="form-group">
+                  <label htmlFor="link">Link*</label>
+                  <input
+                    id="link"
+                    name="link"
+                    type="url"
+                    value={formData.link}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <div className="form-group">
-            <label htmlFor="solutionJS">JavaScript Solution</label>
-            <textarea
-              id="solutionJS"
-              name="solutionJS"
-              rows="4"
-              value={formData.solutionJS}
-              onChange={handleChange}
-            />
-          </div>
+                <div className="form-group">
+                  <label htmlFor="statement">Problem Statement</label>
+                  <textarea
+                    id="statement"
+                    name="statement"
+                    rows="3"
+                    value={formData.statement}
+                    onChange={handleChange}
+                  />
+                </div>
 
-          <div className="form-group">
-            <label htmlFor="solutionPython">Python Solution</label>
-            <textarea
-              id="solutionPython"
-              name="solutionPython"
-              rows="4"
-              value={formData.solutionPython}
-              onChange={handleChange}
-            />
-          </div>
+                <div className="form-group">
+                  <label htmlFor="solutionJS">JavaScript Solution</label>
+                  <textarea
+                    id="solutionJS"
+                    name="solutionJS"
+                    rows="4"
+                    value={formData.solutionJS}
+                    onChange={handleChange}
+                  />
+                </div>
 
-          <div className="form-group">
-            <label htmlFor="notes">Notes</label>
-            <textarea
-              id="notes"
-              name="notes"
-              rows="3"
-              value={formData.notes}
-              onChange={handleChange}
-            />
-          </div>
+                <div className="form-group">
+                  <label htmlFor="solutionPython">Python Solution</label>
+                  <textarea
+                    id="solutionPython"
+                    name="solutionPython"
+                    rows="4"
+                    value={formData.solutionPython}
+                    onChange={handleChange}
+                  />
+                </div>
 
-        <button type="submit" className="button">Add Problem</button>
-      </form>
+                <div className="form-group">
+                  <label htmlFor="notes">Notes</label>
+                  <textarea
+                    id="notes"
+                    name="notes"
+                    rows="3"
+                    value={formData.notes}
+                    onChange={handleChange}
+                  />
+                </div>
+                <button type="submit" className="button">
+                  {editingId ? 'Save Changes' : 'Add Problem'}
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
 
         <div className="problems-table-wrapper">
           <table className="problems-table">
@@ -287,6 +341,7 @@ const LeetCodePage = () => {
                 <th>Difficulty</th>
                 <th>Statement</th>
                 <th>Date Solved</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -300,6 +355,15 @@ const LeetCodePage = () => {
                   <td>{p.difficulty}</td>
                   <td>{p.statement}</td>
                   <td>{new Date(p.dateSolved).toLocaleDateString()}</td>
+                  <td>
+                    <button
+                      className="button outline"
+                      onClick={() => handleEditProblem(p.id)}
+                      aria-label={`Edit ${p.title}`}
+                    >
+                      Edit
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -316,6 +380,10 @@ const LeetCodePage = () => {
           <ProblemModal
             problem={selectedProblem}
             onClose={() => setSelectedProblem(null)}
+            onEdit={(id) => {
+              setSelectedProblem(null);
+              handleEditProblem(id);
+            }}
           />
         )}
       </div>
