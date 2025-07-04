@@ -147,13 +147,15 @@
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
+  padding-top: var(--space-12);
   animation: scaleIn var(--transition-normal);
 }
 
 .close-button {
-  position: absolute;
+  position: sticky;
   top: var(--space-4);
-  right: var(--space-4);
+  margin-left: auto;
+  margin-right: var(--space-4);
   background-color: var(--muted);
   border: none;
   width: 32px;
