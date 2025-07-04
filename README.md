@@ -13,3 +13,11 @@ Run `npm install` before executing any other scripts, especially prior to runnin
 For CI environments a simple helper script is provided at `ci/setup.sh` which installs the dependencies before tests are executed.
 
 The app entry point is `src/index.js` and routing is handled with `react-router-dom`.
+
+## LeetCode Page
+
+The `/leetcode` route lets you track algorithm problems you've solved. Each entry
+is stored in `localStorage` so that your list persists between sessions. Clicking
+a problem opens a modal where you can view the solution in either JavaScript or
+Python using dedicated tabs.
+
