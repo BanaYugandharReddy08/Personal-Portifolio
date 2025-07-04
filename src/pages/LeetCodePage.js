@@ -7,6 +7,11 @@ const ProblemCard = ({ problem, onSelect }) => (
   <div className="problem-card" onClick={() => onSelect(problem)}>
     <h3>{problem.title}</h3>
     <p className={`difficulty ${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</p>
+    {problem.dateSolved && (
+      <p className="date">
+        {new Date(problem.dateSolved).toLocaleDateString()}
+      </p>
+    )}
     {problem.notes && <p className="notes">{problem.notes}</p>}
   </div>
 );
@@ -34,6 +39,10 @@ const ProblemModal = ({ problem, onClose }) => {
         <button className="close-button" onClick={onClose}>×</button>
         <h2>{problem.title}</h2>
         <p className={`difficulty ${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</p>
+        {problem.dateSolved && (
+          <p className="date">Solved on: {new Date(problem.dateSolved).toLocaleDateString()}</p>
+        )}
+        {problem.statement && <p className="statement">{problem.statement}</p>}
         {problem.notes && <p className="notes">{problem.notes}</p>}
         {showSolution && (
           <div className="solution-section">
@@ -129,8 +138,10 @@ const LeetCodePage = () => {
     difficulty: 'Easy',
     link: '',
     notes: '',
+    statement: '',
     solutionJS: '',
-    solutionPython: ''
+    solutionPython: '',
+    dateSolved: ''
   });
   const [formMessage, setFormMessage] = useState('');
   const [selectedProblem, setSelectedProblem] = useState(null);
@@ -154,6 +165,7 @@ const LeetCodePage = () => {
     const { solutionJS, solutionPython, ...rest } = formData;
     const newProblem = {
       ...rest,
+      dateSolved: new Date().toISOString(),
       id: Date.now().toString(),
       solution: {
         javascript: solutionJS,
@@ -166,8 +178,10 @@ const LeetCodePage = () => {
       difficulty: 'Easy',
       link: '',
       notes: '',
+      statement: '',
       solutionJS: '',
       solutionPython: '',
+      dateSolved: '',
     });
     setFormMessage('Problem added successfully.');
     setTimeout(() => setFormMessage(''), 3000);
@@ -219,6 +233,17 @@ const LeetCodePage = () => {
           </div>
 
           <div className="form-group">
+            <label htmlFor="statement">Problem Statement</label>
+            <textarea
+              id="statement"
+              name="statement"
+              rows="3"
+              value={formData.statement}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
             <label htmlFor="solutionJS">JavaScript Solution</label>
             <textarea
               id="solutionJS"
@@ -251,8 +276,35 @@ const LeetCodePage = () => {
             />
           </div>
 
-          <button type="submit" className="button">Add Problem</button>
-        </form>
+        <button type="submit" className="button">Add Problem</button>
+      </form>
+
+        <div className="problems-table-wrapper">
+          <table className="problems-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Difficulty</th>
+                <th>Statement</th>
+                <th>Date Solved</th>
+              </tr>
+            </thead>
+            <tbody>
+              {problems.map((p) => (
+                <tr key={p.id}>
+                  <td>
+                    <a href={p.link} target="_blank" rel="noopener noreferrer">
+                      {p.title}
+                    </a>
+                  </td>
+                  <td>{p.difficulty}</td>
+                  <td>{p.statement}</td>
+                  <td>{new Date(p.dateSolved).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         <div className="problems-list">
           {problems.map((p) => (
