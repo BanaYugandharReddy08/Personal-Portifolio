@@ -125,9 +125,6 @@ const LeetCodePage = () => {
   }, [problems]);
 
   const totalSolved = problems.length;
-  const easyPct = totalSolved ? (difficultyCounts.Easy / totalSolved) * 100 : 0;
-  const medPct = totalSolved ? (difficultyCounts.Medium / totalSolved) * 100 : 0;
-  const hardPct = totalSolved ? (difficultyCounts.Hard / totalSolved) * 100 : 0;
 
   const filteredProblems = useMemo(() => {
     const now = new Date();
