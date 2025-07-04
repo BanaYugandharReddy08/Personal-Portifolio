@@ -176,9 +176,20 @@
   color: var(--background);
 }
 
+.problem-modal-content h2 {
+  text-align: center;
+}
+
+.modal-actions {
+  margin-top: var(--space-4);
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
 .leetcode-link {
   display: inline-block;
-  margin-top: var(--space-4);
+  margin-top: 0;
   color: var(--primary);
   text-decoration: none;
 }
