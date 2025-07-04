@@ -28,9 +28,7 @@ const ProblemModal = ({ problem, onClose, onEdit }) => {
         <button className="close-button" onClick={onClose}>×</button>
         <h2>{problem.title}</h2>
         <p className={`difficulty ${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</p>
-        {problem.dateSolved && (
-          <p className="date">Solved on: {new Date(problem.dateSolved).toLocaleDateString()}</p>
-        )}
+
         {problem.statement && <p className="statement">{problem.statement}</p>}
         {problem.notes && <p className="notes">{problem.notes}</p>}
         {showSolution && (
@@ -232,34 +230,34 @@ const LeetCodePage = () => {
         <div className="progress-summary">
           <div className="summary-header">
             <div className="total-solved">Total Solved: {totalSolved}</div>
-            <button
-              type="button"
-              className="button add-problem-btn"
-              onClick={openAddForm}
-            >
-              Add New Problem
-            </button>
+            <div className="progress-circles">
+              <ProgressCircle
+                label="Easy"
+                value={difficultyCounts.Easy}
+                total={totalSolved}
+                color="var(--success-600)"
+              />
+              <ProgressCircle
+                label="Medium"
+                value={difficultyCounts.Medium}
+                total={totalSolved}
+                color="var(--warning-600)"
+              />
+              <ProgressCircle
+                label="Hard"
+                value={difficultyCounts.Hard}
+                total={totalSolved}
+                color="var(--error-600)"
+              />
+            </div>
           </div>
-          <div className="progress-circles">
-            <ProgressCircle
-              label="Easy"
-              value={difficultyCounts.Easy}
-              total={totalSolved}
-              color="var(--success-600)"
-            />
-            <ProgressCircle
-              label="Medium"
-              value={difficultyCounts.Medium}
-              total={totalSolved}
-              color="var(--warning-600)"
-            />
-            <ProgressCircle
-              label="Hard"
-              value={difficultyCounts.Hard}
-              total={totalSolved}
-              color="var(--error-600)"
-            />
-          </div>
+          <button
+            type="button"
+            className="button add-problem-btn"
+            onClick={openAddForm}
+          >
+            Add New Problem
+          </button>
         </div>
 
         <div className="results-grid">
@@ -280,9 +278,9 @@ const LeetCodePage = () => {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>ID</th>
+                    <th>LC ID</th>
                     <th>Title</th>
-                    <th>Date Solved</th>
+                    <th>Difficulty</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -296,7 +294,7 @@ const LeetCodePage = () => {
                           {p.title}
                         </a>
                       </td>
-                      <td>{new Date(p.dateSolved).toLocaleDateString()}</td>
+                      <td>{p.difficulty}</td>
                       <td>
                         <div className="action-buttons">
                           <button
@@ -373,7 +371,7 @@ const LeetCodePage = () => {
                   <div className="form-message">{formMessage}</div>
                 )}
                 <div className="form-group">
-                  <label htmlFor="lcId">ID*</label>
+                  <label htmlFor="lcId">LC ID*</label>
                   <input
                     id="lcId"
                     name="lcId"

@@ -9,7 +9,7 @@ describe('LeetCodePage', () => {
   test('opens form and adds a new problem', () => {
     render(<LeetCodePage />);
     fireEvent.click(screen.getByRole('button', { name: /add new problem/i }));
-    fireEvent.change(screen.getByLabelText(/id/i), { target: { value: '99' } });
+    fireEvent.change(screen.getByLabelText(/lc id/i), { target: { value: '99' } });
     fireEvent.change(screen.getByLabelText(/title/i), { target: { value: 'Sample' } });
     fireEvent.change(screen.getByLabelText(/link/i), { target: { value: 'https://example.com' } });
     fireEvent.click(screen.getByRole('button', { name: /add problem/i }));
@@ -20,7 +20,7 @@ describe('LeetCodePage', () => {
     render(<LeetCodePage />);
     // open add form and create item
     fireEvent.click(screen.getByRole('button', { name: /add new problem/i }));
-    fireEvent.change(screen.getByLabelText(/id/i), { target: { value: '1' } });
+    fireEvent.change(screen.getByLabelText(/lc id/i), { target: { value: '1' } });
     fireEvent.change(screen.getByLabelText(/title/i), { target: { value: 'Old' } });
     fireEvent.change(screen.getByLabelText(/link/i), { target: { value: 'https://example.com' } });
     fireEvent.click(screen.getByRole('button', { name: /add problem/i }));
@@ -35,7 +35,7 @@ describe('LeetCodePage', () => {
     expect(screen.getByText(/total solved/i)).toHaveTextContent('3');
 
     fireEvent.click(screen.getByRole('button', { name: /add new problem/i }));
-    fireEvent.change(screen.getByLabelText(/id/i), { target: { value: '5' } });
+    fireEvent.change(screen.getByLabelText(/lc id/i), { target: { value: '5' } });
     fireEvent.change(screen.getByLabelText(/title/i), { target: { value: 'Test' } });
     fireEvent.change(screen.getByLabelText(/link/i), { target: { value: 'https://example.com' } });
     fireEvent.click(screen.getByRole('button', { name: /add problem/i }));

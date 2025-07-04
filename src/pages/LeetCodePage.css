@@ -238,17 +238,21 @@
   flex-wrap: wrap;
   gap: var(--space-8);
   align-items: center;
+  justify-content: space-between;
 }
 
 .summary-header {
   display: flex;
   align-items: center;
   gap: var(--space-4);
+  flex: 1;
 }
 
 .add-problem-btn {
-  margin-left: auto;
+  align-self: flex-start;
 }
+
+
 
 .total-solved {
   font-size: var(--text-lg);
