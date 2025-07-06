@@ -1,39 +1,48 @@
-# React Portfolio
+# Portfolio Monorepo
 
-This project is a personal portfolio built with plain React using `react-scripts`. The application does not rely on Vite, Next.js or TypeScript. All components use the `.js` extension and standard CSS for styling.
+This repository now contains three separate applications:
 
-## Available Scripts
+- **frontend** – the React UI
+- **backend-node** – a small Express middleware layer
+- **backend-java** – a Spring Boot service that implements the API logic
 
-- `npm start` – start the development server
-- `npm run build` – build the production assets
-- `npm test` – run tests and automatically generate a coverage report
+## Frontend
 
-Run `npm install` before executing any other scripts, especially before running `npm test`, so that `react-scripts` and the other dev dependencies are available.
-
-## Running Tests
-
-Execute the following commands from the project root:
+The React code was moved under `frontend/`. All original `npm` scripts continue to work from that folder.
 
 ```sh
+cd frontend
 npm install
+npm start
+```
+
+Tests are executed the same way:
+
+```sh
+cd frontend
 npm test
 ```
 
-This installs all dependencies and then starts the Jest runner, generating a coverage report that can be viewed at `coverage/lcov-report/index.html`.
+The React app reads `REACT_APP_API_BASE_URL` to know where the Node API is running. Set this variable before starting the dev server or building the project so API calls are proxied correctly.
 
-`npm test` will automatically run `npm install` first thanks to the `pretest` script defined in `package.json`.
+## Node Backend
 
-For CI environments a helper script is provided at `ci/setup.sh` which performs the `npm install` step before tests are executed.
+`backend-node/` contains a minimal Express server exposing `/login`, `/certificates` and `/leetcode` routes.
 
-The app entry point is `src/index.js` and routing is handled with `react-router-dom`.
+```sh
+cd backend-node
+npm install
+npm start
+```
 
-## LeetCode Page
+## Java Backend
 
-The `/leetcode` route lets you track algorithm problems you've solved. Data is
-loaded from the backend via the new API service and displayed in a paginated
-table. Clicking a problem opens a modal where you can view the solution in
-either JavaScript or Python using dedicated tabs.
+`backend-java/` holds a simple Spring Boot project. Use Maven to run it:
 
+```sh
+cd backend-java
+mvn spring-boot:run
+```
 
 ## License
 
