@@ -115,7 +115,7 @@ const DashboardExperiences = () => {
             setFormData(initialForm);
           }}
         >
-          Add Experience
+          Add New Experience
         </button>
       </div>
 
@@ -189,7 +189,7 @@ const DashboardExperiences = () => {
                 Cancel
               </button>
               <button type="submit" className="button">
-                {editingId ? 'Save Changes' : 'Add Experience'}
+                {editingId ? 'Save Changes' : 'Add New Experience'}
               </button>
             </div>
           </form>

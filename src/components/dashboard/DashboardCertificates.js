@@ -210,7 +210,7 @@ const DashboardCertificates = () => {
             });
           }}
         >
-          Upload new
+          Add New Certificate
         </button>
       </div>
 
