@@ -493,3 +493,12 @@ section {
   white-space: nowrap;
   border-width: 0;
 }
+
+/* Toastify adjustments */
+.Toastify__toast {
+  font-size: var(--text-sm);
+}
+.Toastify__toast--success {
+  background-color: var(--success-500);
+  color: #fff;
+}

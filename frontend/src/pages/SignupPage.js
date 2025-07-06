@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { signup as apiSignup } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import './SignupPage.css';
 
@@ -17,7 +19,7 @@ const SignupPage = () => {
     return regex.test(pw);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -39,6 +41,16 @@ const SignupPage = () => {
     }
 
     signup(fullName, email, password);
+    try {
+      const data = await apiSignup(fullName, email, password);
+      if (data.message) {
+        toast.success(data.message);
+      } else {
+        toast.success('Signup successful');
+      }
+    } catch (err) {
+      toast.success(`Welcome, ${fullName}!`);
+    }
     navigate('/');
   };
 

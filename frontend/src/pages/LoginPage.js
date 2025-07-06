@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Navigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { login as apiLogin } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import './LoginPage.css';
 
@@ -17,7 +19,7 @@ const LoginPage = () => {
     return <Navigate to="/" />;
   }
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -37,6 +39,16 @@ const LoginPage = () => {
       if (result.requireVerification) {
         setIsVerifying(true);
       } else {
+        try {
+          const data = await apiLogin(email, password);
+          if (data.lastLogin) {
+            toast.success(`Last login: ${new Date(data.lastLogin).toLocaleString()}`);
+          } else {
+            toast.success('Welcome!');
+          }
+        } catch (err) {
+          toast.success('Login successful');
+        }
         navigate('/');
       }
     } else {

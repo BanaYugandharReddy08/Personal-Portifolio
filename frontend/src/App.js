@@ -1,5 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import FloatingChatbot from './components/chatbot/FloatingChatbot';
@@ -57,6 +59,7 @@ function App() {
       </main>
       <Footer />
       <FloatingChatbot />
+      <ToastContainer position="bottom-right" newestOnTop />
     </div>
   );
 }
