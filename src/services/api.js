@@ -27,3 +27,37 @@ export async function fetchLeetcodeProblems() {
   }
   return response.json();
 }
+
+export async function createLeetcodeProblem(problem) {
+  const response = await fetch(`${API_BASE_URL}/leetcode`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(problem)
+  });
+  if (!response.ok) {
+    throw new Error('Failed to create problem');
+  }
+  return response.json();
+}
+
+export async function updateLeetcodeProblem(id, problem) {
+  const response = await fetch(`${API_BASE_URL}/leetcode/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(problem)
+  });
+  if (!response.ok) {
+    throw new Error('Failed to update problem');
+  }
+  return response.json();
+}
+
+export async function deleteLeetcodeProblem(id) {
+  const response = await fetch(`${API_BASE_URL}/leetcode/${id}`, {
+    method: 'DELETE'
+  });
+  if (!response.ok) {
+    throw new Error('Failed to delete problem');
+  }
+  return response.json();
+}

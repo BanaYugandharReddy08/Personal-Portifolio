@@ -8,6 +8,8 @@ import { fetchCertificates } from '../services/api';
 
 const CertificationsPage = () => {
   const [certificates, setCertificates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedCertificate, setSelectedCertificate] = useState(null);
   const [filter, setFilter] = useState('All');
   const { user } = useAuth();
@@ -15,14 +17,28 @@ const CertificationsPage = () => {
   const categories = ['All', 'Development', 'Data', 'Cloud', 'Design', 'Academic'];
 
   useEffect(() => {
+    setLoading(true);
     fetchCertificates()
-      .then(setCertificates)
-      .catch(() => setCertificates(defaultCertificates));
+      .then((data) => setCertificates(data))
+      .catch((err) => {
+        console.error(err);
+        setError('Failed to load certificates');
+        setCertificates(defaultCertificates);
+      })
+      .finally(() => setLoading(false));
   }, []);
   
   const filteredCertificates = filter === 'All'
     ? certificates
     : certificates.filter(cert => cert.category === filter);
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
 
   return (
     <div className="certifications-page">

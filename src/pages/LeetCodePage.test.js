@@ -1,12 +1,13 @@
-import { render, screen, fireEvent } from '../test-utils';
+import { render, screen, fireEvent, waitFor } from '../test-utils';
 import LeetCodePage from './LeetCodePage';
 import defaultProblems from '../data/leetcodeProblems';
 
 describe('LeetCodePage', () => {
   beforeEach(() => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({ ok: true, json: () => Promise.resolve(defaultProblems) })
-    );
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(defaultProblems) })
+      .mockResolvedValue({ ok: true, json: () => Promise.resolve({}) });
   });
 
   afterEach(() => {
@@ -21,7 +22,7 @@ describe('LeetCodePage', () => {
     fireEvent.change(screen.getByLabelText(/title/i), { target: { value: 'Sample' } });
     fireEvent.change(screen.getByLabelText(/link/i), { target: { value: 'https://example.com' } });
     fireEvent.click(screen.getByRole('button', { name: /add problem/i }));
-    expect(screen.getByText('Sample')).toBeInTheDocument();
+    await screen.findByText('Sample');
   });
 
   test('editing pre-fills the form', async () => {
@@ -35,6 +36,7 @@ describe('LeetCodePage', () => {
     fireEvent.click(screen.getByRole('button', { name: /add problem/i }));
 
     // click edit for the newly created item
+    await screen.findByLabelText(/edit old/i);
     fireEvent.click(screen.getByLabelText(/edit old/i));
     expect(screen.getByDisplayValue('Old')).toBeInTheDocument();
   });
@@ -50,6 +52,7 @@ describe('LeetCodePage', () => {
     fireEvent.change(screen.getByLabelText(/link/i), { target: { value: 'https://example.com' } });
     fireEvent.click(screen.getByRole('button', { name: /add problem/i }));
 
+    await screen.findByText('Test');
     expect(screen.getByText(/total solved/i)).toHaveTextContent('4');
   });
 
@@ -89,6 +92,6 @@ describe('LeetCodePage', () => {
     await screen.findByText('Two Sum');
     fireEvent.click(screen.getByLabelText(/delete two sum/i));
     fireEvent.click(screen.getByRole('button', { name: /^delete$/i }));
-    expect(screen.queryByText('Two Sum')).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByText('Two Sum')).not.toBeInTheDocument());
   });
 });

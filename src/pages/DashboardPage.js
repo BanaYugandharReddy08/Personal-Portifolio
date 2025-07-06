@@ -8,6 +8,8 @@ import { fetchCertificates } from '../services/api';
 const DashboardPage = () => {
   const { user } = useAuth();
   const [certificates, setCertificates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [newCertificate, setNewCertificate] = useState({
     title: '',
     issuer: '',
@@ -26,9 +28,15 @@ const DashboardPage = () => {
   const categories = ['Development', 'Data', 'Cloud', 'Design', 'Other'];
 
   useEffect(() => {
+    setLoading(true);
     fetchCertificates()
-      .then(setCertificates)
-      .catch(() => setCertificates(defaultCertificates));
+      .then((data) => setCertificates(data))
+      .catch((err) => {
+        console.error(err);
+        setError('Failed to load certificates');
+        setCertificates(defaultCertificates);
+      })
+      .finally(() => setLoading(false));
   }, []);
   
   const currentDate = new Date();
@@ -180,6 +188,14 @@ const DashboardPage = () => {
   const handleCancelDelete = () => {
     setConfirmDelete(null);
   };
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
 
   return (
     <div className="dashboard-page">
