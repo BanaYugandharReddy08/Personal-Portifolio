@@ -6,6 +6,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [verificationCode, setVerificationCode] = useState(null);
 
@@ -40,37 +41,38 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = (email, password, twoFactorCode) => {
-    // Mock authentication - In a real app, this would make an API call
-    if (email === 'yugandharreddybana@outlook.com' && password === 'admin123') {
+    const adminEmail = process.env.REACT_APP_ADMIN_EMAIL;
+    const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD;
+
+    if (email === adminEmail && password === adminPassword) {
       if (twoFactorCode) {
-        // Verify the 2FA code (in a real app)
         if (twoFactorCode === verificationCode) {
           setUser({
             id: '1',
             email,
-            name: 'Yugandhar Reddy Bana',
+            name: 'Admin User',
             role: 'admin'
           });
-          return { success: true };
+          setToken('admin-token');
+          return { success: true, token: 'admin-token' };
         } else {
           return { success: false, error: 'Invalid verification code' };
         }
       } else {
-        // Send verification code (simulate email)
-        const code = generateVerificationCode();
+        generateVerificationCode();
         return { success: true, requireVerification: true };
       }
     } else if (email && password) {
-      // For guest login
       setUser({
         id: Date.now().toString(),
         email,
         name: email.split('@')[0],
         role: 'guest'
       });
-      return { success: true };
+      setToken('guest-token');
+      return { success: true, token: 'guest-token' };
     }
-    
+
     return { success: false, error: 'Invalid credentials' };
   };
 
@@ -79,7 +81,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading, verificationCode }}>
+    <AuthContext.Provider value={{ user, token, login, logout, isLoading, verificationCode }}>
       {children}
     </AuthContext.Provider>
   );
