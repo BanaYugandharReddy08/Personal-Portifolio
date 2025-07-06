@@ -9,6 +9,9 @@ app.use(express.json());
 const JAVA_BASE_URL = process.env.JAVA_BASE_URL || 'http://localhost:8080';
 const PORT = process.env.PORT || 3001;
 
+// simple in-memory user store
+const users = {};
+
 app.post('/login', async (req, res) => {
   const { email, password } = req.body || {};
   if (!email || !password) {
@@ -26,6 +29,24 @@ app.post('/login', async (req, res) => {
     console.error('Error contacting Java backend:', err);
     res.status(500).json({ error: 'Java backend unreachable' });
   }
+});
+
+app.post('/signup', (req, res) => {
+  const { fullName, email, password } = req.body || {};
+  if (!fullName || !email || !password) {
+    return res.status(400).json({ error: 'Full name, email and password required' });
+  }
+  const now = new Date().toISOString();
+  const existing = users[email];
+  if (existing) {
+    const lastLogin = existing.lastLogin;
+    existing.fullName = fullName;
+    existing.password = password;
+    existing.lastLogin = now;
+    return res.json({ lastLogin });
+  }
+  users[email] = { fullName, email, password, lastLogin: now };
+  res.status(201).json({ message: `Welcome, ${fullName}!` });
 });
 
 app.get('/certificates', (req, res) => {
