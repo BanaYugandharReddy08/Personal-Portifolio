@@ -29,10 +29,10 @@ The app entry point is `src/index.js` and routing is handled with `react-router-
 
 ## LeetCode Page
 
-The `/leetcode` route lets you track algorithm problems you've solved. Each entry
-is stored in `localStorage` so that your list persists between sessions. Clicking
-a problem opens a modal where you can view the solution in either JavaScript or
-Python using dedicated tabs.
+The `/leetcode` route lets you track algorithm problems you've solved. Data is
+loaded from the backend via the new API service and displayed in a paginated
+table. Clicking a problem opens a modal where you can view the solution in
+either JavaScript or Python using dedicated tabs.
 
 
 ## License

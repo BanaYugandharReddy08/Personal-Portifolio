@@ -3,18 +3,11 @@ import { useAuth } from '../context/AuthContext';
 import './DashboardPage.css';
 
 import defaultCertificates from '../data/certificates';
+import { fetchCertificates } from '../services/api';
 
 const DashboardPage = () => {
   const { user } = useAuth();
-  const [certificates, setCertificates] = useState(() => {
-    try {
-      const saved = localStorage.getItem('certificates');
-      return saved ? JSON.parse(saved) : defaultCertificates;
-    } catch (e) {
-      console.error('Failed to parse certificates', e);
-      return defaultCertificates;
-    }
-  });
+  const [certificates, setCertificates] = useState([]);
   const [newCertificate, setNewCertificate] = useState({
     title: '',
     issuer: '',
@@ -31,9 +24,12 @@ const DashboardPage = () => {
   const [confirmDelete, setConfirmDelete] = useState(null);
 
   const categories = ['Development', 'Data', 'Cloud', 'Design', 'Other'];
+
   useEffect(() => {
-    localStorage.setItem("certificates", JSON.stringify(certificates));
-  }, [certificates]);
+    fetchCertificates()
+      .then(setCertificates)
+      .catch(() => setCertificates(defaultCertificates));
+  }, []);
   
   const currentDate = new Date();
   const hours = currentDate.getHours();

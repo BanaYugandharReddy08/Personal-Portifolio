@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import './LeetCodePage.css';
 import defaultProblems from '../data/leetcodeProblems';
 import ProgressCircle from '../components/leetcode/ProgressCircle';
+import { fetchLeetcodeProblems } from '../services/api';
 
 
 
@@ -83,15 +84,7 @@ const ProblemModal = ({ problem, onClose, onEdit }) => {
 };
 
 const LeetCodePage = () => {
-  const [problems, setProblems] = useState(() => {
-    try {
-      const saved = localStorage.getItem('leetcodeProblems');
-      return saved ? JSON.parse(saved) : defaultProblems;
-    } catch (e) {
-      console.error('Failed to parse problems', e);
-      return defaultProblems;
-    }
-  });
+  const [problems, setProblems] = useState([]);
 
   const initialForm = {
     lcId: '',
@@ -117,6 +110,12 @@ const LeetCodePage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+
+  useEffect(() => {
+    fetchLeetcodeProblems()
+      .then(setProblems)
+      .catch(() => setProblems(defaultProblems));
+  }, []);
 
   const difficultyCounts = useMemo(() => {
     const counts = { Easy: 0, Medium: 0, Hard: 0 };
@@ -145,10 +144,6 @@ const LeetCodePage = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [difficultyFilter, pageSize]);
-
-  useEffect(() => {
-    localStorage.setItem('leetcodeProblems', JSON.stringify(problems));
-  }, [problems]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
