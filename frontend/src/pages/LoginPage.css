@@ -83,22 +83,6 @@
   margin-top: var(--space-4);
 }
 
-.link-button {
-  background: none;
-  border: none;
-  color: var(--primary);
-  cursor: pointer;
-  padding: 0;
-  font-size: var(--text-sm);
-  text-decoration: underline;
-  transition: color var(--transition-fast);
-}
-
-.link-button:hover {
-  color: var(--primary-700);
-  background: none;
-  transform: none;
-}
 
 .verification-info {
   margin-bottom: var(--space-6);

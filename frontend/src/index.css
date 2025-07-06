@@ -317,6 +317,26 @@ button.outline:hover, .button.outline:hover {
   background-color: var(--primary-50);
 }
 
+/* Link-style buttons used in forms */
+.link-button {
+  display: inline;
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 0;
+  font-size: var(--text-sm);
+  font-weight: normal;
+  text-decoration: underline;
+  transition: color var(--transition-fast);
+}
+
+.link-button:hover {
+  color: var(--primary-700);
+  background: none;
+  transform: none;
+}
+
 /* Form elements */
 input, textarea, select {
   width: 100%;
