@@ -34,3 +34,7 @@ is stored in `localStorage` so that your list persists between sessions. Clickin
 a problem opens a modal where you can view the solution in either JavaScript or
 Python using dedicated tabs.
 
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
