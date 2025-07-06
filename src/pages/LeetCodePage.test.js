@@ -1,13 +1,21 @@
 import { render, screen, fireEvent } from '../test-utils';
 import LeetCodePage from './LeetCodePage';
+import defaultProblems from '../data/leetcodeProblems';
 
 describe('LeetCodePage', () => {
-  afterEach(() => {
-    localStorage.clear();
+  beforeEach(() => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({ ok: true, json: () => Promise.resolve(defaultProblems) })
+    );
   });
 
-  test('opens form and adds a new problem', () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  test('opens form and adds a new problem', async () => {
     render(<LeetCodePage />);
+    await screen.findByText('Two Sum');
     fireEvent.click(screen.getByRole('button', { name: /add new problem/i }));
     fireEvent.change(screen.getByLabelText(/lc id/i), { target: { value: '99' } });
     fireEvent.change(screen.getByLabelText(/title/i), { target: { value: 'Sample' } });
@@ -16,8 +24,9 @@ describe('LeetCodePage', () => {
     expect(screen.getByText('Sample')).toBeInTheDocument();
   });
 
-  test('editing pre-fills the form', () => {
+  test('editing pre-fills the form', async () => {
     render(<LeetCodePage />);
+    await screen.findByText('Two Sum');
     // open add form and create item
     fireEvent.click(screen.getByRole('button', { name: /add new problem/i }));
     fireEvent.change(screen.getByLabelText(/lc id/i), { target: { value: '1' } });
@@ -30,8 +39,9 @@ describe('LeetCodePage', () => {
     expect(screen.getByDisplayValue('Old')).toBeInTheDocument();
   });
 
-  test('updates total solved count when new problem is added', () => {
+  test('updates total solved count when new problem is added', async () => {
     render(<LeetCodePage />);
+    await screen.findByText('Two Sum');
     expect(screen.getByText(/total solved/i)).toHaveTextContent('3');
 
     fireEvent.click(screen.getByRole('button', { name: /add new problem/i }));
@@ -43,7 +53,7 @@ describe('LeetCodePage', () => {
     expect(screen.getByText(/total solved/i)).toHaveTextContent('4');
   });
 
-  test('pagination controls navigate through pages', () => {
+  test('pagination controls navigate through pages', async () => {
     const manyProblems = Array.from({ length: 7 }, (_, i) => ({
       id: String(i + 1),
       lcId: String(i + 1),
@@ -52,8 +62,12 @@ describe('LeetCodePage', () => {
       link: '#',
       dateSolved: '2024-01-01T00:00:00.000Z'
     }));
-    localStorage.setItem('leetcodeProblems', JSON.stringify(manyProblems));
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(manyProblems)
+    });
     render(<LeetCodePage />);
+    await screen.findByText('Problem 5');
 
     // first page shows first five problems
     expect(screen.getByText('Problem 5')).toBeInTheDocument();
@@ -70,8 +84,9 @@ describe('LeetCodePage', () => {
     expect(screen.getByText('Problem 1')).toBeInTheDocument();
   });
 
-  test('deletes a problem after confirmation', () => {
+  test('deletes a problem after confirmation', async () => {
     render(<LeetCodePage />);
+    await screen.findByText('Two Sum');
     fireEvent.click(screen.getByLabelText(/delete two sum/i));
     fireEvent.click(screen.getByRole('button', { name: /^delete$/i }));
     expect(screen.queryByText('Two Sum')).not.toBeInTheDocument();

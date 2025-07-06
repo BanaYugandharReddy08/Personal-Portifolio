@@ -1,25 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './CertificationsPage.css';
 
 import defaultCertificates from '../data/certificates';
+import { fetchCertificates } from '../services/api';
 
 
 const CertificationsPage = () => {
-  const [certificates, setCertificates] = useState(() => {
-    try {
-      const saved = localStorage.getItem("certificates");
-      return saved ? JSON.parse(saved) : defaultCertificates;
-    } catch (e) {
-      console.error("Failed to parse certificates", e);
-      return defaultCertificates;
-    }
-  });
+  const [certificates, setCertificates] = useState([]);
   const [selectedCertificate, setSelectedCertificate] = useState(null);
   const [filter, setFilter] = useState('All');
   const { user } = useAuth();
-  
+
   const categories = ['All', 'Development', 'Data', 'Cloud', 'Design', 'Academic'];
+
+  useEffect(() => {
+    fetchCertificates()
+      .then(setCertificates)
+      .catch(() => setCertificates(defaultCertificates));
+  }, []);
   
   const filteredCertificates = filter === 'All'
     ? certificates
