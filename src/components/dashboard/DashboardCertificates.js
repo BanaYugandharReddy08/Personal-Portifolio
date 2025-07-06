@@ -182,9 +182,7 @@ const DashboardCertificates = () => {
     return <div className="loading">Loading...</div>;
   }
 
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
+
 
   return (
     <div className="dashboard-certificates">
@@ -215,6 +213,8 @@ const DashboardCertificates = () => {
           Upload new
         </button>
       </div>
+
+      {error && <div className="error">{error}</div>}
 
       {notification && (
         <div className={`notification ${notification.type}`}>

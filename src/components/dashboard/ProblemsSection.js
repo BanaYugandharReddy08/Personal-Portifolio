@@ -113,9 +113,6 @@ function ProblemsSection() {
     return <div className="loading">Loading...</div>;
   }
 
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
 
   return (
     <div className="problems-section">
@@ -125,6 +122,8 @@ function ProblemsSection() {
           Add Problem
         </button>
       </div>
+
+      {error && <div className="error">{error}</div>}
 
       {notification && (
         <div className={`notification ${notification.type}`}>{notification.message}</div>
