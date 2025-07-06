@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useCertificates } from '../../context/CertificatesContext';
 import '../../pages/DashboardPage.css';
@@ -9,7 +9,6 @@ const DashboardCertificates = () => {
     certificates,
     loading,
     error,
-    loadCertificates,
     addCertificate,
     updateCertificateById,
     deleteCertificateById,
@@ -31,12 +30,6 @@ const DashboardCertificates = () => {
 
   const categories = ['Development', 'Data', 'Cloud', 'Design', 'Other'];
 
-  useEffect(() => {
-    if (certificates.length === 0) {
-      loadCertificates();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const currentDate = new Date();
   const hours = currentDate.getHours();
