@@ -118,7 +118,7 @@ const DashboardProjects = () => {
             setFormData(initialForm);
           }}
         >
-          Add Project
+          Add New Project
         </button>
       </div>
 
@@ -189,7 +189,7 @@ const DashboardProjects = () => {
                 Cancel
               </button>
               <button type="submit" className="button">
-                {editingId ? 'Save Changes' : 'Add Project'}
+                {editingId ? 'Save Changes' : 'Add New Project'}
               </button>
             </div>
           </form>

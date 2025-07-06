@@ -541,7 +541,7 @@ const LeetCodePage = () => {
                   />
                 </div> */}
                 <button type="submit" className="button">
-                  {editingId ? 'Save Changes' : 'Add Problem'}
+                  {editingId ? 'Save Changes' : 'Add New Problem'}
                 </button>
               </form>
             </div>

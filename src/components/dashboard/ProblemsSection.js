@@ -122,7 +122,7 @@ function ProblemsSection() {
       <div className="dashboard-header">
         <h2>LeetCode Problems</h2>
         <button className="button" onClick={() => { setIsAdding(true); setEditingId(null); setFormData(initialForm); }}>
-          Add Problem
+          Add New Problem
         </button>
       </div>
 
@@ -228,7 +228,7 @@ function ProblemsSection() {
                 Cancel
               </button>
               <button type="submit" className="button">
-                {editingId ? 'Save Changes' : 'Add Problem'}
+                {editingId ? 'Save Changes' : 'Add New Problem'}
               </button>
             </div>
           </form>
