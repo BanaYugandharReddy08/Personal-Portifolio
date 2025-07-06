@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import defaultCertificates from '../../data/certificates';
-import { fetchCertificates } from '../../services/api';
+import { useCertificates } from '../../context/CertificatesContext';
 import '../../pages/DashboardPage.css';
 
 const DashboardCertificates = () => {
   const { user } = useAuth();
-  const [certificates, setCertificates] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const {
+    certificates,
+    loading,
+    error,
+    loadCertificates,
+    addCertificate,
+    updateCertificateById,
+    deleteCertificateById,
+  } = useCertificates();
   const [newCertificate, setNewCertificate] = useState({
     title: '',
     issuer: '',
@@ -27,15 +32,10 @@ const DashboardCertificates = () => {
   const categories = ['Development', 'Data', 'Cloud', 'Design', 'Other'];
 
   useEffect(() => {
-    setLoading(true);
-    fetchCertificates()
-      .then((data) => setCertificates(data))
-      .catch((err) => {
-        console.error(err);
-        setError('Failed to load certificates');
-        setCertificates(defaultCertificates);
-      })
-      .finally(() => setLoading(false));
+    if (certificates.length === 0) {
+      loadCertificates();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const currentDate = new Date();
@@ -54,15 +54,7 @@ const DashboardCertificates = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (editingId) {
-      setCertificates(
-        certificates.map((cert) =>
-          cert.id === editingId ? { ...cert, [name]: value } : cert
-        )
-      );
-    } else {
-      setNewCertificate({ ...newCertificate, [name]: value });
-    }
+    setNewCertificate({ ...newCertificate, [name]: value });
   };
 
   const handleModuleChange = (index, e) => {
@@ -84,7 +76,7 @@ const DashboardCertificates = () => {
     setNewCertificate({ ...newCertificate, children: modules });
   };
 
-  const handleAddCertificate = () => {
+  const handleAddCertificate = async () => {
     if (!newCertificate.title || !newCertificate.issuer || !newCertificate.date) {
       showNotification('Please fill in all required fields', 'error');
       return;
@@ -93,7 +85,11 @@ const DashboardCertificates = () => {
       ...newCertificate,
       id: Date.now().toString(),
     };
-    setCertificates([...certificates, certificate]);
+    const { success } = await addCertificate(certificate);
+    if (!success) {
+      showNotification('Failed to add certificate', 'error');
+      return;
+    }
     setNewCertificate({
       title: '',
       issuer: '',
@@ -143,12 +139,12 @@ const DashboardCertificates = () => {
     setIsAddingCertificate(true);
   };
 
-  const handleSaveEdit = () => {
-    setCertificates(
-      certificates.map((cert) =>
-        cert.id === editingId ? { ...newCertificate } : cert
-      )
-    );
+  const handleSaveEdit = async () => {
+    const { success } = await updateCertificateById(editingId, newCertificate);
+    if (!success) {
+      showNotification('Failed to update certificate', 'error');
+      return;
+    }
     setEditingId(null);
     setIsAddingCertificate(false);
     setNewCertificate({
@@ -168,10 +164,14 @@ const DashboardCertificates = () => {
     setConfirmDelete(id);
   };
 
-  const handleConfirmDelete = () => {
-    setCertificates(certificates.filter((cert) => cert.id !== confirmDelete));
+  const handleConfirmDelete = async () => {
+    const { success } = await deleteCertificateById(confirmDelete);
+    if (success) {
+      showNotification('Certificate deleted successfully');
+    } else {
+      showNotification('Failed to delete certificate', 'error');
+    }
     setConfirmDelete(null);
-    showNotification('Certificate deleted successfully');
   };
 
   const handleCancelDelete = () => {

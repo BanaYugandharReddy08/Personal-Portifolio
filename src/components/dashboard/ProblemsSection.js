@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProblems } from '../../context/ProblemsContext';
 import '../../pages/DashboardPage.css';
 
@@ -20,6 +20,7 @@ function ProblemsSection() {
     addProblem,
     updateProblem,
     deleteProblemById,
+    loadProblems,
   } = useProblems();
 
   const [isAdding, setIsAdding] = useState(false);
@@ -27,6 +28,13 @@ function ProblemsSection() {
   const [editingId, setEditingId] = useState(null);
   const [notification, setNotification] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
+
+  useEffect(() => {
+    if (problems.length === 0) {
+      loadProblems();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
