@@ -20,10 +20,60 @@ export async function fetchCertificates() {
   return response.json();
 }
 
+export async function createCertificate(certificate) {
+  const response = await fetch(`${API_BASE_URL}/certificates`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(certificate)
+  });
+  if (!response.ok) {
+    throw new Error('Failed to create certificate');
+  }
+  return response.json();
+}
+
+export async function updateCertificate(id, certificate) {
+  const response = await fetch(`${API_BASE_URL}/certificates/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(certificate)
+  });
+  if (!response.ok) {
+    throw new Error('Failed to update certificate');
+  }
+  return response.json();
+}
+
+export async function deleteCertificate(id) {
+  const response = await fetch(`${API_BASE_URL}/certificates/${id}`, {
+    method: 'DELETE'
+  });
+  if (!response.ok) {
+    throw new Error('Failed to delete certificate');
+  }
+  return response.json();
+}
+
 export async function fetchLeetcodeProblems() {
   const response = await fetch(`${API_BASE_URL}/leetcode`);
   if (!response.ok) {
     throw new Error('Failed to fetch problems');
+  }
+  return response.json();
+}
+
+export async function fetchExperiences() {
+  const response = await fetch(`${API_BASE_URL}/experiences`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch experiences');
+  }
+  return response.json();
+}
+
+export async function fetchProjects() {
+  const response = await fetch(`${API_BASE_URL}/projects`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch projects');
   }
   return response.json();
 }
@@ -58,6 +108,74 @@ export async function deleteLeetcodeProblem(id) {
   });
   if (!response.ok) {
     throw new Error('Failed to delete problem');
+  }
+  return response.json();
+}
+
+export async function createExperience(experience) {
+  const response = await fetch(`${API_BASE_URL}/experiences`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(experience)
+  });
+  if (!response.ok) {
+    throw new Error('Failed to create experience');
+  }
+  return response.json();
+}
+
+export async function updateExperience(id, experience) {
+  const response = await fetch(`${API_BASE_URL}/experiences/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(experience)
+  });
+  if (!response.ok) {
+    throw new Error('Failed to update experience');
+  }
+  return response.json();
+}
+
+export async function deleteExperience(id) {
+  const response = await fetch(`${API_BASE_URL}/experiences/${id}`, {
+    method: 'DELETE'
+  });
+  if (!response.ok) {
+    throw new Error('Failed to delete experience');
+  }
+  return response.json();
+}
+
+export async function createProject(project) {
+  const response = await fetch(`${API_BASE_URL}/projects`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(project)
+  });
+  if (!response.ok) {
+    throw new Error('Failed to create project');
+  }
+  return response.json();
+}
+
+export async function updateProject(id, project) {
+  const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(project)
+  });
+  if (!response.ok) {
+    throw new Error('Failed to update project');
+  }
+  return response.json();
+}
+
+export async function deleteProject(id) {
+  const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
+    method: 'DELETE'
+  });
+  if (!response.ok) {
+    throw new Error('Failed to delete project');
   }
   return response.json();
 }
