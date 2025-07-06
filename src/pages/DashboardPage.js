@@ -4,6 +4,8 @@ import './DashboardPage.css';
 
 import defaultCertificates from '../data/certificates';
 import { fetchCertificates } from '../services/api';
+import { ProblemsProvider } from '../context/ProblemsContext';
+import ProblemsSection from '../components/dashboard/ProblemsSection';
 
 const DashboardPage = () => {
   const { user } = useAuth();
@@ -198,6 +200,7 @@ const DashboardPage = () => {
   }
 
   return (
+    <ProblemsProvider>
     <div className="dashboard-page">
       <div className="container">
         <div className="dashboard-header">
@@ -497,7 +500,9 @@ const DashboardPage = () => {
           </div>
         )}
       </div>
+      <ProblemsSection />
     </div>
+    </ProblemsProvider>
   );
 };
 
