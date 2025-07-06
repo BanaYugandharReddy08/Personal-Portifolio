@@ -20,6 +20,35 @@
   font-size: var(--text-sm);
 }
 
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.tab {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  border: none;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: var(--text-base);
+  font-weight: 500;
+}
+
+.tab:hover {
+  background-color: var(--muted-foreground);
+  color: var(--muted);
+}
+
+.tab.active {
+  background-color: var(--primary);
+  color: white;
+}
+
 .certificates-container {
   margin-top: var(--space-8);
 }
