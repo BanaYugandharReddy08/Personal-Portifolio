@@ -26,7 +26,8 @@
     "pretest": "npm install",
     "test": "react-scripts test --coverage --watchAll=false",
     "coverage": "npm test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src"
   },
   "browserslist": {
     "production": [
