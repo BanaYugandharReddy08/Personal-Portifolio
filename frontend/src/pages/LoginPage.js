@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './LoginPage.css';
 
@@ -9,7 +9,6 @@ const LoginPage = () => {
   const [verificationCode, setVerificationCode] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
   const [error, setError] = useState('');
-  const [isGuestMode, setIsGuestMode] = useState(false);
   const { user, login } = useAuth();
   const navigate = useNavigate();
 
@@ -27,12 +26,12 @@ const LoginPage = () => {
       return;
     }
 
-    if (!isGuestMode && !password) {
+    if (!password) {
       setError('Password is required');
       return;
     }
 
-    const result = login(email, isGuestMode ? 'guest123' : password, isVerifying ? verificationCode : null);
+    const result = login(email, password, isVerifying ? verificationCode : null);
 
     if (result.success) {
       if (result.requireVerification) {
@@ -45,10 +44,11 @@ const LoginPage = () => {
     }
   };
 
-  const toggleGuestMode = () => {
-    setIsGuestMode(!isGuestMode);
-    setError('');
+  const handleGuestLogin = () => {
+    login('guest@example.com', 'guest123');
+    navigate('/');
   };
+
 
   return (
     <div className="login-page">
@@ -75,37 +75,28 @@ const LoginPage = () => {
                   />
                 </div>
                 
-                {!isGuestMode && (
-                  <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input
-                      type="password"
-                      id="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter your password"
-                    />
-                  </div>
-                )}
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                />
+              </div>
                 
                 <button type="submit" className="button login-button">
-                  {isGuestMode ? 'Continue as Guest' : 'Sign In'}
+                  Sign In
                 </button>
                 
                 <div className="form-footer">
-                  <button 
-                    type="button" 
-                    className="link-button"
-                    onClick={toggleGuestMode}
-                  >
-                    {isGuestMode ? 'I have an account' : 'Only need to look around?'}
+                  <Link to="/signup" className="link-button">
+                    Create account
+                  </Link>
+                  <button type="button" className="link-button">
+                    Forgot password?
                   </button>
-                  
-                  {!isGuestMode && (
-                    <button type="button" className="link-button">
-                      Forgot password?
-                    </button>
-                  )}
                 </div>
               </>
             ) : (
@@ -142,6 +133,12 @@ const LoginPage = () => {
               </>
             )}
           </form>
+
+          <div className="guest-login">
+            <button type="button" className="button" onClick={handleGuestLogin}>
+              Continue as Guest
+            </button>
+          </div>
           
           <div className="legal-text">
             <p>By continuing you agree to the site's Cookie and Privacy policies.</p>

@@ -11,6 +11,7 @@ import ExperiencePage from './pages/ExperiencePage';
 import ContactPage from './pages/ContactPage';
 import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ResumeAndCoverPage from './pages/ResumeAndCoverPage';
@@ -39,6 +40,7 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/resume-and-cover" element={<ResumeAndCoverPage />} />
 
           {/* <Route

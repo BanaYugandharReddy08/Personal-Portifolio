@@ -1,11 +1,11 @@
-.login-page {
+.signup-page {
   padding-top: 120px;
   min-height: 100vh;
   display: flex;
   align-items: center;
 }
 
-.login-container {
+.signup-container {
   max-width: 480px;
   margin: 0 auto;
   padding: var(--space-8);
@@ -15,18 +15,14 @@
   border: 1px solid var(--border);
 }
 
-.login-header {
+.signup-header {
   text-align: center;
   margin-bottom: var(--space-8);
 }
 
-.login-header h1 {
+.signup-header h1 {
   font-size: var(--text-3xl);
   margin-bottom: var(--space-2);
-}
-
-.login-header p {
-  color: var(--muted-foreground);
 }
 
 .alert {
@@ -41,7 +37,7 @@
   color: var(--error-700);
 }
 
-.login-form {
+.signup-form {
   margin-bottom: var(--space-6);
 }
 
@@ -70,7 +66,7 @@
   outline: none;
 }
 
-.login-button {
+.signup-button {
   width: 100%;
   padding: var(--space-3) var(--space-4);
   margin-top: var(--space-4);
@@ -79,7 +75,7 @@
 
 .form-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-top: var(--space-4);
 }
 
@@ -100,34 +96,14 @@
   transform: none;
 }
 
-.verification-info {
-  margin-bottom: var(--space-6);
-  padding: var(--space-4);
-  background-color: var(--primary-50);
-  border-radius: var(--radius-md);
-  color: var(--primary-700);
-}
-
-.legal-text {
-  text-align: center;
-  font-size: var(--text-xs);
-  color: var(--muted-foreground);
-}
-
 .guest-login {
   margin-top: var(--space-6);
   text-align: center;
 }
 
 @media (max-width: 768px) {
-  .login-container {
+  .signup-container {
     padding: var(--space-6);
     margin: 0 var(--space-4);
-  }
-  
-  .form-footer {
-    flex-direction: column;
-    gap: var(--space-3);
-    align-items: center;
   }
 }

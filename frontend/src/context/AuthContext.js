@@ -76,12 +76,27 @@ export const AuthProvider = ({ children }) => {
     return { success: false, error: 'Invalid credentials' };
   };
 
+  const signup = (fullName, email, password) => {
+    if (email && password) {
+      setUser({
+        id: Date.now().toString(),
+        email,
+        name: fullName,
+        role: 'guest'
+      });
+      setToken('guest-token');
+      return { success: true, token: 'guest-token' };
+    }
+
+    return { success: false, error: 'Invalid details' };
+  };
+
   const logout = () => {
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isLoading, verificationCode }}>
+    <AuthContext.Provider value={{ user, token, login, signup, logout, isLoading, verificationCode }}>
       {children}
     </AuthContext.Provider>
   );
