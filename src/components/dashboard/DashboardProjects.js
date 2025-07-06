@@ -94,9 +94,6 @@ const DashboardProjects = () => {
     return <div className="loading">Loading...</div>;
   }
 
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
 
   return (
     <div className="problems-section">
@@ -113,6 +110,8 @@ const DashboardProjects = () => {
           Add Project
         </button>
       </div>
+
+      {error && <div className="error">{error}</div>}
 
       {notification && (
         <div className={`notification ${notification.type}`}>{notification.message}</div>
