@@ -102,11 +102,6 @@ const Header = () => {
               ) : (
                 <>
                   <li className="nav-item">
-                    <NavLink to="/signup" className="button outline">
-                      Sign Up
-                    </NavLink>
-                  </li>
-                  <li className="nav-item">
                     <NavLink to="/login" className="button">
                       Login
                     </NavLink>
