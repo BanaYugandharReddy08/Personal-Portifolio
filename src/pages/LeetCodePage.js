@@ -2,7 +2,12 @@ import { useState, useEffect, useMemo } from 'react';
 import './LeetCodePage.css';
 import defaultProblems from '../data/leetcodeProblems';
 import ProgressCircle from '../components/leetcode/ProgressCircle';
-import { fetchLeetcodeProblems } from '../services/api';
+import {
+  fetchLeetcodeProblems,
+  createLeetcodeProblem,
+  updateLeetcodeProblem,
+  deleteLeetcodeProblem,
+} from '../services/api';
 
 
 
@@ -85,6 +90,8 @@ const ProblemModal = ({ problem, onClose, onEdit }) => {
 
 const LeetCodePage = () => {
   const [problems, setProblems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const initialForm = {
     lcId: '',
@@ -112,9 +119,15 @@ const LeetCodePage = () => {
   const [pageSize, setPageSize] = useState(5);
 
   useEffect(() => {
+    setLoading(true);
     fetchLeetcodeProblems()
-      .then(setProblems)
-      .catch(() => setProblems(defaultProblems));
+      .then((data) => setProblems(data))
+      .catch((err) => {
+        console.error(err);
+        setError('Failed to load problems');
+        setProblems(defaultProblems);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const difficultyCounts = useMemo(() => {
@@ -174,7 +187,7 @@ const LeetCodePage = () => {
     setIsFormOpen(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title || !formData.link || !formData.lcId) {
       setFormMessage('Please provide an ID, title and link.');
@@ -192,11 +205,25 @@ const LeetCodePage = () => {
     };
 
     if (editingId) {
-      setProblems(problems.map((p) => (p.id === editingId ? { ...newProblem, id: editingId } : p)));
-      setFormMessage('Problem updated successfully.');
+      try {
+        await updateLeetcodeProblem(editingId, newProblem);
+        setProblems(problems.map((p) => (p.id === editingId ? { ...newProblem, id: editingId } : p)));
+        setFormMessage('Problem updated successfully.');
+      } catch (err) {
+        console.error(err);
+        setFormMessage('Failed to update problem.');
+        return;
+      }
     } else {
-      setProblems([...problems, { ...newProblem, id: Date.now().toString() }]);
-      setFormMessage('Problem added successfully.');
+      try {
+        await createLeetcodeProblem(newProblem);
+        setProblems([...problems, { ...newProblem, id: Date.now().toString() }]);
+        setFormMessage('Problem added successfully.');
+      } catch (err) {
+        console.error(err);
+        setFormMessage('Failed to add problem.');
+        return;
+      }
     }
 
     setFormData(initialForm);
@@ -219,8 +246,13 @@ const LeetCodePage = () => {
     setConfirmDelete(id);
   };
 
-  const handleConfirmDelete = () => {
-    setProblems(problems.filter((p) => p.id !== confirmDelete));
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteLeetcodeProblem(confirmDelete);
+      setProblems(problems.filter((p) => p.id !== confirmDelete));
+    } catch (err) {
+      console.error(err);
+    }
     setConfirmDelete(null);
   };
 
@@ -235,6 +267,14 @@ const LeetCodePage = () => {
   const handleNextPage = () => {
     setCurrentPage((p) => Math.min(totalPages, p + 1));
   };
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
 
   return (
     <div className="leetcode-page">
