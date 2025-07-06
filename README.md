@@ -34,7 +34,7 @@ The React app reads `REACT_APP_API_BASE_URL` to know where the Node API is runni
 
 ## Node Backend
 
-`backend-node/` contains a minimal Express server exposing `/login`, `/certificates` and `/leetcode` routes.
+`backend-node/` contains a minimal Express server exposing `/login`, `/certificates` and `/leetcode` routes. The `/login` endpoint accepts a **POST** request with a JSON body containing `email` and `password` fields. The route forwards these credentials to the Java backend and returns whatever response it provides. Configure the Java backend's base URL via the `JAVA_BASE_URL` environment variable (defaults to `http://localhost:8080`).
 
 ```sh
 cd backend-node
@@ -44,7 +44,7 @@ npm start
 
 ## Java Backend
 
-`backend-java/` holds a simple Spring Boot project. Use Maven to run it:
+`backend-java/` holds a simple Spring Boot project exposing its API under `/api`. It now implements `/api/login` which validates email and password for the Node layer. Use Maven to run it:
 
 ```sh
 cd backend-java
