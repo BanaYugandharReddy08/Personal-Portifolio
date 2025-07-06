@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useExperiences } from '../../context/ExperiencesContext';
 import '../../pages/DashboardPage.css';
 
@@ -17,6 +17,7 @@ const DashboardExperiences = () => {
     addExperience,
     updateExperienceById,
     deleteExperienceById,
+    loadExperiences,
   } = useExperiences();
 
   const [isAdding, setIsAdding] = useState(false);
@@ -24,6 +25,13 @@ const DashboardExperiences = () => {
   const [editingId, setEditingId] = useState(null);
   const [notification, setNotification] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
+
+  useEffect(() => {
+    if (experiences.length === 0) {
+      loadExperiences();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
