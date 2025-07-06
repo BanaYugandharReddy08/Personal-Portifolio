@@ -23,6 +23,13 @@ cd frontend
 npm test
 ```
 
+Run ESLint to check for coding style issues:
+
+```sh
+cd frontend
+npm run lint
+```
+
 The React app reads `REACT_APP_API_BASE_URL` to know where the Node API is running. Set this variable before starting the dev server or building the project so API calls are proxied correctly.
 
 ## Node Backend
