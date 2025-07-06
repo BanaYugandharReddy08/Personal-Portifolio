@@ -16,7 +16,8 @@
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.4.3",
-    "gh-pages": "^5.0.0"
+    "gh-pages": "^5.0.0",
+    "eslint-plugin-react-hooks": "^4.6.2"
   },
   "scripts": {
     "start": "react-scripts start",
