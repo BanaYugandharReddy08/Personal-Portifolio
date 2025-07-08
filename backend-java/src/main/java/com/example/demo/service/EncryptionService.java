@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
