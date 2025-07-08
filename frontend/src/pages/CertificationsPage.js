@@ -114,10 +114,11 @@ const CertificationsPage = () => {
             <div className="certificate-modal-content" onClick={e => e.stopPropagation()}>
               <button className="close-button" onClick={() => setSelectedCertificate(null)}>×</button>
               
-              <div className="certificate-modal-image">
-                {selectedCertificate.imageUrl ? (
-                  <img src={selectedCertificate.imageUrl} alt={selectedCertificate.title} />
-                ) : (
+              <div
+                className="certificate-modal-image"
+                style={selectedCertificate.imageUrl ? { backgroundImage: `url(${selectedCertificate.imageUrl})` } : {}}
+              >
+                {!selectedCertificate.imageUrl && (
                   <div className="certificate-placeholder large">
                     <span>No Image Available</span>
                   </div>
