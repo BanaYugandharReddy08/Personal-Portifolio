@@ -44,11 +44,11 @@ npm start
 
 ## Java Backend
 
-`backend-java/` holds a simple Spring Boot project exposing its API under `/api`. It now implements `/api/login` which validates email and password for the Node layer. Use Maven to run it:
+`backend-java/` holds a simple Spring Boot project exposing its API under `/api`. It now implements `/api/login` which validates email and password for the Node layer. Use the Gradle wrapper to run it:
 
 ```sh
 cd backend-java
-mvn spring-boot:run
+./gradlew bootRun
 ```
 
 ## License
