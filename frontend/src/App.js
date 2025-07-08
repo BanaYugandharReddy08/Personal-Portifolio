@@ -25,6 +25,7 @@ import { useAuth } from './context/AuthContext';
 function App() {
   const location = useLocation();
   const { user } = useAuth();
+  const hideLayout = !user && ['/login', '/signup'].includes(location.pathname);
   
   // Scroll to top on route change
   useEffect(() => {
@@ -33,7 +34,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header />
+      {!hideLayout && <Header />}
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -68,7 +69,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
-      <Footer />
+      {!hideLayout && <Footer />}
       <FloatingChatbot />
       <ToastContainer position="top-center" newestOnTop />
     </div>
