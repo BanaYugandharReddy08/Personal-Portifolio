@@ -40,18 +40,18 @@ const SignupPage = () => {
       return;
     }
 
-    signup(fullName, email, password);
     try {
       const data = await apiSignup(fullName, email, password);
+      signup(fullName, email, password);
       if (data.message) {
         toast.success(data.message);
       } else {
         toast.success('Signup successful');
       }
+      navigate('/');
     } catch (err) {
-      toast.success(`Welcome, ${fullName}!`);
+      toast.warn(err.message);
     }
-    navigate('/');
   };
 
   const handleGuest = () => {
