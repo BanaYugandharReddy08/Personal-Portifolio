@@ -205,3 +205,26 @@ export async function deleteProject(id) {
   }
   return response.json();
 }
+
+export async function fetchDocs() {
+  const response = await fetch(`${API_BASE_URL}/documents`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch documents');
+  }
+  return response.json();
+}
+
+export async function uploadDocument(type, file) {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await fetch(`${API_BASE_URL}/documents/${type}`, {
+    method: 'POST',
+    body: formData,
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || 'Failed to upload document');
+  }
+  return data;
+}
