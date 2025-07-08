@@ -9,19 +9,21 @@ const experiences = [
     id: 1,
     position: "Chef",
     company: "Skylon Hotel (Dublin)",
-    period: "Jun 2024 — present",
+    startDate: "2024-06-01",
+    currentlyWorking: true,
     description: [
       "Mastered high-pressure teamwork, time-boxing, and quality control—skills that translate surprisingly well to sprint rooms.",
       "Worked evening and weekend kitchen shifts as a part-time chef while simultaneously completing my MSc, balancing high-pressure service with graduate-level coursework."
     ],
-    technologies: ["Team Coordination", "Time Management", "Quality Control"],
+    skills: "Team Coordination, Time Management, Quality Control",
     featured: true
   },
   {
     id: 2,
     position: "React Developer (Freelance)",
     company: "US Client",
-    period: "Apr 2024 — Jul 2024",
+    startDate: "2024-04-01",
+    endDate: "2024-07-01",
     description: [
       "Designed and implemented high-performance, scalable front-end architecture using ReactJS, delivering enhanced user experience and interface responsiveness.",
   "Rebuilt core UI components to improve web application performance, achieving a 30% reduction in page load time and boosting customer satisfaction.",
@@ -31,14 +33,15 @@ const experiences = [
   "Delivered all development milestones on time in a fully remote setting, demonstrating strong time management, self-direction, and remote team collaboration.",
   "Documented feature specifications and user stories to support Agile Scrum workflows, sprint planning, and project handover."
     ],
-    technologies: ["React", "Redux", "REST APIs", "Jest", "CI/CD","Remote Collaboration"],
+    skills: "React, Redux, REST APIs, Jest, CI/CD, Remote Collaboration",
     featured: true
   },
   {
     id: 3,
     position: "Software Engineer",
     company: "Verizon — Incedo Technologies",
-    period: "Aug 2021 — Jan 2024",
+    startDate: "2021-08-01",
+    endDate: "2024-01-01",
     description: [
       "Designed and developed a scalable telecommunications request platform supporting device, application, and circuit provisioning across multiple global regions.",
       "Engineered modular, reusable ReactJS components with responsive design, improving system efficiency and reducing development time.",
@@ -53,7 +56,7 @@ const experiences = [
       "Played a key role in Agile Scrum ceremonies, including sprint planning, retrospectives, and daily stand-ups, ensuring alignment with project goals and timelines.",
       "Supported team scaling through 20+ technical interviews and knowledge transfer sessions for 10+ developers, enhancing team capabilities and project delivery."
     ],
-    technologies: ["React", "Node.js", "Javascript", "CI/CD", "HTML","CSS","JUnit","Java","PostgresQL","Git","Agile Scrum", "Jira", "Confluence"],
+    skills: "React, Node.js, Javascript, CI/CD, HTML, CSS, JUnit, Java, PostgresQL, Git, Agile Scrum, Jira, Confluence",
     featured: true
   }
 ];
@@ -86,6 +89,17 @@ const ExperiencePage = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [animate, setAnimate] = useState(false);          // triggers CSS keyframes
   const [canEmbed,  setCanEmbed]  = useState(true);
+
+  const formatPeriod = (exp) => {
+    const format = (d) => d.toLocaleString('default', { month: 'short', year: 'numeric' });
+    const start = exp.startDate ? format(new Date(exp.startDate)) : '';
+    const end = exp.currentlyWorking
+      ? 'Present'
+      : exp.endDate
+      ? format(new Date(exp.endDate))
+      : '';
+    return start && end ? `${start} - ${end}` : start || end;
+  };
 
   /* start animations after first paint */
   useEffect(() => {
@@ -135,7 +149,7 @@ const ExperiencePage = () => {
                 }`}
                 style={{ animationDelay: `${0.1 * i + 0.2}s` }}
               >
-                <div className="experience-period">{exp.period}</div>
+                <div className="experience-period">{formatPeriod(exp)}</div>
                 <div className="experience-content">
                   <div className="experience-header">
                     <h2>{exp.position}</h2>
@@ -149,9 +163,9 @@ const ExperiencePage = () => {
                   </ul>
 
                   <div className="technologies">
-                    {exp.technologies.map((tech, k) => (
+                    {exp.skills.split(',').map((tech, k) => (
                       <span key={k} className="tech-tag">
-                        {tech}
+                        {tech.trim()}
                       </span>
                     ))}
                   </div>
