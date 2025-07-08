@@ -109,6 +109,126 @@ app.delete('/certificates/:id', async (req, res) => {
   }
 });
 
+app.get('/experiences', async (req, res) => {
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/experiences`);
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.post('/experiences', async (req, res) => {
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/experiences`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body || {})
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.put('/experiences/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/experiences/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body || {})
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.delete('/experiences/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/experiences/${id}`, {
+      method: 'DELETE'
+    });
+    if (response.status === 204) {
+      res.sendStatus(204);
+    } else {
+      const data = await response.json();
+      res.status(response.status).json(data);
+    }
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.get('/projects', async (req, res) => {
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/projects`);
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.post('/projects', async (req, res) => {
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/projects`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body || {})
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.put('/projects/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/projects/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body || {})
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.delete('/projects/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/projects/${id}`, {
+      method: 'DELETE'
+    });
+    if (response.status === 204) {
+      res.sendStatus(204);
+    } else {
+      const data = await response.json();
+      res.status(response.status).json(data);
+    }
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
 app.get('/leetcode', async (req, res) => {
   try {
     const response = await fetch(`${JAVA_BASE_URL}/api/leetcode`);
