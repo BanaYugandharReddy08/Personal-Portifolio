@@ -19,42 +19,45 @@ const LoginPage = () => {
     return <Navigate to="/" />;
   }
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
+    const handleLogin = async (e) => {
+      e.preventDefault();
+      setError('');
 
-    if (!email) {
-      setError('Email is required');
-      return;
-    }
+      if (!email) {
+        setError('Email is required');
+        return;
+      }
 
-    if (!password) {
-      setError('Password is required');
-      return;
-    }
+      if (!password) {
+        setError('Password is required');
+        return;
+      }
 
-    const result = login(email, password, isVerifying ? verificationCode : null);
+      let apiData;
+      try {
+        apiData = await apiLogin(email, password);
+      } catch (err) {
+        toast.error(err.message);
+        return;
+      }
 
-    if (result.success) {
-      if (result.requireVerification) {
-        setIsVerifying(true);
-      } else {
-        try {
-          const data = await apiLogin(email, password);
-          if (data.lastLogin) {
-            toast.success(`Last login: ${new Date(data.lastLogin).toLocaleString()}`);
+      const result = login(email, password, isVerifying ? verificationCode : null);
+
+      if (result.success) {
+        if (result.requireVerification) {
+          setIsVerifying(true);
+        } else {
+          if (apiData.lastLogin) {
+            toast.success(`Last login: ${new Date(apiData.lastLogin).toLocaleString()}`);
           } else {
             toast.success('Welcome!');
           }
-        } catch (err) {
-          toast.success('Login successful');
+          navigate('/');
         }
-        navigate('/');
+      } else {
+        setError(result.error || 'Login failed. Please check your credentials.');
       }
-    } else {
-      setError(result.error || 'Login failed. Please check your credentials.');
-    }
-  };
+    };
 
   const handleGuestLogin = () => {
     login('guest@example.com', 'guest123');
