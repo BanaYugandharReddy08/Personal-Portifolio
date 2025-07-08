@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDocs } from '../context/DocsContext';
+import { useAuth } from '../context/AuthContext';
 import './ResumeAndCoverPage.css';
 
 /* files live in PUBLIC_URL so they work in dev & production builds */
@@ -12,11 +13,19 @@ const ResumeAndCoverPage = () => {
   const [activeTab, setActiveTab] = useState('resume');
   const [canEmbed,  setCanEmbed]  = useState(true);
   const [animate,   setAnimate]   = useState(false);
-  const { fetchLatest } = useDocs();
+  const { user } = useAuth();
+  const { fetchLatest, uploadDoc } = useDocs();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [notification, setNotification] = useState(null);
   const [urls, setUrls] = useState({
     resume: `${process.env.PUBLIC_URL}/resume.pdf`,
     coverLetter: `${process.env.PUBLIC_URL}/coverletter.pdf`,
   });
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 3000);
+  };
 
   /* 1️⃣ kick-off entrance animation once */
   useEffect(() => {
@@ -47,6 +56,22 @@ const ResumeAndCoverPage = () => {
   /* 3️⃣ handy references */
   const { label, fallback } = DOCS[activeTab];
   const fileURL = urls[activeTab] || `${process.env.PUBLIC_URL}/${fallback}`;
+
+  const handleUpload = async (e) => {
+    e.preventDefault();
+    if (!selectedFile) return;
+    const { success } = await uploadDoc(activeTab, selectedFile);
+    if (success) {
+      const url = await fetchLatest(activeTab);
+      if (url) {
+        setUrls((prev) => ({ ...prev, [activeTab]: url }));
+      }
+      showNotification(`${DOCS[activeTab].label} uploaded successfully`);
+    } else {
+      showNotification(`Failed to upload ${DOCS[activeTab].label}`, 'error');
+    }
+    setSelectedFile(null);
+  };
 
   return (
     <div className="resume-page">
@@ -96,6 +121,30 @@ const ResumeAndCoverPage = () => {
         >
           ⬇️ Download {label}
         </a>
+
+        {user?.role === 'admin' && (
+          <div className="certificate-form-container" style={{ marginTop: '2rem' }}>
+            {notification && (
+              <div className={`notification ${notification.type}`}>{notification.message}</div>
+            )}
+            <form className="certificate-form" onSubmit={handleUpload}>
+              <div className="form-group">
+                <label htmlFor="docUpload">Upload {label}</label>
+                <input
+                  id="docUpload"
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => setSelectedFile(e.target.files[0])}
+                />
+              </div>
+              <div className="form-actions">
+                <button type="submit" className="button">
+                  Upload
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );
