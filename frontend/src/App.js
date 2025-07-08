@@ -17,6 +17,7 @@ import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ResumeAndCoverPage from './pages/ResumeAndCoverPage';
+import { DocsProvider } from './context/DocsContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import { ExperiencesProvider } from './context/ExperiencesContext';
 import { ProjectsProvider } from './context/ProjectsContext';
@@ -55,7 +56,14 @@ function App() {
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/resume-and-cover" element={<ResumeAndCoverPage />} />
+          <Route
+            path="/resume-and-cover"
+            element={(
+              <DocsProvider>
+                <ResumeAndCoverPage />
+              </DocsProvider>
+            )}
+          />
 
           {/* <Route
             path="/dashboard"
