@@ -75,7 +75,7 @@ const DashboardCertificates = () => {
   };
 
   const handleAddCertificate = async () => {
-    if (!newCertificate.title || !newCertificate.issuer || !newCertificate.date) {
+    if (!newCertificate.title || !newCertificate.issuer) {
       showNotification('Please fill in all required fields', 'error');
       return;
     }
@@ -83,6 +83,9 @@ const DashboardCertificates = () => {
       ...newCertificate,
       id: Date.now().toString(),
     };
+    if (!certificate.date) {
+      delete certificate.date;
+    }
     const { success } = await addCertificate(certificate);
     if (!success) {
       showNotification('Failed to add certificate', 'error');
@@ -138,7 +141,11 @@ const DashboardCertificates = () => {
   };
 
   const handleSaveEdit = async () => {
-    const { success } = await updateCertificateById(editingId, newCertificate);
+    const updated = { ...newCertificate };
+    if (!updated.date) {
+      delete updated.date;
+    }
+    const { success } = await updateCertificateById(editingId, updated);
     if (!success) {
       showNotification('Failed to update certificate', 'error');
       return;
@@ -262,14 +269,13 @@ const DashboardCertificates = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="date">Date Received*</label>
+              <label htmlFor="date">Date Received</label>
               <input
                 type="date"
                 id="date"
                 name="date"
                 value={newCertificate.date}
                 onChange={handleInputChange}
-                required
               />
             </div>
             <div className="form-group">
