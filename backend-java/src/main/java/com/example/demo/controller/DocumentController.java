@@ -26,6 +26,11 @@ public class DocumentController {
         Files.createDirectories(uploadDir);
     }
 
+    @GetMapping("")
+    public ResponseEntity<?> getAll() {
+        return ResponseEntity.ok(documentRepository.findAll());
+    }
+
     @PostMapping(path = "/{type}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> upload(@PathVariable("type") String type, @RequestParam("file") MultipartFile file) {
         if (!"resume".equalsIgnoreCase(type) && !"coverletter".equalsIgnoreCase(type)) {
