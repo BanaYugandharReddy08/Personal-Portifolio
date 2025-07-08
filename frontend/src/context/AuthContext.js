@@ -10,6 +10,16 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [verificationCode, setVerificationCode] = useState(null);
 
+  const setAuthenticatedUser = (apiUser) => {
+    if (!apiUser) return;
+    setUser({
+      id: apiUser.id ? apiUser.id.toString() : Date.now().toString(),
+      email: apiUser.email,
+      name: apiUser.fullName,
+      role: apiUser.admin ? 'admin' : 'user'
+    });
+  };
+
   // Initialize auth state from localStorage
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
@@ -96,7 +106,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, signup, logout, isLoading, verificationCode }}>
+    <AuthContext.Provider value={{ user, token, login, signup, logout, isLoading, verificationCode, setAuthenticatedUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import './Header.css';
@@ -8,8 +8,14 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -94,7 +100,7 @@ const Header = () => {
                     </li>
                   )}
                   <li className="nav-item">
-                    <button onClick={logout} className="button outline">
+                    <button onClick={handleLogout} className="button outline">
                       Logout
                     </button>
                   </li>
