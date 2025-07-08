@@ -131,14 +131,18 @@ const ExperiencePage = () => {
                   <p>{proj.description.slice(0, 100)}…</p>
 
                   <div className="technologies">
-                    {proj.technologies.slice(0, 3).map((tech, k) => (
-                      <span key={k} className="tech-tag">
-                        {tech}
-                      </span>
-                    ))}
-                    {proj.technologies.length > 3 && (
+                    {proj.technologies
+                      .split(',')
+                      .map((t) => t.trim())
+                      .slice(0, 3)
+                      .map((tech, k) => (
+                        <span key={k} className="tech-tag">
+                          {tech}
+                        </span>
+                      ))}
+                    {proj.technologies.split(',').length > 3 && (
                       <span className="tech-tag">
-                        +{proj.technologies.length - 3}
+                        +{proj.technologies.split(',').length - 3}
                       </span>
                     )}
                   </div>
@@ -183,11 +187,14 @@ const ExperiencePage = () => {
 
                 <h3>Technologies Used</h3>
                 <div className="technologies">
-                  {selectedProject.technologies.map((tech, k) => (
-                    <span key={k} className="tech-tag">
-                      {tech}
-                    </span>
-                  ))}
+                  {selectedProject.technologies
+                    .split(',')
+                    .map((t) => t.trim())
+                    .map((tech, k) => (
+                      <span key={k} className="tech-tag">
+                        {tech}
+                      </span>
+                    ))}
                 </div>
                 {selectedProject.reportFile && (
                   <div className="project-report-details">
