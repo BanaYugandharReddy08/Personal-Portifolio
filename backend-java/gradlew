@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# Simple gradle wrapper that delegates to system gradle
+exec gradle "$@"
