@@ -19,10 +19,11 @@ export async function signup(fullName, email, password) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ fullName, email, password })
   });
+  const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error('Failed to signup');
+    throw new Error(data.error || 'Failed to signup');
   }
-  return response.json();
+  return data;
 }
 
 export async function fetchCertificates() {

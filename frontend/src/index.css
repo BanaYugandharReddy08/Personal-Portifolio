@@ -502,3 +502,11 @@ section {
   background-color: var(--success-500);
   color: #fff;
 }
+.Toastify__toast--warning {
+  background-color: var(--warning-500);
+  color: #fff;
+}
+.Toastify__toast--error {
+  background-color: var(--error-500);
+  color: #fff;
+}
