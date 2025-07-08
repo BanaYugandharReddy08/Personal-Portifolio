@@ -49,8 +49,64 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-app.get('/certificates', (req, res) => {
-  res.json({ certificates: [] });
+app.get('/certificates', async (req, res) => {
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/certificates`);
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.post('/certificates', async (req, res) => {
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/certificates`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body || {})
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.put('/certificates/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/certificates/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body || {})
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.delete('/certificates/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/certificates/${id}`, {
+      method: 'DELETE'
+    });
+    if (response.status === 204) {
+      res.sendStatus(204);
+    } else {
+      const data = await response.json();
+      res.status(response.status).json(data);
+    }
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
 });
 
 app.get('/leetcode', (req, res) => {
