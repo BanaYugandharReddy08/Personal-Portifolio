@@ -1,16 +1,26 @@
 import { useEffect, useState } from 'react';
 import './ResumeAndCoverPage.css';
+import { DocsProvider, useDocs } from '../context/DocsContext';
 
-/* files live in PUBLIC_URL so they work in dev & production builds */
-const DOCS = {
-  resume:      { label: 'CV',           file: 'resume.pdf' },
-  coverLetter: { label: 'Cover Letter', file: 'coverletter.pdf' },
+/* fallback file names for dev & production builds */
+const FALLBACK_FILES = {
+  resume: 'resume.pdf',
+  coverLetter: 'coverletter.pdf',
 };
 
-const ResumeAndCoverPage = () => {
+const DOC_LABELS = {
+  resume: 'CV',
+  coverLetter: 'Cover Letter',
+};
+
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+
+const ResumeContent = () => {
   const [activeTab, setActiveTab] = useState('resume');
-  const [canEmbed,  setCanEmbed]  = useState(true);
-  const [animate,   setAnimate]   = useState(false);
+  const [canEmbed, setCanEmbed] = useState(true);
+  const [animate, setAnimate] = useState(false);
+  const { docs, loadDocs } = useDocs();
 
   /* 1️⃣ kick-off entrance animation once */
   useEffect(() => {
@@ -22,10 +32,16 @@ const ResumeAndCoverPage = () => {
     setCanEmbed(Boolean(navigator.mimeTypes?.['application/pdf']));
   }, []);
 
-  /* 3️⃣ handy references */
-  const { label, file } = DOCS[activeTab];
-  const fileURL = `${process.env.PUBLIC_URL}/${file}`;
-  // console.log("The File URL is:", fileURL);
+  /* 3️⃣ fetch document URLs on mount */
+  useEffect(() => {
+    loadDocs();
+  }, [loadDocs]);
+
+  const label = DOC_LABELS[activeTab];
+  const fileName = docs[activeTab]?.fileName;
+  const fileURL = fileName
+    ? `${API_BASE_URL}/documents/${activeTab}?${fileName}`
+    : `${process.env.PUBLIC_URL}/${FALLBACK_FILES[activeTab]}`;
 
   return (
     <div className="resume-page">
@@ -38,13 +54,13 @@ const ResumeAndCoverPage = () => {
           </p>
 
           <div className="tabs">
-            {Object.entries(DOCS).map(([key, { label }]) => (
+            {Object.entries(DOC_LABELS).map(([key, lbl]) => (
               <button
                 key={key}
                 className={`tab ${activeTab === key ? 'active' : ''}`}
                 onClick={() => setActiveTab(key)}
               >
-                {label}
+                {lbl}
               </button>
             ))}
           </div>
@@ -62,7 +78,7 @@ const ResumeAndCoverPage = () => {
           </div>
         ) : (
           <p className="no-preview fade-in-up run">
-            Your browser can’t display PDFs inline.  
+            Your browser can’t display PDFs inline.
             Use the button below to download the file.
           </p>
         )}
@@ -79,5 +95,11 @@ const ResumeAndCoverPage = () => {
     </div>
   );
 };
+
+const ResumeAndCoverPage = () => (
+  <DocsProvider>
+    <ResumeContent />
+  </DocsProvider>
+);
 
 export default ResumeAndCoverPage;
