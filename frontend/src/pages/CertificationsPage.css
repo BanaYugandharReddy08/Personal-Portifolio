@@ -216,12 +216,8 @@
   width: 100%;
   height: 300px;
   overflow: hidden;
-}
-
-.certificate-modal-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  background-size: cover;
+  background-position: center;
 }
 
 .certificate-placeholder.large {
