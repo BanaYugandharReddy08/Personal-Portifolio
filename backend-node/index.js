@@ -109,8 +109,64 @@ app.delete('/certificates/:id', async (req, res) => {
   }
 });
 
-app.get('/leetcode', (req, res) => {
-  res.json({ problems: [] });
+app.get('/leetcode', async (req, res) => {
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/leetcode`);
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.post('/leetcode', async (req, res) => {
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/leetcode`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body || {})
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.put('/leetcode/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/leetcode/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body || {})
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
+app.delete('/leetcode/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/leetcode/${id}`, {
+      method: 'DELETE'
+    });
+    if (response.status === 204) {
+      res.sendStatus(204);
+    } else {
+      const data = await response.json();
+      res.status(response.status).json(data);
+    }
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
 });
 
 app.listen(PORT, () => {
