@@ -32,7 +32,7 @@ public class CertificateController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CertificateEntity> update(@PathVariable Long id, @RequestBody CertificateEntity certificate) {
+    public ResponseEntity<CertificateEntity> update(@PathVariable("id") Long id, @RequestBody CertificateEntity certificate) {
         Optional<CertificateEntity> existingOpt = certificateRepository.findById(id);
         if (existingOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -51,7 +51,7 @@ public class CertificateController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         if (!certificateRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

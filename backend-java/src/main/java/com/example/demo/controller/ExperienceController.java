@@ -28,7 +28,7 @@ public class ExperienceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ExperienceEntity> update(@PathVariable Long id, @RequestBody ExperienceEntity experience) {
+    public ResponseEntity<ExperienceEntity> update(@PathVariable("id") Long id, @RequestBody ExperienceEntity experience) {
         Optional<ExperienceEntity> existingOpt = experienceRepository.findById(id);
         if (existingOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -46,7 +46,7 @@ public class ExperienceController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         if (!experienceRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
