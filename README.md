@@ -30,11 +30,11 @@ cd frontend
 npm run lint
 ```
 
-The React app reads `REACT_APP_API_BASE_URL` to know where the Node API is running. Set this variable before starting the dev server or building the project so API calls are proxied correctly.
+The React app reads `REACT_APP_API_BASE_URL` to know where the Node API is running. Create a `.env` file inside `frontend/` and set this variable before starting the dev server or building the project so API calls are proxied correctly.
 
 ## Node Backend
 
-`backend-node/` contains a minimal Express server exposing `/login`, `/certificates` and `/leetcode` routes. The `/login` endpoint accepts a **POST** request with a JSON body containing `email` and `password` fields. The route forwards these credentials to the Java backend and returns whatever response it provides. Configure the Java backend's base URL via the `JAVA_BASE_URL` environment variable (defaults to `http://localhost:8080`).
+`backend-node/` contains a minimal Express server exposing `/login`, `/certificates` and `/leetcode` routes. The `/login` endpoint accepts a **POST** request with a JSON body containing `email` and `password` fields. The route forwards these credentials to the Java backend and returns whatever response it provides. Create a `.env` file inside `backend-node/` and configure the Java backend's base URL via the `JAVA_BASE_URL` variable (defaults to `http://localhost:8080`).
 
 ```sh
 cd backend-node
