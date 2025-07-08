@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useCertificates } from '../../context/CertificatesContext';
 import '../../pages/DashboardPage.css';
@@ -12,7 +12,12 @@ const DashboardCertificates = () => {
     addCertificate,
     updateCertificateById,
     deleteCertificateById,
+    loadCertificates,
   } = useCertificates();
+
+  useEffect(() => {
+    loadCertificates();
+  }, []);
   const [newCertificate, setNewCertificate] = useState({
     title: '',
     issuer: '',

@@ -87,9 +87,7 @@ export const ExperiencesProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    loadExperiences();
-  }, []);
+  // Data is loaded on demand from the dashboard pages
 
   return (
     <ExperiencesContext.Provider

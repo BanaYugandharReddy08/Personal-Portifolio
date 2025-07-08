@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useExperiences } from '../../context/ExperiencesContext';
 import '../../pages/DashboardPage.css';
 
@@ -22,7 +22,12 @@ const DashboardExperiences = () => {
     addExperience,
     updateExperienceById,
     deleteExperienceById,
+    loadExperiences,
   } = useExperiences();
+
+  useEffect(() => {
+    loadExperiences();
+  }, []);
 
   const [isAdding, setIsAdding] = useState(false);
   const [formData, setFormData] = useState(initialForm);
