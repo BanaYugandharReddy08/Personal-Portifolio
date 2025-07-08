@@ -1,94 +1,25 @@
 import { useState, useEffect } from 'react';
 import LeetCodePage from './LeetCodePage';
 // import { motion } from 'framer-motion';
+import { useExperiences } from '../context/ExperiencesContext';
+import { useProjects } from '../context/ProjectsContext';
 import './ExperiencePage.css';
-import report from './report.pdf'; // Import the report file
-
-const experiences = [
-  {
-    id: 1,
-    position: "Chef",
-    company: "Skylon Hotel (Dublin)",
-    startDate: "2024-06-01",
-    currentlyWorking: true,
-    description: [
-      "Mastered high-pressure teamwork, time-boxing, and quality control—skills that translate surprisingly well to sprint rooms.",
-      "Worked evening and weekend kitchen shifts as a part-time chef while simultaneously completing my MSc, balancing high-pressure service with graduate-level coursework."
-    ],
-    skills: "Team Coordination, Time Management, Quality Control",
-    featured: true
-  },
-  {
-    id: 2,
-    position: "React Developer (Freelance)",
-    company: "US Client",
-    startDate: "2024-04-01",
-    endDate: "2024-07-01",
-    description: [
-      "Designed and implemented high-performance, scalable front-end architecture using ReactJS, delivering enhanced user experience and interface responsiveness.",
-  "Rebuilt core UI components to improve web application performance, achieving a 30% reduction in page load time and boosting customer satisfaction.",
-  "Integrated RESTful APIs to facilitate dynamic data exchange between client-side and server-side, improving application stability and reliability.",
-  "Conducted code reviews, debugged complex issues, and resolved performance bottlenecks, resulting in improved system reliability and codebase quality.",
-  "Maintained responsive, cross-browser compatible components using HTML5, CSS3, JavaScript (ES6+), and React Hooks.",
-  "Delivered all development milestones on time in a fully remote setting, demonstrating strong time management, self-direction, and remote team collaboration.",
-  "Documented feature specifications and user stories to support Agile Scrum workflows, sprint planning, and project handover."
-    ],
-    skills: "React, Redux, REST APIs, Jest, CI/CD, Remote Collaboration",
-    featured: true
-  },
-  {
-    id: 3,
-    position: "Software Engineer",
-    company: "Verizon — Incedo Technologies",
-    startDate: "2021-08-01",
-    endDate: "2024-01-01",
-    description: [
-      "Designed and developed a scalable telecommunications request platform supporting device, application, and circuit provisioning across multiple global regions.",
-      "Engineered modular, reusable ReactJS components with responsive design, improving system efficiency and reducing development time.",
-      "Refactored monolithic front-end architecture to modern component-based structures, enhancing maintainability and alignment with business requirements.",
-      "Increased automated test coverage from 30% to 90% by implementing robust unit testing and integration testing frameworks within a CI/CD pipeline.",
-      "Built a custom CSV upload tool with real-time input validation and toaster notifications, streamlining data entry and reducing user error rates.",
-      "Conducted detailed data analysis on user behaviour and system usage trends, enabling data-driven enhancements and performance tuning.",
-      "Resolved critical system latency issues, reducing page load times from 30+ seconds to under 10 seconds, improving SEO performance and user retention.",
-      "Led cross-functional collaboration and Agile delivery by managing version control through Git, contributing to daily Scrum.",
-      "Mentored junior developers in React best practices, code quality, and Agile methodologies, fostering a culture of continuous learning and improvement.",
-      "Contributed to team growth by leading knowledge transfer sessions, conducting technical interviews, and onboarding new developers.",
-      "Played a key role in Agile Scrum ceremonies, including sprint planning, retrospectives, and daily stand-ups, ensuring alignment with project goals and timelines.",
-      "Supported team scaling through 20+ technical interviews and knowledge transfer sessions for 10+ developers, enhancing team capabilities and project delivery."
-    ],
-    skills: "React, Node.js, Javascript, CI/CD, HTML, CSS, JUnit, Java, PostgresQL, Git, Agile Scrum, Jira, Confluence",
-    featured: true
-  }
-];
-
-const projects = [
-  {
-    id: 1,
-    title: "Dublin Housing Price Prediction",
-    description: "Created ensemble ML models (Random Forest, XGBoost, LightGBM) that predict Dublin housing prices with 88% accuracy. Integrated macroeconomic factors and location data for comprehensive analysis.",
-    technologies: ["Python", "scikit-learn", "Pandas", "Matplotlib", "Jupyter"],
-    imageUrl: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg",
-    featured: true,
-    reportFile: report
-  },
-  {
-    id: 2,
-    title: "React Portfolio Site",
-    description:
-      "This very portfolio—built with plain React and CSS without relying on frameworks like Next.js or Vite. It showcases my work, CV and contact details in a responsive, animated interface.",
-    technologies: ["React", "React Router", "Framer Motion", "CSS"],
-    imageUrl: "https://images.pexels.com/photos/11035535/pexels-photo-11035535.jpeg",
-    featured: true
-  }
-];
-
-
 
 const ExperiencePage = () => {
   const [activeTab, setActiveTab] = useState('experience');
   const [selectedProject, setSelectedProject] = useState(null);
   const [animate, setAnimate] = useState(false);          // triggers CSS keyframes
   const [canEmbed,  setCanEmbed]  = useState(true);
+  const {
+    experiences,
+    loading: experiencesLoading,
+    error: experiencesError,
+  } = useExperiences();
+  const {
+    projects,
+    loading: projectsLoading,
+    error: projectsError,
+  } = useProjects();
 
   const formatPeriod = (exp) => {
     const format = (d) => d.toLocaleString('default', { month: 'short', year: 'numeric' });
@@ -105,6 +36,14 @@ const ExperiencePage = () => {
   useEffect(() => {
     requestAnimationFrame(() => setAnimate(true));
   }, []);
+
+  if (experiencesLoading || projectsLoading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  if (experiencesError || projectsError) {
+    return <div className="error">Failed to load data</div>;
+  }
 
   return (
     <div id="experience" className="experience-page">
