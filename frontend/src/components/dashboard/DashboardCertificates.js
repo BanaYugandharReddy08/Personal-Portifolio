@@ -33,7 +33,7 @@ const DashboardCertificates = () => {
   const [notification, setNotification] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
 
-  const categories = ['Development', 'Data', 'Cloud', 'Design', 'Other'];
+  const categories = ['Development', 'Data', 'Cloud', 'Design','Academic' ,'Other'];
 
 
   const currentDate = new Date();
