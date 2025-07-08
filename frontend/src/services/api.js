@@ -61,6 +61,9 @@ export async function deleteCertificate(id) {
   const response = await fetch(`${API_BASE_URL}/certificates/${id}`, {
     method: 'DELETE'
   });
+  if (response.status === 204) {
+    return true;
+  }
   if (!response.ok) {
     throw new Error('Failed to delete certificate');
   }
@@ -119,6 +122,9 @@ export async function deleteLeetcodeProblem(id) {
   const response = await fetch(`${API_BASE_URL}/leetcode/${id}`, {
     method: 'DELETE'
   });
+  if (response.status === 204) {
+    return true;
+  }
   if (!response.ok) {
     throw new Error('Failed to delete problem');
   }
@@ -153,6 +159,9 @@ export async function deleteExperience(id) {
   const response = await fetch(`${API_BASE_URL}/experiences/${id}`, {
     method: 'DELETE'
   });
+  if (response.status === 204) {
+    return true;
+  }
   if (!response.ok) {
     throw new Error('Failed to delete experience');
   }
@@ -187,6 +196,9 @@ export async function deleteProject(id) {
   const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
     method: 'DELETE'
   });
+  if (response.status === 204) {
+    return true;
+  }
   if (!response.ok) {
     throw new Error('Failed to delete project');
   }
