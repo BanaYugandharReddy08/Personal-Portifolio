@@ -87,9 +87,7 @@ export const ProblemsProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    loadProblems();
-  }, []);
+  // Data is loaded on demand from the dashboard pages
 
   return (
     <ProblemsContext.Provider

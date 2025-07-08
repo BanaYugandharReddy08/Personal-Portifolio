@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProblems } from '../../context/ProblemsContext';
 import '../../pages/DashboardPage.css';
 
@@ -20,7 +20,12 @@ function ProblemsSection() {
     addProblem,
     updateProblem,
     deleteProblemById,
+    loadProblems,
   } = useProblems();
+
+  useEffect(() => {
+    loadProblems();
+  }, []);
 
   const [isAdding, setIsAdding] = useState(false);
   const [formData, setFormData] = useState(initialForm);
