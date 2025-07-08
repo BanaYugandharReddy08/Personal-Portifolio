@@ -19,7 +19,7 @@ function certificatesReducer(state, action) {
     case 'FETCH_START':
       return { ...state, loading: true, error: null };
     case 'FETCH_SUCCESS':
-      return { ...state, loading: false, certificates: action.payload };
+      return { ...state, loading: false, certificates: action.payload.certificates};
     case 'FETCH_FAILURE':
       return { ...state, loading: false, error: action.payload };
     case 'ADD_SUCCESS':
