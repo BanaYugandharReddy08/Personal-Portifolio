@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from 'react';
-import { fetchDocs, uploadDocument } from '../services/api';
+import { fetchDocs, uploadDocument, fetchLatestDocument } from '../services/api';
 
 const DocsContext = createContext();
 
@@ -48,8 +48,18 @@ export const DocsProvider = ({ children }) => {
     }
   };
 
+  const fetchLatest = async (type) => {
+    try {
+      const url = await fetchLatestDocument(type);
+      return url;
+    } catch (err) {
+      dispatch({ type: 'FETCH_FAILURE', payload: err.message });
+      return null;
+    }
+  };
+
   return (
-    <DocsContext.Provider value={{ ...state, loadDocs, uploadDoc }}>
+    <DocsContext.Provider value={{ ...state, loadDocs, uploadDoc, fetchLatest }}>
       {children}
     </DocsContext.Provider>
   );

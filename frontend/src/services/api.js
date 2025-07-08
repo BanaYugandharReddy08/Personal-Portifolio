@@ -228,3 +228,13 @@ export async function uploadDocument(type, file) {
   }
   return data;
 }
+
+export async function fetchLatestDocument(type) {
+  const response = await fetch(`${API_BASE_URL}/documents/${type}`);
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.error || 'Failed to fetch document');
+  }
+  const blob = await response.blob();
+  return URL.createObjectURL(blob);
+}

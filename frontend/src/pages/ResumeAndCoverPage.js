@@ -1,21 +1,43 @@
 import { useEffect, useState } from 'react';
+import { useDocs } from '../context/DocsContext';
 import './ResumeAndCoverPage.css';
 
 /* files live in PUBLIC_URL so they work in dev & production builds */
 const DOCS = {
-  resume:      { label: 'CV',           file: 'resume.pdf' },
-  coverLetter: { label: 'Cover Letter', file: 'coverletter.pdf' },
+  resume:      { label: 'CV',           fallback: 'resume.pdf' },
+  coverLetter: { label: 'Cover Letter', fallback: 'coverletter.pdf' },
 };
 
 const ResumeAndCoverPage = () => {
   const [activeTab, setActiveTab] = useState('resume');
   const [canEmbed,  setCanEmbed]  = useState(true);
   const [animate,   setAnimate]   = useState(false);
+  const { fetchLatest } = useDocs();
+  const [urls, setUrls] = useState({
+    resume: `${process.env.PUBLIC_URL}/resume.pdf`,
+    coverLetter: `${process.env.PUBLIC_URL}/coverletter.pdf`,
+  });
 
   /* 1️⃣ kick-off entrance animation once */
   useEffect(() => {
     requestAnimationFrame(() => setAnimate(true));
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchLatest(activeTab)
+      .then((url) => {
+        if (!cancelled && url) {
+          setUrls((prev) => ({ ...prev, [activeTab]: url }));
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [activeTab, fetchLatest]);
 
   /* 2️⃣ check once if the browser can embed PDFs */
   useEffect(() => {
@@ -23,9 +45,8 @@ const ResumeAndCoverPage = () => {
   }, []);
 
   /* 3️⃣ handy references */
-  const { label, file } = DOCS[activeTab];
-  const fileURL = `${process.env.PUBLIC_URL}/${file}`;
-  // console.log("The File URL is:", fileURL);
+  const { label, fallback } = DOCS[activeTab];
+  const fileURL = urls[activeTab] || `${process.env.PUBLIC_URL}/${fallback}`;
 
   return (
     <div className="resume-page">
