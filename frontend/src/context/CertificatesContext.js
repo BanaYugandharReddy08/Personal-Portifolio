@@ -87,9 +87,7 @@ export const CertificatesProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    loadCertificates();
-  }, []);
+  // Data is loaded on demand from the dashboard pages
 
   return (
     <CertificatesContext.Provider

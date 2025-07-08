@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProjects } from '../../context/ProjectsContext';
 import '../../pages/DashboardPage.css';
 
@@ -17,7 +17,12 @@ const DashboardProjects = () => {
     addProject,
     updateProjectById,
     deleteProjectById,
+    loadProjects,
   } = useProjects();
+
+  useEffect(() => {
+    loadProjects();
+  }, []);
 
   const [isAdding, setIsAdding] = useState(false);
   const [formData, setFormData] = useState(initialForm);

@@ -87,9 +87,7 @@ export const ProjectsProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    loadProjects();
-  }, []);
+  // Data is loaded on demand from the dashboard pages
 
   return (
     <ProjectsContext.Provider
