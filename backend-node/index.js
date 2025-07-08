@@ -10,6 +10,9 @@ app.use(express.json());
 const JAVA_BASE_URL = process.env.JAVA_BASE_URL || 'http://localhost:8080';
 const PORT = process.env.PORT || 3001;
 
+const documentsRouter = require('./routes/documents');
+app.use('/documents', documentsRouter);
+
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body || {};
@@ -49,49 +52,6 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-app.get('/documents', async (req, res) => {
-  try {
-    const response = await fetch(`${JAVA_BASE_URL}/api/documents`);
-    const data = await response.json();
-    res.status(response.status).json(data);
-  } catch (err) {
-    console.error('Error contacting Java backend:', err);
-    res.status(500).json({ error: 'Java backend unreachable' });
-  }
-});
-
-app.post('/documents/:type', async (req, res) => {
-  try {
-    const response = await fetch(`${JAVA_BASE_URL}/api/documents/${req.params.type}`, {
-      method: 'POST',
-      headers: { 'content-type': req.headers['content-type'] },
-      body: req
-    });
-    res.status(response.status);
-    response.headers.forEach((v, k) => res.setHeader(k, v));
-    response.body.pipe(res);
-  } catch (err) {
-    console.error('Error contacting Java backend:', err);
-    res.status(500).json({ error: 'Java backend unreachable' });
-  }
-});
-
-app.get('/documents/:type', async (req, res) => {
-  try {
-    const response = await fetch(`${JAVA_BASE_URL}/api/documents/${req.params.type}`);
-    res.status(response.status);
-    response.headers.forEach((v, k) => res.setHeader(k, v));
-    if (response.status === 200) {
-      response.body.pipe(res);
-    } else {
-      const data = await response.json();
-      res.json(data);
-    }
-  } catch (err) {
-    console.error('Error contacting Java backend:', err);
-    res.status(500).json({ error: 'Java backend unreachable' });
-  }
-});
 
 app.get('/certificates', async (req, res) => {
   try {
