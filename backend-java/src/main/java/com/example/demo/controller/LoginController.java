@@ -46,6 +46,12 @@ public class LoginController {
         Instant previousLogin = user.getLastLoggedInDate();
         user.setLastLoggedInDate(Instant.now());
         userRepository.save(user);
-        return ResponseEntity.ok(Map.of("lastLoggedInDate", previousLogin != null ? previousLogin.toString() : null));
+        return ResponseEntity.ok(Map.of(
+            "id", user.getId(),
+            "email", request.email(),
+            "fullName", user.getFullName(),
+            "admin", user.isAdmin(),
+            "lastLogin", previousLogin != null ? previousLogin.toString() : null
+        ));
     }
 }

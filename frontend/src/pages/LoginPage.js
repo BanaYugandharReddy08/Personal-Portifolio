@@ -8,10 +8,8 @@ import './LoginPage.css';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
-  const [isVerifying, setIsVerifying] = useState(false);
   const [error, setError] = useState('');
-  const { user, login } = useAuth();
+  const { user, login, setAuthenticatedUser } = useAuth();
   const navigate = useNavigate();
 
   // If already logged in, redirect to home
@@ -33,29 +31,17 @@ const LoginPage = () => {
         return;
       }
 
-      let apiData;
       try {
-        apiData = await apiLogin(email, password);
+        const data = await apiLogin(email, password);
+        setAuthenticatedUser(data);
+        const username = data.fullName || email.split('@')[0];
+        if (data.lastLogin) {
+          toast.info(`Last login: ${new Date(data.lastLogin).toLocaleString()}`);
+        }
+        toast.success(`Welcome, ${username}!`);
+        navigate('/');
       } catch (err) {
         toast.error(err.message);
-        return;
-      }
-
-      const result = login(email, password, isVerifying ? verificationCode : null);
-
-      if (result.success) {
-        if (result.requireVerification) {
-          setIsVerifying(true);
-        } else {
-          if (apiData.lastLogin) {
-            toast.success(`Last login: ${new Date(apiData.lastLogin).toLocaleString()}`);
-          } else {
-            toast.success('Welcome!');
-          }
-          navigate('/');
-        }
-      } else {
-        setError(result.error || 'Login failed. Please check your credentials.');
       }
     };
 
@@ -77,18 +63,16 @@ const LoginPage = () => {
           {error && <div className="alert alert-error">{error}</div>}
 
           <form onSubmit={handleLogin} className="login-form">
-            {!isVerifying ? (
-              <>
-                <div className="form-group">
-                  <label htmlFor="email">Email address</label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                  />
-                </div>
+            <div className="form-group">
+              <label htmlFor="email">Email address</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+              />
+            </div>
                 
               <div className="form-group">
                 <label htmlFor="password">Password</label>
@@ -103,8 +87,8 @@ const LoginPage = () => {
                 
                 <button type="submit" className="button login-button">
                   Sign In
-                </button>
-                
+              </button>
+
                 <div className="form-footer">
                   <Link to="/signup" className="link-button">
                     Create account
@@ -113,40 +97,6 @@ const LoginPage = () => {
                     Forgot password?
                   </button>
                 </div>
-              </>
-            ) : (
-              <>
-                <div className="verification-info">
-                  <p>A verification code has been sent to your email. Please enter it below to complete sign-in.</p>
-                </div>
-                
-                <div className="form-group">
-                  <label htmlFor="verificationCode">2-factor code (see your inbox)</label>
-                  <input
-                    type="text"
-                    id="verificationCode"
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value)}
-                    placeholder="Enter 6-digit code"
-                    maxLength={6}
-                  />
-                </div>
-                
-                <button type="submit" className="button login-button">
-                  Verify & Sign In
-                </button>
-                
-                <div className="form-footer">
-                  <button 
-                    type="button" 
-                    className="link-button"
-                    onClick={() => setIsVerifying(false)}
-                  >
-                    Back to login
-                  </button>
-                </div>
-              </>
-            )}
           </form>
 
           <div className="guest-login">
