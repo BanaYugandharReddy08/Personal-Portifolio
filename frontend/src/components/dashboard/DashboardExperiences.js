@@ -5,7 +5,12 @@ import '../../pages/DashboardPage.css';
 const initialForm = {
   position: '',
   company: '',
-  period: '',
+  startMonth: '',
+  startYear: '',
+  endMonth: '',
+  endYear: '',
+  currentlyWorking: false,
+  skills: '',
   description: '',
 };
 
@@ -32,16 +37,26 @@ const DashboardExperiences = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = e.target;
+    setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formatDate = (year, month) => {
+      if (!year || !month) return null;
+      return `${year}-${String(month).padStart(2, '0')}-01`;
+    };
+
     const exp = {
       position: formData.position,
       company: formData.company,
-      period: formData.period,
+      startDate: formatDate(formData.startYear, formData.startMonth),
+      endDate: formData.currentlyWorking
+        ? null
+        : formatDate(formData.endYear, formData.endMonth),
+      currentlyWorking: formData.currentlyWorking,
+      skills: formData.skills,
       description: formData.description,
     };
 
@@ -72,10 +87,22 @@ const DashboardExperiences = () => {
     const exp = experiences.find((e) => e.id === id);
     if (!exp) return;
     setEditingId(id);
+    const parseDate = (dateStr) => {
+      if (!dateStr) return { year: '', month: '' };
+      const d = new Date(dateStr);
+      return { year: String(d.getFullYear()), month: String(d.getMonth() + 1) };
+    };
+    const start = parseDate(exp.startDate);
+    const end = parseDate(exp.endDate);
     setFormData({
       position: exp.position || '',
       company: exp.company || '',
-      period: exp.period || '',
+      startMonth: start.month,
+      startYear: start.year,
+      endMonth: end.month,
+      endYear: end.year,
+      currentlyWorking: exp.currentlyWorking || false,
+      skills: exp.skills || '',
       description: exp.description || '',
     });
     setIsAdding(true);
@@ -89,6 +116,18 @@ const DashboardExperiences = () => {
       showNotification('Failed to delete experience', 'error');
     }
     setConfirmDelete(null);
+  };
+
+  const formatPeriod = (exp) => {
+    const format = (d) =>
+      d.toLocaleString('default', { month: 'short', year: 'numeric' });
+    const start = exp.startDate ? format(new Date(exp.startDate)) : '';
+    const end = exp.currentlyWorking
+      ? 'Present'
+      : exp.endDate
+      ? format(new Date(exp.endDate))
+      : '';
+    return start && end ? `${start} - ${end}` : start || end;
   };
 
   if (loading) {
@@ -158,12 +197,74 @@ const DashboardExperiences = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="period">Period</label>
+              <label htmlFor="startMonth">Start Month</label>
+              <select
+                id="startMonth"
+                name="startMonth"
+                value={formData.startMonth}
+                onChange={handleChange}
+              >
+                <option value="">Month</option>
+                {[...Array(12).keys()].map((m) => (
+                  <option key={m + 1} value={m + 1}>{m + 1}</option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="startYear">Start Year</label>
               <input
-                id="period"
-                name="period"
+                id="startYear"
+                name="startYear"
+                type="number"
+                value={formData.startYear}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="currentlyWorking">
+                <input
+                  id="currentlyWorking"
+                  name="currentlyWorking"
+                  type="checkbox"
+                  checked={formData.currentlyWorking}
+                  onChange={handleChange}
+                />{' '}
+                Currently Working
+              </label>
+            </div>
+            <div className="form-group">
+              <label htmlFor="endMonth">End Month</label>
+              <select
+                id="endMonth"
+                name="endMonth"
+                value={formData.endMonth}
+                onChange={handleChange}
+                disabled={formData.currentlyWorking}
+              >
+                <option value="">Month</option>
+                {[...Array(12).keys()].map((m) => (
+                  <option key={m + 1} value={m + 1}>{m + 1}</option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="endYear">End Year</label>
+              <input
+                id="endYear"
+                name="endYear"
+                type="number"
+                value={formData.endYear}
+                onChange={handleChange}
+                disabled={formData.currentlyWorking}
+              />
+            </div>
+            <div className="form-group" style={{ gridColumn: 'span 2' }}>
+              <label htmlFor="skills">Skills (comma separated)</label>
+              <input
+                id="skills"
+                name="skills"
                 type="text"
-                value={formData.period}
+                value={formData.skills}
                 onChange={handleChange}
               />
             </div>
@@ -200,11 +301,16 @@ const DashboardExperiences = () => {
                   <div className="certificate-details">
                     <h3>{exp.position}</h3>
                     <p className="certificate-issuer">{exp.company}</p>
-                    {exp.period && (
-                      <p className="certificate-date">{exp.period}</p>
-                    )}
+                    <p className="certificate-date">{formatPeriod(exp)}</p>
                     {exp.description && (
                       <p className="certificate-takeaway">{exp.description}</p>
+                    )}
+                    {exp.skills && (
+                      <div className="technologies">
+                        {exp.skills.split(',').map((s, i) => (
+                          <span key={i} className="tech-tag">{s.trim()}</span>
+                        ))}
+                      </div>
                     )}
                   </div>
                   <div className="certificate-actions">
