@@ -39,7 +39,9 @@ public class AuthController {
         entity.setFullName(request.fullName());
         entity.setEmail(encryptionService.encrypt(request.email()));
         entity.setPassword(encryptionService.encrypt(request.password()));
-        entity.setLastLogin(Instant.now());
+        entity.setCreatedDate(Instant.now());
+        entity.setLastLoggedInDate(Instant.now());
+        entity.setAdmin(false);
         userRepository.save(entity);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("message", "Welcome, " + request.fullName() + "!"));
@@ -60,9 +62,9 @@ public class AuthController {
         if (!decryptedPassword.equals(request.password())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
         }
-        Instant previousLogin = user.getLastLogin();
-        user.setLastLogin(Instant.now());
+        Instant previousLogin = user.getLastLoggedInDate();
+        user.setLastLoggedInDate(Instant.now());
         userRepository.save(user);
-        return ResponseEntity.ok(Map.of("lastLogin", previousLogin != null ? previousLogin.toString() : null));
+        return ResponseEntity.ok(Map.of("lastLoggedInDate", previousLogin != null ? previousLogin.toString() : null));
     }
 }

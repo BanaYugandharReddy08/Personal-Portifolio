@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.Instant;
 
@@ -25,7 +26,13 @@ public class UserEntity {
     @Column(nullable = false)
     private String fullName;
 
-    private Instant lastLogin;
+    private Instant lastLoggedInDate;
+
+    @Column(nullable = false)
+    private boolean isAdmin = false;
+
+    @Column(nullable = false, updatable = false)
+    private Instant createdDate;
 
     public Long getId() {
         return id;
@@ -59,11 +66,34 @@ public class UserEntity {
         this.fullName = fullName;
     }
 
-    public Instant getLastLogin() {
-        return lastLogin;
+    public Instant getLastLoggedInDate() {
+        return lastLoggedInDate;
     }
 
-    public void setLastLogin(Instant lastLogin) {
-        this.lastLogin = lastLogin;
+    public void setLastLoggedInDate(Instant lastLoggedInDate) {
+        this.lastLoggedInDate = lastLoggedInDate;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    @PrePersist
+    private void onCreate() {
+        if (createdDate == null) {
+            createdDate = Instant.now();
+        }
     }
 }
