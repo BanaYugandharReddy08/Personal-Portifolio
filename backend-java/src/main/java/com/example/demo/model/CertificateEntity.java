@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,10 +89,12 @@ public class CertificateEntity {
         this.status = status;
     }
 
+    @JsonProperty("children")
     public List<ModuleEntity> getModules() {
         return modules;
     }
 
+    @JsonProperty("children")
     public void setModules(List<ModuleEntity> modules) {
         this.modules.clear();
         if (modules != null) {
