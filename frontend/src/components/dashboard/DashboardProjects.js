@@ -212,7 +212,16 @@ const DashboardProjects = () => {
                       <p className="certificate-takeaway">{proj.description}</p>
                     )}
                     {proj.technologies && (
-                      <p className="certificate-issuer">{proj.technologies}</p>
+                      <div className="technologies">
+                        {proj.technologies
+                          .split(',')
+                          .map((t) => t.trim())
+                          .map((tech, k) => (
+                            <span key={k} className="tech-tag">
+                              {tech}
+                            </span>
+                          ))}
+                      </div>
                     )}
                   </div>
                   <div className="certificate-actions">
