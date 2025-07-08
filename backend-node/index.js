@@ -49,6 +49,17 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+app.get('/documents', async (req, res) => {
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/documents`);
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    console.error('Error contacting Java backend:', err);
+    res.status(500).json({ error: 'Java backend unreachable' });
+  }
+});
+
 app.post('/documents/:type', async (req, res) => {
   try {
     const response = await fetch(`${JAVA_BASE_URL}/api/documents/${req.params.type}`, {
