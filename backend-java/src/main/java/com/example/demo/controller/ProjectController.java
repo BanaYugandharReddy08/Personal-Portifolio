@@ -30,7 +30,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProjectEntity> update(@PathVariable Long id, @RequestBody ProjectEntity project) {
+    public ResponseEntity<ProjectEntity> update(@PathVariable("id") Long id, @RequestBody ProjectEntity project) {
         Optional<ProjectEntity> existingOpt = projectRepository.findById(id);
         if (existingOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -45,7 +45,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         if (!projectRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

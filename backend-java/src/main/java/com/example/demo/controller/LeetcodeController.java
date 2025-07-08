@@ -30,7 +30,7 @@ public class LeetcodeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProblemEntity> update(@PathVariable Long id, @RequestBody ProblemEntity problem) {
+    public ResponseEntity<ProblemEntity> update(@PathVariable("id") Long id, @RequestBody ProblemEntity problem) {
         Optional<ProblemEntity> existingOpt = problemRepository.findById(id);
         if (existingOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -47,7 +47,7 @@ public class LeetcodeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         if (!problemRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
