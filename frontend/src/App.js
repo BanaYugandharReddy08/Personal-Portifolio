@@ -18,6 +18,8 @@ import DashboardPage from './pages/DashboardPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ResumeAndCoverPage from './pages/ResumeAndCoverPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import { ExperiencesProvider } from './context/ExperiencesContext';
+import { ProjectsProvider } from './context/ProjectsContext';
 import { useAuth } from './context/AuthContext';
 
 function App() {
@@ -38,7 +40,16 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/education" element={<EducationPage />} />
           <Route path="/certifications" element={<CertificationsPage />} />
-          <Route path="/experience" element={<ExperiencePage />} />
+          <Route
+            path="/experience"
+            element={(
+              <ExperiencesProvider>
+                <ProjectsProvider>
+                  <ExperiencePage />
+                </ProjectsProvider>
+              </ExperiencesProvider>
+            )}
+          />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/login" element={<LoginPage />} />
