@@ -6,6 +6,19 @@ This repository now contains three separate applications:
 - **backend-node** – a small Express middleware layer
 - **backend-java** – a Spring Boot service that implements the API logic
 
+## Local development ports
+
+The applications communicate with each other using the following default ports:
+
+- React frontend: **http://localhost:3000**
+- Node middleware: **http://localhost:3001**
+- Java API service: **http://localhost:8080**
+- PostgreSQL database: **localhost:5433**
+
+Make sure these ports are free on your machine or adjust the values in the
+corresponding `.env` files before starting the services. Example environment
+files are provided as `frontend/.env.example` and `backend-node/.env.example`.
+
 ## Frontend
 
 The React code was moved under `frontend/`. All original `npm` scripts continue to work from that folder.
@@ -30,11 +43,17 @@ cd frontend
 npm run lint
 ```
 
-The React app reads `REACT_APP_API_BASE_URL` to know where the Node API is running. Create a `.env` file inside `frontend/` and set this variable before starting the dev server or building the project so API calls are proxied correctly.
+The React app reads `REACT_APP_API_BASE_URL` to know where the Node API is running.
+Copy `frontend/.env.example` to `frontend/.env` and adjust the URL if you run the
+Node server on a different port. This variable must be set before starting the
+dev server or building the project so API calls are proxied correctly.
 
 ## Node Backend
 
-`backend-node/` contains a minimal Express server exposing `/login`, `/certificates` and `/leetcode` routes. The `/login` endpoint accepts a **POST** request with a JSON body containing `email` and `password` fields. The route forwards these credentials to the Java backend and returns whatever response it provides. Create a `.env` file inside `backend-node/` and configure the Java backend's base URL via the `JAVA_BASE_URL` variable (defaults to `http://localhost:8080`).
+`backend-node/` contains a minimal Express server exposing `/login`, `/certificates` and `/leetcode` routes. The `/login` endpoint accepts a **POST** request with a JSON body containing `email` and `password` fields. The route forwards these credentials to the Java backend and returns whatever response it provides.
+Copy `backend-node/.env.example` to `backend-node/.env` to configure the Java
+backend URL (`JAVA_BASE_URL`) and the port for this Node server (`PORT`). The
+defaults are `http://localhost:8080` and `3001` respectively.
 
 ```sh
 cd backend-node
