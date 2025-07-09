@@ -8,6 +8,7 @@ import {
   updateLeetcodeProblem,
   deleteLeetcodeProblem,
 } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 
 
@@ -89,6 +90,8 @@ const ProblemModal = ({ problem, onClose, onEdit }) => {
 };
 
 const LeetCodePage = () => {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const [problems, setProblems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -304,13 +307,15 @@ const LeetCodePage = () => {
               />
             </div>
           </div>
-          <button
-            type="button"
-            className="button add-problem-btn"
-            onClick={openAddForm}
-          >
-            Add New Problem
-          </button>
+          {isAdmin && (
+            <button
+              type="button"
+              className="button add-problem-btn"
+              onClick={openAddForm}
+            >
+              Add New Problem
+            </button>
+          )}
         </div>
 
         <div className="results-grid">
@@ -357,20 +362,24 @@ const LeetCodePage = () => {
                           >
                             View
                           </button>
-                          <button
-                            className="button outline"
-                            onClick={() => handleEditProblem(p.id)}
-                            aria-label={`Edit ${p.title}`}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            className="button outline"
-                            onClick={() => handleDeleteClick(p.id)}
-                            aria-label={`Delete ${p.title}`}
-                          >
-                            Delete
-                          </button>
+                          {isAdmin && (
+                            <>
+                              <button
+                                className="button outline"
+                                onClick={() => handleEditProblem(p.id)}
+                                aria-label={`Edit ${p.title}`}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className="button outline"
+                                onClick={() => handleDeleteClick(p.id)}
+                                aria-label={`Delete ${p.title}`}
+                              >
+                                Delete
+                              </button>
+                            </>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -413,7 +422,7 @@ const LeetCodePage = () => {
         </div>
       </div>
 
-      {confirmDelete && (
+      {isAdmin && confirmDelete && (
         <div className="confirm-dialog">
           <div className="confirm-dialog-content">
             <h3>Delete this problem?</h3>
@@ -430,7 +439,7 @@ const LeetCodePage = () => {
         </div>
       )}
 
-        {isFormOpen && (
+        {isAdmin && isFormOpen && (
           <div className="problem-modal" onClick={() => setIsFormOpen(false)}>
             <div
               className="problem-modal-content"
@@ -552,10 +561,10 @@ const LeetCodePage = () => {
           <ProblemModal
             problem={selectedProblem}
             onClose={() => setSelectedProblem(null)}
-            onEdit={(id) => {
+            onEdit={isAdmin ? (id) => {
               setSelectedProblem(null);
               handleEditProblem(id);
-            }}
+            } : undefined}
           />
         )}
       </div>
