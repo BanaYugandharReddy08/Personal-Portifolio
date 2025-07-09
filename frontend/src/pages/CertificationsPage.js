@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './CertificationsPage.css';
+import DashboardCertificates from '../components/dashboard/DashboardCertificates';
+import { CertificatesProvider } from '../context/CertificatesContext';
 
 import defaultCertificates from '../data/certificates';
 import { fetchCertificates } from '../services/api';
@@ -17,6 +19,10 @@ const CertificationsPage = () => {
   const categories = ['All', 'Development', 'Data', 'Cloud', 'Design', 'Academic'];
 
   useEffect(() => {
+    if (user?.role === 'admin') {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     fetchCertificates()
       .then((data) => setCertificates(data))
@@ -26,8 +32,20 @@ const CertificationsPage = () => {
         setCertificates(defaultCertificates);
       })
       .finally(() => setLoading(false));
-  }, []);
-  
+  }, [user]);
+
+  if (user?.role === 'admin') {
+    return (
+      <div className="certifications-page">
+        <div className="container">
+          <CertificatesProvider>
+            <DashboardCertificates />
+          </CertificatesProvider>
+        </div>
+      </div>
+    );
+  }
+
   const filteredCertificates = filter === 'All'
     ? certificates
     : certificates.filter(cert => cert.category === filter);
