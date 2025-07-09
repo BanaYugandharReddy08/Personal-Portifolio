@@ -232,8 +232,7 @@ export async function uploadDocument(type, file) {
 export async function fetchLatestDocument(type) {
   const response = await fetch(`${API_BASE_URL}/documents/${type}`);
   if (!response.ok) {
-    const data = await response.json().catch(() => ({}));
-    throw new Error(data.error || 'Failed to fetch document');
+    return null;
   }
   const blob = await response.blob();
   return URL.createObjectURL(blob);
