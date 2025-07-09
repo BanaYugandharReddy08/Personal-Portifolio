@@ -15,7 +15,10 @@ const ResumeAndCoverPage = () => {
   const [animate,   setAnimate]   = useState(false);
   const { user } = useAuth();
   const { fetchLatest, uploadDoc } = useDocs();
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState({
+    resume: null,
+    coverLetter: null,
+  });
   const [notification, setNotification] = useState(null);
   const [loadError, setLoadError] = useState(false);
   const [urls, setUrls] = useState({
@@ -71,23 +74,24 @@ const ResumeAndCoverPage = () => {
   const { label, fallback } = DOCS[activeTab];
   const fileURL = urls[activeTab] || `${process.env.PUBLIC_URL}/${fallback}`;
 
-  const handleUpload = async (e) => {
+  const handleUpload = (type) => async (e) => {
     e.preventDefault();
-    if (!selectedFile) return;
-    const { success } = await uploadDoc(activeTab, selectedFile);
+    const file = selectedFiles[type];
+    if (!file) return;
+    const { success } = await uploadDoc(type, file);
     if (success) {
-      const url = await fetchLatest(activeTab);
+      const url = await fetchLatest(type);
       if (url) {
-        setUrls((prev) => ({ ...prev, [activeTab]: url }));
-        showNotification(`${DOCS[activeTab].label} uploaded successfully`);
+        setUrls((prev) => ({ ...prev, [type]: url }));
+        showNotification(`${DOCS[type].label} uploaded successfully`);
       } else {
-        showNotification(`Failed to fetch latest ${DOCS[activeTab].label}`, 'error');
-        fetchedRef.current[activeTab] = true;
+        showNotification(`Failed to fetch latest ${DOCS[type].label}`, 'error');
+        fetchedRef.current[type] = true;
       }
     } else {
-      showNotification(`Failed to upload ${DOCS[activeTab].label}`, 'error');
+      showNotification(`Failed to upload ${DOCS[type].label}`, 'error');
     }
-    setSelectedFile(null);
+    setSelectedFiles((prev) => ({ ...prev, [type]: null }));
   };
 
   return (
@@ -145,25 +149,49 @@ const ResumeAndCoverPage = () => {
           ⬇️ Download {label}
         </a>
 
-        {user?.role === 'admin' && (
+        {user?.role === 'admin' && activeTab === 'resume' && (
           <div className="certificate-form-container" style={{ marginTop: '2rem' }}>
             {notification && (
               <div className={`notification ${notification.type}`}>{notification.message}</div>
             )}
-            <form className="certificate-form" onSubmit={handleUpload}>
+            <form className="certificate-form" onSubmit={handleUpload('resume')}>
               <div className="form-group">
-                <label htmlFor="docUpload">Upload {label}</label>
+                <label htmlFor="resumeUpload">Upload CV</label>
                 <input
-                  id="docUpload"
+                  id="resumeUpload"
                   type="file"
                   accept="application/pdf"
-                  onChange={(e) => setSelectedFile(e.target.files[0])}
+                  onChange={(e) =>
+                    setSelectedFiles((prev) => ({ ...prev, resume: e.target.files[0] }))
+                  }
                 />
               </div>
               <div className="form-actions">
-                <button type="submit" className="button">
-                  Upload
-                </button>
+                <button type="submit" className="button">Upload</button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {user?.role === 'admin' && activeTab === 'coverLetter' && (
+          <div className="certificate-form-container" style={{ marginTop: '2rem' }}>
+            {notification && (
+              <div className={`notification ${notification.type}`}>{notification.message}</div>
+            )}
+            <form className="certificate-form" onSubmit={handleUpload('coverLetter')}>
+              <div className="form-group">
+                <label htmlFor="coverUpload">Upload Cover Letter</label>
+                <input
+                  id="coverUpload"
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) =>
+                    setSelectedFiles((prev) => ({ ...prev, coverLetter: e.target.files[0] }))
+                  }
+                />
+              </div>
+              <div className="form-actions">
+                <button type="submit" className="button">Upload</button>
               </div>
             </form>
           </div>
