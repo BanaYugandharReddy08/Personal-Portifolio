@@ -79,7 +79,7 @@ function App() {
       </main>
       {!hideLayout && <Footer />}
       <FloatingChatbot />
-      <ToastContainer position="top-center" newestOnTop />
+      <ToastContainer position="top-right" newestOnTop />
     </div>
   );
 }
