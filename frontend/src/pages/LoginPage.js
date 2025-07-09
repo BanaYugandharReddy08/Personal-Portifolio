@@ -35,10 +35,11 @@ const LoginPage = () => {
         const data = await apiLogin(email, password);
         setAuthenticatedUser(data);
         const username = data.fullName || email.split('@')[0];
+        let message = `Welcome, ${username}!`;
         if (data.lastLogin) {
-          toast.info(`Last login: ${new Date(data.lastLogin).toLocaleString()}`);
+          message += ` Last login: ${new Date(data.lastLogin).toLocaleString()}`;
         }
-        toast.success(`Welcome, ${username}!`);
+        toast.success(message);
         navigate('/');
       } catch (err) {
         toast.error(err.message);
