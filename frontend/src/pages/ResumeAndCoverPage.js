@@ -26,6 +26,31 @@ const ResumeAndCoverPage = () => {
     coverLetter: `${process.env.PUBLIC_URL}/coverletter.pdf`,
   });
   const fetchedRef = useRef({});
+  const urlRef = useRef({
+    resume: null,
+    coverLetter: null,
+  });
+
+  useEffect(() => {
+    const prev = urlRef.current;
+    Object.entries(urls).forEach(([key, url]) => {
+      const oldUrl = prev[key];
+      if (oldUrl && oldUrl !== url && oldUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(oldUrl);
+      }
+    });
+    urlRef.current = urls;
+  }, [urls]);
+
+  useEffect(() => {
+    return () => {
+      Object.values(urlRef.current).forEach((u) => {
+        if (u && u.startsWith('blob:')) {
+          URL.revokeObjectURL(u);
+        }
+      });
+    };
+  }, []);
 
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });

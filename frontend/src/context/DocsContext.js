@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer, useRef, useEffect } from 'react';
 import { fetchDocs, uploadDocument, fetchLatestDocument } from '../services/api';
 
 const DocsContext = createContext();
@@ -26,6 +26,13 @@ function docsReducer(state, action) {
 
 export const DocsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(docsReducer, initialState);
+  const latestUrls = useRef({});
+
+  useEffect(() => {
+    return () => {
+      Object.values(latestUrls.current).forEach((u) => URL.revokeObjectURL(u));
+    };
+  }, []);
 
   const loadDocs = async () => {
     dispatch({ type: 'FETCH_START' });
@@ -51,6 +58,10 @@ export const DocsProvider = ({ children }) => {
   const fetchLatest = async (type) => {
     try {
       const url = await fetchLatestDocument(type);
+      if (latestUrls.current[type]) {
+        URL.revokeObjectURL(latestUrls.current[type]);
+      }
+      latestUrls.current[type] = url;
       return url;
     } catch (err) {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
