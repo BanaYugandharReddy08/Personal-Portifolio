@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDocs } from '../context/DocsContext';
 import { useAuth } from '../context/AuthContext';
 import './ResumeAndCoverPage.css';
@@ -22,6 +22,7 @@ const ResumeAndCoverPage = () => {
     resume: `${process.env.PUBLIC_URL}/resume.pdf`,
     coverLetter: `${process.env.PUBLIC_URL}/coverletter.pdf`,
   });
+  const fetchedRef = useRef({});
 
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
@@ -35,6 +36,9 @@ const ResumeAndCoverPage = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
+    if (fetchedRef.current[activeTab]) return;
+
+    fetchedRef.current[activeTab] = true;
     let cancelled = false;
     setLoadError(false);
     fetchLatest(activeTab)
@@ -52,6 +56,7 @@ const ResumeAndCoverPage = () => {
           setLoadError(true);
         }
       });
+
     return () => {
       cancelled = true;
     };
@@ -77,6 +82,7 @@ const ResumeAndCoverPage = () => {
         showNotification(`${DOCS[activeTab].label} uploaded successfully`);
       } else {
         showNotification(`Failed to fetch latest ${DOCS[activeTab].label}`, 'error');
+        fetchedRef.current[activeTab] = true;
       }
     } else {
       showNotification(`Failed to upload ${DOCS[activeTab].label}`, 'error');
