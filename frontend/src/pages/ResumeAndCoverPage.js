@@ -17,6 +17,7 @@ const ResumeAndCoverPage = () => {
   const { fetchLatest, uploadDoc } = useDocs();
   const [selectedFile, setSelectedFile] = useState(null);
   const [notification, setNotification] = useState(null);
+  const [loadError, setLoadError] = useState(false);
   const [urls, setUrls] = useState({
     resume: `${process.env.PUBLIC_URL}/resume.pdf`,
     coverLetter: `${process.env.PUBLIC_URL}/coverletter.pdf`,
@@ -32,21 +33,29 @@ const ResumeAndCoverPage = () => {
     requestAnimationFrame(() => setAnimate(true));
   }, []);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     let cancelled = false;
+    setLoadError(false);
     fetchLatest(activeTab)
       .then((url) => {
-        if (!cancelled && url) {
+        if (cancelled) return;
+        if (url) {
           setUrls((prev) => ({ ...prev, [activeTab]: url }));
+        } else {
+          setLoadError(true);
         }
       })
       .catch((err) => {
-        console.error(err);
+        if (!cancelled) {
+          console.error(err);
+          setLoadError(true);
+        }
       });
     return () => {
       cancelled = true;
     };
-  }, [activeTab, fetchLatest]);
+  }, [activeTab]);
 
   /* 2️⃣ check once if the browser can embed PDFs */
   useEffect(() => {
@@ -65,8 +74,10 @@ const ResumeAndCoverPage = () => {
       const url = await fetchLatest(activeTab);
       if (url) {
         setUrls((prev) => ({ ...prev, [activeTab]: url }));
+        showNotification(`${DOCS[activeTab].label} uploaded successfully`);
+      } else {
+        showNotification(`Failed to fetch latest ${DOCS[activeTab].label}`, 'error');
       }
-      showNotification(`${DOCS[activeTab].label} uploaded successfully`);
     } else {
       showNotification(`Failed to upload ${DOCS[activeTab].label}`, 'error');
     }
@@ -95,6 +106,12 @@ const ResumeAndCoverPage = () => {
             ))}
           </div>
         </div>
+
+        {loadError && (
+          <div className="error fade-in-up run">
+            Failed to load {label}. Showing default file.
+          </div>
+        )}
 
         {/* ───────── preview / fallback ───────── */}
         {canEmbed ? (
