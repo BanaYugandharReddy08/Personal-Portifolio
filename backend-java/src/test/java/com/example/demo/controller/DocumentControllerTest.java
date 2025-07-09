@@ -94,6 +94,9 @@ class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=" + fileName))
+                .andExpect(header().string(HttpHeaders.CACHE_CONTROL,
+                        "no-store, no-cache, must-revalidate"))
+                .andExpect(header().string(HttpHeaders.PRAGMA, "no-cache"))
                 .andExpect(content().string("content"));
 
         Files.deleteIfExists(filePath);
