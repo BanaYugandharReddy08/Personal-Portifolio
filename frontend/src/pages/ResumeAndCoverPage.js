@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDocs } from '../context/DocsContext';
 import { useAuth } from '../context/AuthContext';
 import './ResumeAndCoverPage.css';
@@ -21,6 +21,7 @@ const ResumeAndCoverPage = () => {
     resume: `${process.env.PUBLIC_URL}/resume.pdf`,
     coverLetter: `${process.env.PUBLIC_URL}/coverletter.pdf`,
   });
+  const fetchedRef = useRef({});
 
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
@@ -33,7 +34,11 @@ const ResumeAndCoverPage = () => {
   }, []);
 
   useEffect(() => {
+    if (fetchedRef.current[activeTab]) return;
+
+    fetchedRef.current[activeTab] = true;
     let cancelled = false;
+
     fetchLatest(activeTab)
       .then((url) => {
         if (!cancelled && url) {
@@ -43,6 +48,7 @@ const ResumeAndCoverPage = () => {
       .catch((err) => {
         console.error(err);
       });
+
     return () => {
       cancelled = true;
     };
@@ -65,6 +71,7 @@ const ResumeAndCoverPage = () => {
       const url = await fetchLatest(activeTab);
       if (url) {
         setUrls((prev) => ({ ...prev, [activeTab]: url }));
+        fetchedRef.current[activeTab] = true;
       }
       showNotification(`${DOCS[activeTab].label} uploaded successfully`);
     } else {
