@@ -12,9 +12,11 @@ describe('LeetCodePage', () => {
 
   afterEach(() => {
     jest.resetAllMocks();
+    localStorage.clear();
   });
 
   test('opens form and adds a new problem', async () => {
+    localStorage.setItem('user', JSON.stringify({ role: 'admin', name: 'Admin' }));
     render(<LeetCodePage />);
     await screen.findByText('Two Sum');
     fireEvent.click(screen.getByRole('button', { name: /add new problem/i }));
@@ -26,6 +28,7 @@ describe('LeetCodePage', () => {
   });
 
   test('editing pre-fills the form', async () => {
+    localStorage.setItem('user', JSON.stringify({ role: 'admin', name: 'Admin' }));
     render(<LeetCodePage />);
     await screen.findByText('Two Sum');
     // open add form and create item
@@ -42,6 +45,7 @@ describe('LeetCodePage', () => {
   });
 
   test('updates total solved count when new problem is added', async () => {
+    localStorage.setItem('user', JSON.stringify({ role: 'admin', name: 'Admin' }));
     render(<LeetCodePage />);
     await screen.findByText('Two Sum');
     expect(screen.getByText(/total solved/i)).toHaveTextContent('3');
@@ -57,6 +61,7 @@ describe('LeetCodePage', () => {
   });
 
   test('pagination controls navigate through pages', async () => {
+    localStorage.setItem('user', JSON.stringify({ role: 'admin', name: 'Admin' }));
     const manyProblems = Array.from({ length: 7 }, (_, i) => ({
       id: String(i + 1),
       lcId: String(i + 1),
@@ -88,10 +93,20 @@ describe('LeetCodePage', () => {
   });
 
   test('deletes a problem after confirmation', async () => {
+    localStorage.setItem('user', JSON.stringify({ role: 'admin', name: 'Admin' }));
     render(<LeetCodePage />);
     await screen.findByText('Two Sum');
     fireEvent.click(screen.getByLabelText(/delete two sum/i));
     fireEvent.click(screen.getByRole('button', { name: /^delete$/i }));
     await waitFor(() => expect(screen.queryByText('Two Sum')).not.toBeInTheDocument());
+  });
+
+  test('hides editing controls for guests', async () => {
+    render(<LeetCodePage />);
+    await screen.findByText('Two Sum');
+    expect(screen.queryByRole('button', { name: /add new problem/i })).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/edit two sum/i)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/delete two sum/i)).not.toBeInTheDocument();
+    expect(screen.getByLabelText(/view two sum/i)).toBeInTheDocument();
   });
 });
