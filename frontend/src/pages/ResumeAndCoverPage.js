@@ -21,6 +21,7 @@ const ResumeAndCoverPage = () => {
   });
   const [notification, setNotification] = useState(null);
   const [loadError, setLoadError] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [urls, setUrls] = useState({
     resume: null,
     coverLetter: null,
@@ -69,6 +70,7 @@ const ResumeAndCoverPage = () => {
     fetchedRef.current[activeTab] = true;
     let cancelled = false;
     setLoadError(false);
+    setLoading(true);
     fetchLatest(activeTab)
       .then((url) => {
         if (cancelled) return;
@@ -91,6 +93,9 @@ const ResumeAndCoverPage = () => {
             'error'
           );
         }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
       });
 
     return () => {
@@ -114,6 +119,7 @@ const ResumeAndCoverPage = () => {
     if (!file) return;
     const { success } = await uploadDoc(type, file);
     if (success) {
+      setLoading(true);
       const url = await fetchLatest(type);
       if (url) {
         setUrls((prev) => ({ ...prev, [type]: url }));
@@ -122,6 +128,7 @@ const ResumeAndCoverPage = () => {
         showNotification(`Failed to fetch latest ${DOCS[type].label}`, 'error');
         fetchedRef.current[type] = true;
       }
+      setLoading(false);
     } else {
       showNotification(`Failed to upload ${DOCS[type].label}`, 'error');
     }
@@ -158,7 +165,9 @@ const ResumeAndCoverPage = () => {
         )}
 
         {/* ───────── preview / fallback ───────── */}
-        {canEmbed && fileURL ? (
+        {loading ? (
+          <div className="loading fade-in-up run">Loading...</div>
+        ) : canEmbed && fileURL ? (
           <div className="pdf-frame fade-in-up run">
             <iframe
               title={label}
