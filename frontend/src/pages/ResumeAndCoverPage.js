@@ -22,8 +22,8 @@ const ResumeAndCoverPage = () => {
   const [notification, setNotification] = useState(null);
   const [loadError, setLoadError] = useState(false);
   const [urls, setUrls] = useState({
-    resume: `${process.env.PUBLIC_URL}/resume.pdf`,
-    coverLetter: `${process.env.PUBLIC_URL}/coverletter.pdf`,
+    resume: null,
+    coverLetter: null,
   });
   const fetchedRef = useRef({});
   const urlRef = useRef({
@@ -76,12 +76,20 @@ const ResumeAndCoverPage = () => {
           setUrls((prev) => ({ ...prev, [activeTab]: url }));
         } else {
           setLoadError(true);
+          showNotification(
+            `Failed to load ${DOCS[activeTab].label}. Use the download button to open the local file.`,
+            'error'
+          );
         }
       })
       .catch((err) => {
         if (!cancelled) {
           console.error(err);
           setLoadError(true);
+          showNotification(
+            `Failed to load ${DOCS[activeTab].label}. Use the download button to open the local file.`,
+            'error'
+          );
         }
       });
 
@@ -97,7 +105,8 @@ const ResumeAndCoverPage = () => {
 
   /* 3️⃣ handy references */
   const { label, fallback } = DOCS[activeTab];
-  const fileURL = urls[activeTab] || `${process.env.PUBLIC_URL}/${fallback}`;
+  const fileURL = urls[activeTab];
+  const downloadURL = urls[activeTab] || `${process.env.PUBLIC_URL}/${fallback}`;
 
   const handleUpload = (type) => async (e) => {
     e.preventDefault();
@@ -144,12 +153,12 @@ const ResumeAndCoverPage = () => {
 
         {loadError && (
           <div className="error fade-in-up run">
-            Failed to load {label}. Showing default file.
+            Failed to load {label}. Use the download button below to open the local file.
           </div>
         )}
 
         {/* ───────── preview / fallback ───────── */}
-        {canEmbed ? (
+        {canEmbed && fileURL ? (
           <div className="pdf-frame fade-in-up run">
             <iframe
               title={label}
@@ -160,14 +169,14 @@ const ResumeAndCoverPage = () => {
           </div>
         ) : (
           <p className="no-preview fade-in-up run">
-            Your browser can’t display PDFs inline.  
+            Your browser can’t display PDFs inline or the file isn’t available.
             Use the button below to download the file.
           </p>
         )}
 
         {/* ───────── download ───────── */}
         <a
-          href={fileURL}
+          href={downloadURL}
           download
           className="button download-btn fade-in-up run"
         >
