@@ -1,4 +1,5 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import {
   fetchLeetcodeProblems,
   createLeetcodeProblem,
@@ -51,6 +52,7 @@ export const ProblemsProvider = ({ children }) => {
       dispatch({ type: 'FETCH_SUCCESS', payload: data });
     } catch (err) {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
+      toast.error('Failed to load problems');
     }
   };
 
@@ -61,6 +63,7 @@ export const ProblemsProvider = ({ children }) => {
       return { success: true };
     } catch (err) {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
+      toast.error('Failed to load problems');
       return { success: false };
     }
   };
@@ -72,6 +75,7 @@ export const ProblemsProvider = ({ children }) => {
       return { success: true };
     } catch (err) {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
+      toast.error('Failed to load problems');
       return { success: false };
     }
   };
@@ -83,6 +87,7 @@ export const ProblemsProvider = ({ children }) => {
       return { success: true };
     } catch (err) {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
+      toast.error('Failed to load problems');
       return { success: false };
     }
   };

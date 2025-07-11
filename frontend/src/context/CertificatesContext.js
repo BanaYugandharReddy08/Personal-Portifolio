@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { createContext, useContext, useReducer, useCallback } from 'react';
 import {
   fetchCertificates,
@@ -51,6 +52,7 @@ export const CertificatesProvider = ({ children }) => {
       dispatch({ type: 'FETCH_SUCCESS', payload: data });
     } catch (err) {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
+      toast.error('Failed to load certificates');
     }
   }, []);
 
@@ -61,6 +63,7 @@ export const CertificatesProvider = ({ children }) => {
       return { success: true };
     } catch (err) {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
+      toast.error('Failed to load certificates');
       return { success: false };
     }
   };
@@ -72,6 +75,7 @@ export const CertificatesProvider = ({ children }) => {
       return { success: true };
     } catch (err) {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
+      toast.error('Failed to load certificates');
       return { success: false };
     }
   };
@@ -83,6 +87,7 @@ export const CertificatesProvider = ({ children }) => {
       return { success: true };
     } catch (err) {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
+      toast.error('Failed to load certificates');
       return { success: false };
     }
   };
