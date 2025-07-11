@@ -1,8 +1,8 @@
-import './CertificationsPage.css';
-import { CertificatesProvider } from '../context/CertificatesContext';
 import Certificates from '../components/Certificates';
+import { CertificatesProvider } from '../context/CertificatesContext';
 
-const CertificationsPage = () => (
+const CertificationsPage = () => {
+  return (
   <div className="certifications-page">
     <div className="container">
       <CertificatesProvider>
@@ -10,6 +10,6 @@ const CertificationsPage = () => (
       </CertificatesProvider>
     </div>
   </div>
-);
-
+  )
+};
 export default CertificationsPage;

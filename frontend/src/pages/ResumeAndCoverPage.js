@@ -97,10 +97,6 @@ const ResumeAndCoverPage = () => {
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
-
-    return () => {
-      cancelled = true;
-    };
   }, [activeTab]);
 
   /* 2️⃣ check once if the browser can embed PDFs */

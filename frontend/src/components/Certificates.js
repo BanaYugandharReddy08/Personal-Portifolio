@@ -18,7 +18,7 @@ const Certificates = () => {
 
   useEffect(() => {
     loadCertificates();
-  }, [loadCertificates]);
+  }, []);
 
   // admin state
   const [newCertificate, setNewCertificate] = useState({
