@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer, useRef, useEffect } from 'react';
 import { fetchDocs, uploadDocument, fetchLatestDocument } from '../services/api';
+import { toast } from 'react-toastify';
 
 const DocsContext = createContext();
 
@@ -41,6 +42,7 @@ export const DocsProvider = ({ children }) => {
       dispatch({ type: 'FETCH_SUCCESS', payload: data });
     } catch (err) {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
+      toast.error('Failed to load documents');
     }
   };
 
@@ -51,6 +53,7 @@ export const DocsProvider = ({ children }) => {
       return { success: true };
     } catch (err) {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
+      toast.error('Failed to load documents');
       return { success: false };
     }
   };
@@ -65,6 +68,7 @@ export const DocsProvider = ({ children }) => {
       return url;
     } catch (err) {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
+      toast.error('Failed to load documents');
       return null;
     }
   };
