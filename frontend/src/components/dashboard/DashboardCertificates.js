@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useCertificates } from '../../context/CertificatesContext';
 import '../../pages/DashboardPage.css';
+import '../../pages/CertificationsPage.css';
 
 const DashboardCertificates = () => {
   const { user } = useAuth();
@@ -32,6 +33,7 @@ const DashboardCertificates = () => {
   const [editingId, setEditingId] = useState(null);
   const [notification, setNotification] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
 
   const categories = ['Development', 'Data', 'Cloud', 'Design','Academic' ,'Other'];
 
@@ -415,7 +417,11 @@ const DashboardCertificates = () => {
           ) : (
             <div className="certificates-grid">
               {certificates.map((certificate) => (
-                <div className="certificate-card" key={certificate.id}>
+                <div
+                  className="certificate-card"
+                  key={certificate.id}
+                  onClick={() => setSelectedCertificate(certificate)}
+                >
                   <div className="certificate-image">
                     {certificate.imageUrl ? (
                       <img src={certificate.imageUrl} alt={certificate.title} />
@@ -443,24 +449,24 @@ const DashboardCertificates = () => {
                   <div className="certificate-actions">
                     <button
                       className="icon-button edit-button"
-                      onClick={() => handleEditCertificate(certificate.id)}
+                      onClick={(e) => { e.stopPropagation(); handleEditCertificate(certificate.id); }}
                       aria-label="Edit certificate"
                     >
                       ✏️
                     </button>
                     <button
                       className="icon-button delete-button"
-                      onClick={() => handleDeleteClick(certificate.id)}
+                      onClick={(e) => { e.stopPropagation(); handleDeleteClick(certificate.id); }}
                       aria-label="Delete certificate"
                     >
                       🗑️
                     </button>
                   </div>
                   <div className="module-card-actions">
-                    <button className="button outline" onClick={() => handleAddModuleClick(certificate.id)}>
+                    <button className="button outline" onClick={(e) => { e.stopPropagation(); handleAddModuleClick(certificate.id); }}>
                       Add Module
                     </button>
-                    <button className="button outline" onClick={() => handleEditModulesClick(certificate.id)}>
+                    <button className="button outline" onClick={(e) => { e.stopPropagation(); handleEditModulesClick(certificate.id); }}>
                       Edit Modules
                     </button>
                   </div>
@@ -469,9 +475,69 @@ const DashboardCertificates = () => {
             </div>
           )}
         </div>
+        )}
+      {selectedCertificate && (
+        <div className="certificate-modal" onClick={() => setSelectedCertificate(null)}>
+          <div className="certificate-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-button" onClick={() => setSelectedCertificate(null)}>×</button>
+
+            <div
+              className="certificate-modal-image"
+              style={selectedCertificate.imageUrl ? { backgroundImage: `url(${selectedCertificate.imageUrl})` } : {}}
+            >
+              {!selectedCertificate.imageUrl && (
+                <div className="certificate-placeholder large">
+                  <span>No Image Available</span>
+                </div>
+              )}
+            </div>
+
+            <div className="certificate-modal-details">
+              <h2>{selectedCertificate.title}</h2>
+              <p className="certificate-issuer">Issued by {selectedCertificate.issuer}</p>
+              <p className="certificate-date">
+                Date: {new Date(selectedCertificate.date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </p>
+
+              <div className="certificate-takeaway-section">
+                <h3>What I Learned</h3>
+                <p>{selectedCertificate.takeaway || 'No summary available.'}</p>
+              </div>
+
+              {selectedCertificate.children && selectedCertificate.children.length > 0 && (
+                <div className="course-certifications">
+                  <h3>Course Certifications</h3>
+                  <p>
+                    Here are the individual courses completed within the {selectedCertificate.title} Professional
+                    Certificate program, along with their respective certificates:
+                  </p>
+                  <div className="course-cert-list">
+                    {selectedCertificate.children.map((child) => (
+                      <div className="course-card" key={child.id}>
+                        <h4>{child.title}</h4>
+                        <p>{child.takeaway}</p>
+                        {child.status === 'In Progress' ? (
+                          <p className="status ongoing">Status: {child.status}</p>
+                        ) : (
+                          <a href={child.certificateLink} target="_blank" rel="noopener noreferrer">
+                            View Certificate
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       )}
-    </div>
-  );
-};
+      </div>
+    );
+}; 
 
 export default DashboardCertificates;
