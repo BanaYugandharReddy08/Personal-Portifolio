@@ -7,6 +7,7 @@ const initialForm = {
   description: '',
   imageUrl: '',
   technologies: '',
+  reportFile: '',
 };
 
 const DashboardProjects = () => {
@@ -18,6 +19,7 @@ const DashboardProjects = () => {
     updateProjectById,
     deleteProjectById,
     loadProjects,
+    uploadReport,
   } = useProjects();
 
   useEffect(() => {
@@ -26,9 +28,11 @@ const DashboardProjects = () => {
 
   const [isAdding, setIsAdding] = useState(false);
   const [formData, setFormData] = useState(initialForm);
+  const [reportFile, setReportFile] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [notification, setNotification] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
 
 
   const showNotification = (message, type = 'success') => {
@@ -58,9 +62,15 @@ const DashboardProjects = () => {
         showNotification('Failed to update project', 'error');
         return;
       }
+      if (reportFile) {
+        await uploadReport(editingId, reportFile);
+      }
     } else {
-      const { success } = await addProject(proj);
+      const { success, project } = await addProject(proj);
       if (success) {
+        if (reportFile) {
+          await uploadReport(project.id, reportFile);
+        }
         showNotification('Project added successfully');
       } else {
         showNotification('Failed to add project', 'error');
@@ -69,6 +79,7 @@ const DashboardProjects = () => {
     }
 
     setFormData(initialForm);
+    setReportFile(null);
     setEditingId(null);
     setIsAdding(false);
   };
@@ -82,7 +93,9 @@ const DashboardProjects = () => {
       description: proj.description || '',
       imageUrl: proj.imageUrl || '',
       technologies: proj.technologies || '',
+      reportFile: proj.reportFile || '',
     });
+    setReportFile(null);
     setIsAdding(true);
   };
 
@@ -180,6 +193,24 @@ const DashboardProjects = () => {
                 value={formData.technologies}
                 onChange={handleChange}
               />
+            </div>
+            <div className="form-group" style={{ gridColumn: 'span 2' }}>
+              <label htmlFor="reportFile">Project Report</label>
+              <input
+                id="reportFile"
+                type="file"
+                accept="application/pdf"
+                onChange={(e) => setReportFile(e.target.files[0])}
+              />
+              {editingId && formData.reportFile && (
+                <a
+                  href={`${baseURL}/projects/${editingId}/report`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Existing Report
+                </a>
+              )}
             </div>
             <div className="form-actions">
               <button type="button" className="button outline" onClick={() => { setIsAdding(false); setEditingId(null); }}>

@@ -22,6 +22,9 @@ const ExperiencePage = () => {
   });
   const [notification, setNotification] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [reportFile, setReportFile] = useState(null);
+  const [reportUrl, setReportUrl] = useState(null);
+  const baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
   const {
     experiences,
     loading: experiencesLoading,
@@ -36,6 +39,8 @@ const ExperiencePage = () => {
     updateProjectById,
     deleteProjectById,
     loadProjects,
+    uploadReport,
+    fetchReport,
   } = useProjects();
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
@@ -57,6 +62,23 @@ const ExperiencePage = () => {
     loadExperiences();
     loadProjects();
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (selectedProject && selectedProject.reportFile) {
+      fetchReport(selectedProject.id).then((url) => {
+        if (!cancelled) setReportUrl(url);
+      });
+    } else {
+      setReportUrl(null);
+    }
+    return () => {
+      cancelled = true;
+      if (reportUrl) {
+        URL.revokeObjectURL(reportUrl);
+      }
+    };
+  }, [selectedProject]);
 
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
@@ -81,14 +103,21 @@ const ExperiencePage = () => {
     if (isEditing && editingId) {
       ({ success } = await updateProjectById(editingId, proj));
       if (success) {
+        if (reportFile) {
+          await uploadReport(editingId, reportFile);
+        }
         showNotification('Project updated successfully');
       } else {
         showNotification('Failed to update project', 'error');
         return;
       }
     } else {
-      ({ success } = await addProject(proj));
+      let result = await addProject(proj);
+      ({ success } = result);
       if (success) {
+        if (reportFile) {
+          await uploadReport(result.project.id, reportFile);
+        }
         showNotification('Project added successfully');
       } else {
         showNotification('Failed to add project', 'error');
@@ -97,6 +126,7 @@ const ExperiencePage = () => {
     }
 
     setFormData({ title: '', description: '', imageUrl: '', technologies: '' });
+    setReportFile(null);
     setEditingId(null);
     setIsEditing(false);
     setIsAdding(false);
@@ -111,7 +141,9 @@ const ExperiencePage = () => {
       description: proj.description || '',
       imageUrl: proj.imageUrl || '',
       technologies: proj.technologies || '',
+      reportFile: proj.reportFile || '',
     });
+    setReportFile(null);
     setIsAdding(false);
     setIsEditing(true);
   };
@@ -281,6 +313,24 @@ const ExperiencePage = () => {
                       onChange={handleChange}
                     />
                   </div>
+                  <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                    <label htmlFor="reportFile">Project Report</label>
+                    <input
+                      id="reportFile"
+                      type="file"
+                      accept="application/pdf"
+                      onChange={(e) => setReportFile(e.target.files[0])}
+                    />
+                    {isEditing && formData.reportFile && (
+                      <a
+                        href={`${baseURL}/projects/${editingId}/report`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Existing Report
+                      </a>
+                    )}
+                  </div>
                   <div className="form-actions">
                     <button
                       type="button"
@@ -402,13 +452,13 @@ const ExperiencePage = () => {
                       </span>
                     ))}
                 </div>
-                {selectedProject.reportFile && (
+                {reportUrl && (
                   <div className="project-report-details">
                     <h3>Report Details</h3>
                     {canEmbed ? (
                       <iframe
                         title={selectedProject.title}
-                        src={`${selectedProject.reportFile}#toolbar=0&view=FitH`}
+                        src={`${reportUrl}#toolbar=0&view=FitH`}
                         loading="lazy"
                         style={{ width: '100%', height: '60vh', border: 'none' }}
                       />
@@ -418,7 +468,7 @@ const ExperiencePage = () => {
                           Your browser can’t display PDFs inline.
                         </p>
                         <a
-                          href={selectedProject.reportFile}
+                          href={reportUrl}
                           download
                           className="button outline download-report-btn"
                         >
