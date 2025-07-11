@@ -1,5 +1,5 @@
-import { createContext, useContext, useReducer, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { createContext, useContext, useReducer, useCallback } from 'react';
 import {
   fetchCertificates,
   createCertificate,
@@ -45,7 +45,7 @@ function certificatesReducer(state, action) {
 export const CertificatesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(certificatesReducer, initialState);
 
-  const loadCertificates = async () => {
+  const loadCertificates = useCallback(async () => {
     dispatch({ type: 'FETCH_START' });
     try {
       const data = await fetchCertificates();
@@ -54,7 +54,7 @@ export const CertificatesProvider = ({ children }) => {
       dispatch({ type: 'FETCH_FAILURE', payload: err.message });
       toast.error('Failed to load certificates');
     }
-  };
+  }, []);
 
   const addCertificate = async (certificate) => {
     try {
