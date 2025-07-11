@@ -14,9 +14,17 @@ const CertificationsPage = () => {
   const [error, setError] = useState(null);
   const [selectedCertificate, setSelectedCertificate] = useState(null);
   const [filter, setFilter] = useState('All');
-  const { user } = useAuth();
+const { user } = useAuth();
 
-  const categories = ['All', 'Development', 'Data', 'Cloud', 'Design', 'Academic'];
+const categories = ['All', 'Development', 'Data', 'Cloud', 'Design', 'Academic'];
+
+  const handleEditCertificate = (id) => {
+    // Admin edit action handled in dashboard view
+  };
+
+  const handleDeleteClick = (id) => {
+    // Admin delete action handled in dashboard view
+  };
 
   useEffect(() => {
     if (user?.role === 'admin') {
@@ -176,7 +184,29 @@ const CertificationsPage = () => {
                       </div>
                     ))}
                     </div>
-                  
+
+                  </div>
+                )}
+                {user?.role === 'admin' && (
+                  <div className="modal-admin-actions">
+                    <button
+                      className="button outline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEditCertificate(selectedCertificate.id);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="button accent"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteClick(selectedCertificate.id);
+                      }}
+                    >
+                      Delete
+                    </button>
                   </div>
                 )}
               </div>
