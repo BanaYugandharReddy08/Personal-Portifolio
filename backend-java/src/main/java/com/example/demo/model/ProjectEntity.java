@@ -16,6 +16,7 @@ public class ProjectEntity {
 
     private String imageUrl;
     private String technologies;
+    private String reportFile;
 
     public Long getId() {
         return id;
@@ -55,5 +56,13 @@ public class ProjectEntity {
 
     public void setTechnologies(String technologies) {
         this.technologies = technologies;
+    }
+
+    public String getReportFile() {
+        return reportFile;
+    }
+
+    public void setReportFile(String reportFile) {
+        this.reportFile = reportFile;
     }
 }

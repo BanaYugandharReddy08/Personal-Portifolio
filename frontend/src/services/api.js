@@ -237,3 +237,27 @@ export async function fetchLatestDocument(type) {
   const blob = await response.blob();
   return URL.createObjectURL(blob);
 }
+
+export async function uploadProjectReport(id, file) {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await fetch(`${API_BASE_URL}/projects/${id}/report`, {
+    method: 'POST',
+    body: formData,
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || 'Failed to upload project report');
+  }
+  return data;
+}
+
+export async function fetchProjectReport(id) {
+  const response = await fetch(`${API_BASE_URL}/projects/${id}/report`);
+  if (!response.ok) {
+    return null;
+  }
+  const blob = await response.blob();
+  return URL.createObjectURL(blob);
+}

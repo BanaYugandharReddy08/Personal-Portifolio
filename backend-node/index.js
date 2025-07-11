@@ -226,6 +226,39 @@ app.put('/projects/:id', async (req, res) => {
   }
 });
 
+app.post('/projects/:id/report', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/projects/${id}/report`, {
+      method: 'POST',
+      headers: { 'content-type': req.headers['content-type'] },
+      body: req,
+    });
+    res.status(response.status);
+    response.headers.forEach((v, k) => res.setHeader(k, v));
+    response.body.pipe(res);
+  } catch (err) {
+    handleError(res, err);
+  }
+});
+
+app.get('/projects/:id/report', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/projects/${id}/report`);
+    res.status(response.status);
+    response.headers.forEach((v, k) => res.setHeader(k, v));
+    if (response.status === 200) {
+      response.body.pipe(res);
+    } else {
+      const data = await parseJsonSafe(response);
+      res.json(data);
+    }
+  } catch (err) {
+    handleError(res, err);
+  }
+});
+
 app.delete('/projects/:id', async (req, res) => {
   const { id } = req.params;
   try {
