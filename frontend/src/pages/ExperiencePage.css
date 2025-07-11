@@ -314,6 +314,11 @@
   margin-top: var(--space-4);
 }
 
+.add-project-btn {
+  align-self: flex-start;
+  margin-bottom: var(--space-6);
+}
+
 .notification {
   position: fixed;
   bottom: var(--space-6);

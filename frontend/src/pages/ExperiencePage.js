@@ -12,6 +12,7 @@ const ExperiencePage = () => {
   const [animate, setAnimate] = useState(false);          // triggers CSS keyframes
   const [canEmbed,  setCanEmbed]  = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
@@ -31,6 +32,7 @@ const ExperiencePage = () => {
     projects,
     loading: projectsLoading,
     error: projectsError,
+    addProject,
     updateProjectById,
     deleteProjectById,
     loadProjects,
@@ -68,23 +70,36 @@ const ExperiencePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!editingId) return;
     const proj = {
       title: formData.title,
       description: formData.description,
       imageUrl: formData.imageUrl,
       technologies: formData.technologies,
     };
-    const { success } = await updateProjectById(editingId, proj);
-    if (success) {
-      showNotification('Project updated successfully');
+
+    let success;
+    if (isEditing && editingId) {
+      ({ success } = await updateProjectById(editingId, proj));
+      if (success) {
+        showNotification('Project updated successfully');
+      } else {
+        showNotification('Failed to update project', 'error');
+        return;
+      }
     } else {
-      showNotification('Failed to update project', 'error');
-      return;
+      ({ success } = await addProject(proj));
+      if (success) {
+        showNotification('Project added successfully');
+      } else {
+        showNotification('Failed to add project', 'error');
+        return;
+      }
     }
+
     setFormData({ title: '', description: '', imageUrl: '', technologies: '' });
     setEditingId(null);
     setIsEditing(false);
+    setIsAdding(false);
   };
 
   const handleEdit = (id) => {
@@ -97,6 +112,7 @@ const ExperiencePage = () => {
       imageUrl: proj.imageUrl || '',
       technologies: proj.technologies || '',
     });
+    setIsAdding(false);
     setIsEditing(true);
   };
 
@@ -202,9 +218,27 @@ const ExperiencePage = () => {
                 </div>
               </div>
             )}
-            {isAdmin && isEditing && (
+            {isAdmin && !isAdding && !isEditing && (
+              <button
+                type="button"
+                className="button add-project-btn"
+                onClick={() => {
+                  setIsAdding(true);
+                  setEditingId(null);
+                  setFormData({
+                    title: '',
+                    description: '',
+                    imageUrl: '',
+                    technologies: '',
+                  });
+                }}
+              >
+                Add New Project
+              </button>
+            )}
+            {isAdmin && (isAdding || isEditing) && (
               <div className="certificate-form-container">
-                <h2>Edit Project</h2>
+                <h2>{isEditing ? 'Edit Project' : 'Add New Project'}</h2>
                 <form className="certificate-form" onSubmit={handleSubmit}>
                   <div className="form-group">
                     <label htmlFor="title">Title*</label>
@@ -248,10 +282,20 @@ const ExperiencePage = () => {
                     />
                   </div>
                   <div className="form-actions">
-                    <button type="button" className="button outline" onClick={() => { setIsEditing(false); setEditingId(null); }}>
+                    <button
+                      type="button"
+                      className="button outline"
+                      onClick={() => {
+                        setIsEditing(false);
+                        setIsAdding(false);
+                        setEditingId(null);
+                      }}
+                    >
                       Cancel
                     </button>
-                    <button type="submit" className="button">Save Changes</button>
+                    <button type="submit" className="button">
+                      {isEditing ? 'Save Changes' : 'Add New Project'}
+                    </button>
                   </div>
                 </form>
               </div>
