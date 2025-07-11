@@ -3,6 +3,7 @@ import LeetCodePage from './LeetCodePage';
 // import { motion } from 'framer-motion';
 import { useExperiences } from '../context/ExperiencesContext';
 import { useProjects } from '../context/ProjectsContext';
+import { useAuth } from '../context/AuthContext';
 import './ExperiencePage.css';
 
 const ExperiencePage = () => {
@@ -10,16 +11,32 @@ const ExperiencePage = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [animate, setAnimate] = useState(false);          // triggers CSS keyframes
   const [canEmbed,  setCanEmbed]  = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    imageUrl: '',
+    technologies: '',
+  });
+  const [notification, setNotification] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(null);
   const {
     experiences,
     loading: experiencesLoading,
     error: experiencesError,
+    loadExperiences,
   } = useExperiences();
   const {
     projects,
     loading: projectsLoading,
     error: projectsError,
+    updateProjectById,
+    deleteProjectById,
+    loadProjects,
   } = useProjects();
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
 
   const formatPeriod = (exp) => {
     const format = (d) => d.toLocaleString('default', { month: 'short', year: 'numeric' });
@@ -35,7 +52,63 @@ const ExperiencePage = () => {
   /* start animations after first paint */
   useEffect(() => {
     requestAnimationFrame(() => setAnimate(true));
+    loadExperiences();
+    loadProjects();
   }, []);
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 3000);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!editingId) return;
+    const proj = {
+      title: formData.title,
+      description: formData.description,
+      imageUrl: formData.imageUrl,
+      technologies: formData.technologies,
+    };
+    const { success } = await updateProjectById(editingId, proj);
+    if (success) {
+      showNotification('Project updated successfully');
+    } else {
+      showNotification('Failed to update project', 'error');
+      return;
+    }
+    setFormData({ title: '', description: '', imageUrl: '', technologies: '' });
+    setEditingId(null);
+    setIsEditing(false);
+  };
+
+  const handleEdit = (id) => {
+    const proj = projects.find((p) => p.id === id);
+    if (!proj) return;
+    setEditingId(id);
+    setFormData({
+      title: proj.title || '',
+      description: proj.description || '',
+      imageUrl: proj.imageUrl || '',
+      technologies: proj.technologies || '',
+    });
+    setIsEditing(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    const { success } = await deleteProjectById(confirmDelete);
+    if (success) {
+      showNotification('Project deleted successfully');
+    } else {
+      showNotification('Failed to delete project', 'error');
+    }
+    setConfirmDelete(null);
+  };
 
   if (experiencesLoading || projectsLoading) {
     return <div className="loading">Loading...</div>;
@@ -113,46 +186,135 @@ const ExperiencePage = () => {
             ))}
           </div>
         ) : activeTab === 'projects' ? (
-          <div id="projects" className="projects-grid">
-            {projects.map((proj, i) => (
-              <div
-                key={proj.id}
-                className={`project-card ${proj.featured ? 'featured' : ''} fade-in-up ${
-                  animate ? 'run' : ''
-                }`}
-                style={{ animationDelay: `${0.1 * i + 0.2}s` }}
-                onClick={() => setSelectedProject(proj)}
-              >
-                <div className="project-image">
-                  <img src={proj.imageUrl} alt={proj.title} />
-                </div>
-                <div className="project-content">
-                  <h2>{proj.title}</h2>
-                  <p>{proj.description.slice(0, 100)}…</p>
-
-                  <div className="technologies">
-                    {proj.technologies
-                      .split(',')
-                      .map((t) => t.trim())
-                      .slice(0, 3)
-                      .map((tech, k) => (
-                        <span key={k} className="tech-tag">
-                          {tech}
-                        </span>
-                      ))}
-                    {proj.technologies.split(',').length > 3 && (
-                      <span className="tech-tag">
-                        +{proj.technologies.split(',').length - 3}
-                      </span>
-                    )}
+          <div id="projects">
+            {isAdmin && notification && (
+              <div className={`notification ${notification.type}`}>{notification.message}</div>
+            )}
+            {isAdmin && confirmDelete && (
+              <div className="confirm-dialog">
+                <div className="confirm-dialog-content">
+                  <h3>Delete this project?</h3>
+                  <p>This action can't be undone.</p>
+                  <div className="confirm-dialog-actions">
+                    <button onClick={() => setConfirmDelete(null)} className="button outline">Cancel</button>
+                    <button onClick={handleConfirmDelete} className="button accent">Delete</button>
                   </div>
-
-                  <button className="button outline view-project-btn">
-                    View Details
-                  </button>
                 </div>
               </div>
-            ))}
+            )}
+            {isAdmin && isEditing && (
+              <div className="certificate-form-container">
+                <h2>Edit Project</h2>
+                <form className="certificate-form" onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <label htmlFor="title">Title*</label>
+                    <input
+                      id="title"
+                      name="title"
+                      type="text"
+                      value={formData.title}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="imageUrl">Image URL</label>
+                    <input
+                      id="imageUrl"
+                      name="imageUrl"
+                      type="text"
+                      value={formData.imageUrl}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                      id="description"
+                      name="description"
+                      rows="3"
+                      value={formData.description}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                    <label htmlFor="technologies">Technologies</label>
+                    <input
+                      id="technologies"
+                      name="technologies"
+                      type="text"
+                      value={formData.technologies}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-actions">
+                    <button type="button" className="button outline" onClick={() => { setIsEditing(false); setEditingId(null); }}>
+                      Cancel
+                    </button>
+                    <button type="submit" className="button">Save Changes</button>
+                  </div>
+                </form>
+              </div>
+            )}
+            <div className="projects-grid">
+              {projects.map((proj, i) => (
+                <div
+                  key={proj.id}
+                  className={`project-card ${proj.featured ? 'featured' : ''} fade-in-up ${
+                    animate ? 'run' : ''
+                  }`}
+                  style={{ animationDelay: `${0.1 * i + 0.2}s` }}
+                  onClick={() => setSelectedProject(proj)}
+                >
+                  <div className="project-image">
+                    <img src={proj.imageUrl} alt={proj.title} />
+                  </div>
+                  <div className="project-content">
+                    <h2>{proj.title}</h2>
+                    <p>{proj.description.slice(0, 100)}…</p>
+
+                    <div className="technologies">
+                      {proj.technologies
+                        .split(',')
+                        .map((t) => t.trim())
+                        .slice(0, 3)
+                        .map((tech, k) => (
+                          <span key={k} className="tech-tag">
+                            {tech}
+                          </span>
+                        ))}
+                      {proj.technologies.split(',').length > 3 && (
+                        <span className="tech-tag">
+                          +{proj.technologies.split(',').length - 3}
+                        </span>
+                      )}
+                    </div>
+
+                    <button className="button outline view-project-btn">
+                      View Details
+                    </button>
+                  </div>
+                  {isAdmin && (
+                    <div className="project-actions">
+                      <button
+                        className="icon-button edit-button"
+                        onClick={(e) => { e.stopPropagation(); handleEdit(proj.id); }}
+                        aria-label="Edit project"
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        className="icon-button delete-button"
+                        onClick={(e) => { e.stopPropagation(); setConfirmDelete(proj.id); }}
+                        aria-label="Delete project"
+                      >
+                        🗑️
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         ) : (
           <LeetCodePage />
