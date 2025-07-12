@@ -49,7 +49,9 @@ public class ProjectController {
         existing.setDescription(project.getDescription());
         existing.setImageUrl(project.getImageUrl());
         existing.setTechnologies(project.getTechnologies());
-        existing.setReportFile(project.getReportFile());
+        if (project.getReportFile() != null && !project.getReportFile().isBlank()) {
+            existing.setReportFile(project.getReportFile());
+        }
         ProjectEntity saved = projectRepository.save(existing);
         return ResponseEntity.ok(saved);
     }
