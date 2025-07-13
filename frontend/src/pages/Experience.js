@@ -4,9 +4,9 @@ import LeetCodePage from './LeetCodePage';
 import { useExperiences } from '../context/ExperiencesContext';
 import { useProjects } from '../context/ProjectsContext';
 import { useAuth } from '../context/AuthContext';
-import './ExperiencePage.css';
+import './Experience.css';
 
-const ExperiencePage = () => {
+const Experience = () => {
   const [activeTab, setActiveTab] = useState('experience');
   const [selectedProject, setSelectedProject] = useState(null);
   const [animate, setAnimate] = useState(false);          // triggers CSS keyframes
@@ -24,12 +24,30 @@ const ExperiencePage = () => {
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [reportFile, setReportFile] = useState(null);
   const [reportUrl, setReportUrl] = useState(null);
+  const expInitialForm = {
+    position: '',
+    company: '',
+    startMonth: '',
+    startYear: '',
+    endMonth: '',
+    endYear: '',
+    currentlyWorking: false,
+    skills: '',
+    description: '',
+  };
+  const [isExpAdding, setIsExpAdding] = useState(false);
+  const [expFormData, setExpFormData] = useState(expInitialForm);
+  const [expEditingId, setExpEditingId] = useState(null);
+  const [expConfirmDelete, setExpConfirmDelete] = useState(null);
   const baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
   const {
     experiences,
     loading: experiencesLoading,
     error: experiencesError,
     loadExperiences,
+    addExperience,
+    updateExperienceById,
+    deleteExperienceById,
   } = useExperiences();
   const {
     projects,
@@ -158,6 +176,91 @@ const ExperiencePage = () => {
     setConfirmDelete(null);
   };
 
+  const handleExpChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setExpFormData({
+      ...expFormData,
+      [name]: type === 'checkbox' ? checked : value,
+    });
+  };
+
+  const handleExpSubmit = async (e) => {
+    e.preventDefault();
+    const formatDate = (year, month) => {
+      if (!year || !month) return null;
+      return `${year}-${String(month).padStart(2, '0')}-01`;
+    };
+
+    const exp = {
+      position: expFormData.position,
+      company: expFormData.company,
+      startDate: formatDate(expFormData.startYear, expFormData.startMonth),
+      endDate: expFormData.currentlyWorking
+        ? null
+        : formatDate(expFormData.endYear, expFormData.endMonth),
+      currentlyWorking: expFormData.currentlyWorking,
+      skills: expFormData.skills,
+      description: expFormData.description,
+    };
+
+    if (expEditingId) {
+      const { success } = await updateExperienceById(expEditingId, exp);
+      if (success) {
+        showNotification('Experience updated successfully');
+      } else {
+        showNotification('Failed to update experience', 'error');
+        return;
+      }
+    } else {
+      const { success } = await addExperience(exp);
+      if (success) {
+        showNotification('Experience added successfully');
+      } else {
+        showNotification('Failed to add experience', 'error');
+        return;
+      }
+    }
+
+    setExpFormData(expInitialForm);
+    setExpEditingId(null);
+    setIsExpAdding(false);
+  };
+
+  const handleExpEdit = (id) => {
+    const exp = experiences.find((e) => e.id === id);
+    if (!exp) return;
+    setExpEditingId(id);
+    const parseDate = (dateStr) => {
+      if (!dateStr) return { year: '', month: '' };
+      const d = new Date(dateStr);
+      return { year: String(d.getFullYear()), month: String(d.getMonth() + 1) };
+    };
+    const start = parseDate(exp.startDate);
+    const end = parseDate(exp.endDate);
+    setExpFormData({
+      position: exp.position || '',
+      company: exp.company || '',
+      startMonth: start.month,
+      startYear: start.year,
+      endMonth: end.month,
+      endYear: end.year,
+      currentlyWorking: exp.currentlyWorking || false,
+      skills: exp.skills || '',
+      description: exp.description || '',
+    });
+    setIsExpAdding(true);
+  };
+
+  const handleExpConfirmDelete = async () => {
+    const { success } = await deleteExperienceById(expConfirmDelete);
+    if (success) {
+      showNotification('Experience deleted successfully');
+    } else {
+      showNotification('Failed to delete experience', 'error');
+    }
+    setExpConfirmDelete(null);
+  };
+
   if (experiencesLoading || projectsLoading) {
     return <div className="loading">Loading...</div>;
   }
@@ -201,6 +304,153 @@ const ExperiencePage = () => {
         {/* ───────── timeline or grid ───────── */}
         {activeTab === 'experience' ? (
           <div className="experience-timeline">
+            {isAdmin && notification && (
+              <div className={`notification ${notification.type}`}>{notification.message}</div>
+            )}
+            {isAdmin && expConfirmDelete && (
+              <div className="confirm-dialog">
+                <div className="confirm-dialog-content">
+                  <h3>Delete this experience?</h3>
+                  <p>This action can't be undone.</p>
+                  <div className="confirm-dialog-actions">
+                    <button onClick={() => setExpConfirmDelete(null)} className="button outline">Cancel</button>
+                    <button onClick={handleExpConfirmDelete} className="button accent">Delete</button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {isAdmin && !isExpAdding && (
+              <button
+                type="button"
+                className="button add-project-btn"
+                onClick={() => {
+                  setIsExpAdding(true);
+                  setExpEditingId(null);
+                  setExpFormData(expInitialForm);
+                }}
+              >
+                Add New Experience
+              </button>
+            )}
+            {isAdmin && isExpAdding && (
+              <div className="certificate-form-container">
+                <h2>{expEditingId ? 'Edit Experience' : 'Add New Experience'}</h2>
+                <form className="certificate-form" onSubmit={handleExpSubmit}>
+                  <div className="form-group">
+                    <label htmlFor="position">Position*</label>
+                    <input
+                      id="position"
+                      name="position"
+                      type="text"
+                      value={expFormData.position}
+                      onChange={handleExpChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="company">Company*</label>
+                    <input
+                      id="company"
+                      name="company"
+                      type="text"
+                      value={expFormData.company}
+                      onChange={handleExpChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="startMonth">Start Month</label>
+                    <select
+                      id="startMonth"
+                      name="startMonth"
+                      value={expFormData.startMonth}
+                      onChange={handleExpChange}
+                    >
+                      <option value="">Month</option>
+                      {[...Array(12).keys()].map((m) => (
+                        <option key={m + 1} value={m + 1}>{m + 1}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="startYear">Start Year</label>
+                    <input
+                      id="startYear"
+                      name="startYear"
+                      type="number"
+                      value={expFormData.startYear}
+                      onChange={handleExpChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="currentlyWorking">
+                      <input
+                        id="currentlyWorking"
+                        name="currentlyWorking"
+                        type="checkbox"
+                        checked={expFormData.currentlyWorking}
+                        onChange={handleExpChange}
+                      />{' '}
+                      Currently Working
+                    </label>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="endMonth">End Month</label>
+                    <select
+                      id="endMonth"
+                      name="endMonth"
+                      value={expFormData.endMonth}
+                      onChange={handleExpChange}
+                      disabled={expFormData.currentlyWorking}
+                    >
+                      <option value="">Month</option>
+                      {[...Array(12).keys()].map((m) => (
+                        <option key={m + 1} value={m + 1}>{m + 1}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="endYear">End Year</label>
+                    <input
+                      id="endYear"
+                      name="endYear"
+                      type="number"
+                      value={expFormData.endYear}
+                      onChange={handleExpChange}
+                      disabled={expFormData.currentlyWorking}
+                    />
+                  </div>
+                  <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                    <label htmlFor="skills">Skills (comma separated)</label>
+                    <input
+                      id="skills"
+                      name="skills"
+                      type="text"
+                      value={expFormData.skills}
+                      onChange={handleExpChange}
+                    />
+                  </div>
+                  <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                      id="description"
+                      name="description"
+                      rows="3"
+                      value={expFormData.description}
+                      onChange={handleExpChange}
+                    />
+                  </div>
+                  <div className="form-actions">
+                    <button type="button" className="button outline" onClick={() => { setIsExpAdding(false); setExpEditingId(null); }}>
+                      Cancel
+                    </button>
+                    <button type="submit" className="button">
+                      {expEditingId ? 'Save Changes' : 'Add New Experience'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
             {experiences.map((exp, i) => (
               <div
                 key={exp.id}
@@ -216,11 +466,17 @@ const ExperiencePage = () => {
                     <h3>{exp.company}</h3>
                   </div>
 
-                  <ul className="experience-description">
-                    {exp.description.map((item, k) => (
-                      <li key={k}>{item}</li>
-                    ))}
-                  </ul>
+                  {Array.isArray(exp.description) ? (
+                    <ul className="experience-description">
+                      {exp.description.map((item, k) => (
+                        <li key={k}>{item}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    exp.description && (
+                      <p className="certificate-takeaway">{exp.description}</p>
+                    )
+                  )}
 
                   <div className="technologies">
                     {exp.skills.split(',').map((tech, k) => (
@@ -229,6 +485,24 @@ const ExperiencePage = () => {
                       </span>
                     ))}
                   </div>
+                  {isAdmin && (
+                    <div className="project-actions">
+                      <button
+                        className="icon-button edit-button"
+                        onClick={() => handleExpEdit(exp.id)}
+                        aria-label="Edit experience"
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        className="icon-button delete-button"
+                        onClick={() => setExpConfirmDelete(exp.id)}
+                        aria-label="Delete experience"
+                      >
+                        🗑️
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -487,4 +761,4 @@ const ExperiencePage = () => {
   );
 };
 
-export default ExperiencePage;
+export default Experience;

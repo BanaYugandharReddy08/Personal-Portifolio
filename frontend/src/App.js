@@ -9,7 +9,7 @@ import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import EducationPage from './pages/EducationPage';
 import CertificationsPage from './pages/CertificationsPage';
-import ExperiencePage from './pages/ExperiencePage';
+import Experience from './pages/Experience';
 import ContactPage from './pages/ContactPage';
 import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
@@ -47,7 +47,7 @@ function App() {
             element={(
               <ExperiencesProvider>
                 <ProjectsProvider>
-                  <ExperiencePage />
+                  <Experience />
                 </ProjectsProvider>
               </ExperiencesProvider>
             )}
