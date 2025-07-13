@@ -252,6 +252,9 @@
 .project-card:hover .project-actions {
   opacity: 1;
 }
+.experience-card:hover .project-actions {
+  opacity: 1;
+}
 
 .icon-button {
   width: 36px;
