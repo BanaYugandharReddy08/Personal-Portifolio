@@ -483,13 +483,18 @@ const Experience = () => {
                     )
                   )}
 
-                  <div className="technologies">
-                    {exp.skills.split(',').map((tech, k) => (
-                      <span key={k} className="tech-tag">
-                        {tech.trim()}
-                      </span>
-                    ))}
-                  </div>
+                  {exp.skills && (
+                    <div className="technologies">
+                      {exp.skills
+                        .split(',')
+                        .map((tech) => tech.trim())
+                        .map((tech, k) => (
+                          <span key={k} className="tech-tag">
+                            {tech}
+                          </span>
+                        ))}
+                    </div>
+                  )}
                     {isAdmin && (
                       <div className="project-actions">
                         <button
@@ -508,8 +513,6 @@ const Experience = () => {
                         </button>
                       </div>
                     )}
-                  </div>
-                </div>
               ))
             )}
           </div>
@@ -650,7 +653,7 @@ const Experience = () => {
                     </div>
                     <div className="project-content">
                       <h2>{proj.title}</h2>
-                      <p>{proj.description.slice(0, 100)}…</p>
+                      <p>{proj.description ? proj.description.slice(0, 100) : ''}…</p>
 
                     <div className="technologies">
                       {proj.technologies
@@ -692,7 +695,6 @@ const Experience = () => {
                         </div>
                       )}
                     </div>
-                  </div>
                 ))
               )}
             </div>
