@@ -451,20 +451,25 @@ const Experience = () => {
                 </form>
               </div>
             )}
-            {experiences.map((exp, i) => (
-              <div
-                key={exp.id}
-                className={`experience-card ${exp.featured ? 'featured' : ''} fade-in-up ${
-                  animate ? 'run' : ''
-                }`}
-                style={{ animationDelay: `${0.1 * i + 0.2}s` }}
-              >
-                <div className="experience-period">{formatPeriod(exp)}</div>
-                <div className="experience-content">
-                  <div className="experience-header">
-                    <h2>{exp.position}</h2>
-                    <h3>{exp.company}</h3>
-                  </div>
+            {experiences.length === 0 ? (
+              <div className="empty-state">
+                <h3>No experiences added yet.</h3>
+              </div>
+            ) : (
+              experiences.map((exp, i) => (
+                <div
+                  key={exp.id}
+                  className={`experience-card ${exp.featured ? 'featured' : ''} fade-in-up ${
+                    animate ? 'run' : ''
+                  }`}
+                  style={{ animationDelay: `${0.1 * i + 0.2}s` }}
+                >
+                  <div className="experience-period">{formatPeriod(exp)}</div>
+                  <div className="experience-content">
+                    <div className="experience-header">
+                      <h2>{exp.position}</h2>
+                      <h3>{exp.company}</h3>
+                    </div>
 
                   {Array.isArray(exp.description) ? (
                     <ul className="experience-description">
@@ -485,27 +490,28 @@ const Experience = () => {
                       </span>
                     ))}
                   </div>
-                  {isAdmin && (
-                    <div className="project-actions">
-                      <button
-                        className="icon-button edit-button"
-                        onClick={() => handleExpEdit(exp.id)}
-                        aria-label="Edit experience"
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        className="icon-button delete-button"
-                        onClick={() => setExpConfirmDelete(exp.id)}
-                        aria-label="Delete experience"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                  )}
+                    {isAdmin && (
+                      <div className="project-actions">
+                        <button
+                          className="icon-button edit-button"
+                          onClick={() => handleExpEdit(exp.id)}
+                          aria-label="Edit experience"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          className="icon-button delete-button"
+                          onClick={() => setExpConfirmDelete(exp.id)}
+                          aria-label="Delete experience"
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         ) : activeTab === 'projects' ? (
           <div id="projects">
@@ -625,21 +631,26 @@ const Experience = () => {
               </div>
             )}
             <div className="projects-grid">
-              {projects.map((proj, i) => (
-                <div
-                  key={proj.id}
-                  className={`project-card ${proj.featured ? 'featured' : ''} fade-in-up ${
-                    animate ? 'run' : ''
-                  }`}
-                  style={{ animationDelay: `${0.1 * i + 0.2}s` }}
-                  onClick={() => setSelectedProject(proj)}
-                >
-                  <div className="project-image">
-                    <img src={proj.imageUrl} alt={proj.title} />
-                  </div>
-                  <div className="project-content">
-                    <h2>{proj.title}</h2>
-                    <p>{proj.description.slice(0, 100)}…</p>
+              {projects.length === 0 ? (
+                <div className="empty-state" style={{ gridColumn: '1/-1' }}>
+                  <h3>No projects added yet.</h3>
+                </div>
+              ) : (
+                projects.map((proj, i) => (
+                  <div
+                    key={proj.id}
+                    className={`project-card ${proj.featured ? 'featured' : ''} fade-in-up ${
+                      animate ? 'run' : ''
+                    }`}
+                    style={{ animationDelay: `${0.1 * i + 0.2}s` }}
+                    onClick={() => setSelectedProject(proj)}
+                  >
+                    <div className="project-image">
+                      <img src={proj.imageUrl} alt={proj.title} />
+                    </div>
+                    <div className="project-content">
+                      <h2>{proj.title}</h2>
+                      <p>{proj.description.slice(0, 100)}…</p>
 
                     <div className="technologies">
                       {proj.technologies
@@ -662,26 +673,28 @@ const Experience = () => {
                       View Details
                     </button>
                   </div>
-                  {isAdmin && (
-                    <div className="project-actions">
-                      <button
-                        className="icon-button edit-button"
-                        onClick={(e) => { e.stopPropagation(); handleEdit(proj.id); }}
-                        aria-label="Edit project"
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        className="icon-button delete-button"
-                        onClick={(e) => { e.stopPropagation(); setConfirmDelete(proj.id); }}
-                        aria-label="Delete project"
-                      >
-                        🗑️
-                      </button>
+                      {isAdmin && (
+                        <div className="project-actions">
+                          <button
+                            className="icon-button edit-button"
+                            onClick={(e) => { e.stopPropagation(); handleEdit(proj.id); }}
+                            aria-label="Edit project"
+                          >
+                            ✏️
+                          </button>
+                          <button
+                            className="icon-button delete-button"
+                            onClick={(e) => { e.stopPropagation(); setConfirmDelete(proj.id); }}
+                            aria-label="Delete project"
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              ))}
+                  </div>
+                ))
+              )}
             </div>
           </div>
         ) : (
