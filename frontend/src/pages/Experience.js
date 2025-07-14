@@ -435,9 +435,6 @@ const Experience = () => {
                       />
                     </div>
                   <div className="form-group checkbox-group">
-                      <label htmlFor="currentlyWorking">
-                        Currently Working
-                      </label>
                       <input
                           id="currentlyWorking"
                           name="currentlyWorking"
@@ -445,6 +442,9 @@ const Experience = () => {
                           checked={expFormData.currentlyWorking}
                           onChange={handleExpChange}
                         />
+                      <label htmlFor="currentlyWorking">
+                        Currently Working
+                      </label>
                     </div>
                   <div className="form-group" style={{ gridColumn: 'span 2' }}>
                     <label htmlFor="skills">Skills (comma separated)</label>
