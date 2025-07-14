@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCertificates } from '../context/CertificatesContext';
 import '../pages/DashboardPage.css';
 import '../pages/CertificationsPage.css';
+import Card from './shared/Card';
 
 const Certificates = () => {
   const { user } = useAuth();
@@ -443,66 +444,64 @@ const Certificates = () => {
             ) : (
               <div className="certificates-grid">
                 {certificates.map((certificate) => (
-                  <div
-                    className="certificate-card"
+                  <Card
                     key={certificate.id}
+                    className="certificate-card"
+                    imageUrl={certificate.imageUrl}
+                    title={certificate.title}
+                    subtitle={certificate.issuer}
+                    date={certificate.date}
+                    description={certificate.takeaway}
                     onClick={() => setSelectedCertificate(certificate)}
+                    actions={
+                      <>
+                        <button
+                          className="icon-button edit-button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditCertificate(certificate.id);
+                          }}
+                          aria-label="Edit certificate"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          className="icon-button delete-button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteClick(certificate.id);
+                          }}
+                          aria-label="Delete certificate"
+                        >
+                          🗑️
+                        </button>
+                      </>
+                    }
                   >
-                    <div className="certificate-image">
-                      {certificate.imageUrl ? (
-                        <img src={certificate.imageUrl} alt={certificate.title} />
-                      ) : (
-                        <div className="certificate-placeholder">
-                          <span>No Image</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="certificate-details">
-                      <h3>{certificate.title}</h3>
-                      <p className="certificate-issuer">{certificate.issuer}</p>
-                      <p className="certificate-date">
-                        {new Date(certificate.date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
-                      </p>
-                      <span className="certificate-category">{certificate.category}</span>
-                      {certificate.takeaway && (
-                        <p className="certificate-takeaway">{certificate.takeaway}</p>
-                      )}
-                    </div>
-                    <div className="certificate-actions">
-                      <button
-                        className="icon-button edit-button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditCertificate(certificate.id);
-                        }}
-                        aria-label="Edit certificate"
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        className="icon-button delete-button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteClick(certificate.id);
-                        }}
-                        aria-label="Delete certificate"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                    <div className="module-card-actions">
-                      <button className="button outline" onClick={(e) => { e.stopPropagation(); handleAddModuleClick(certificate.id); }}>
-                        Add Module
-                      </button>
-                      <button className="button outline" onClick={(e) => { e.stopPropagation(); handleEditModulesClick(certificate.id); }}>
-                        Edit Modules
-                      </button>
-                    </div>
-                  </div>
+                    <span className="certificate-category">{certificate.category}</span>
+                    {isAdmin && (
+                      <div className="module-card-actions">
+                        <button
+                          className="button outline"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddModuleClick(certificate.id);
+                          }}
+                        >
+                          Add Module
+                        </button>
+                        <button
+                          className="button outline"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditModulesClick(certificate.id);
+                          }}
+                        >
+                          Edit Modules
+                        </button>
+                      </div>
+                    )}
+                  </Card>
                 ))}
               </div>
             )}

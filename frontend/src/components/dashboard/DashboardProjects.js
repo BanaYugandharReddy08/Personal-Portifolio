@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useProjects } from '../../context/ProjectsContext';
 import '../../pages/DashboardPage.css';
+import Card from '../shared/Card';
 
 const initialForm = {
   title: '',
@@ -231,47 +232,32 @@ const DashboardProjects = () => {
           ) : (
             <div className="certificates-grid">
               {projects.map((proj) => (
-                <div className="certificate-card" key={proj.id}>
-                  {proj.imageUrl && (
-                    <div className="certificate-image">
-                      <img src={proj.imageUrl} alt={proj.title} />
-                    </div>
-                  )}
-                  <div className="certificate-details">
-                    <h3>{proj.title}</h3>
-                    {proj.description && (
-                      <p className="certificate-takeaway">{proj.description}</p>
-                    )}
-                    {proj.technologies && (
-                      <div className="technologies">
-                        {proj.technologies
-                          .split(',')
-                          .map((t) => t.trim())
-                          .map((tech, k) => (
-                            <span key={k} className="tech-tag">
-                              {tech}
-                            </span>
-                          ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="certificate-actions">
-                    <button
-                      className="icon-button edit-button"
-                      onClick={() => handleEdit(proj.id)}
-                      aria-label="Edit project"
-                    >
-                      ✏️
-                    </button>
-                    <button
-                      className="icon-button delete-button"
-                      onClick={() => setConfirmDelete(proj.id)}
-                      aria-label="Delete project"
-                    >
-                      🗑️
-                    </button>
-                  </div>
-                </div>
+                <Card
+                  key={proj.id}
+                  className="certificate-card"
+                  imageUrl={proj.imageUrl}
+                  title={proj.title}
+                  description={proj.description}
+                  tags={proj.technologies}
+                  actions={
+                    <>
+                      <button
+                        className="icon-button edit-button"
+                        onClick={() => handleEdit(proj.id)}
+                        aria-label="Edit project"
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        className="icon-button delete-button"
+                        onClick={() => setConfirmDelete(proj.id)}
+                        aria-label="Delete project"
+                      >
+                        🗑️
+                      </button>
+                    </>
+                  }
+                />
               ))}
             </div>
           )}

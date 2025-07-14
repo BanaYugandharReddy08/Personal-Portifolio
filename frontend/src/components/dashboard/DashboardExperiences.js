@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useExperiences } from '../../context/ExperiencesContext';
 import '../../pages/DashboardPage.css';
+import Card from '../shared/Card';
 
 const initialForm = {
   position: '',
@@ -302,39 +303,33 @@ const DashboardExperiences = () => {
           ) : (
             <div className="certificates-grid">
               {experiences.map((exp) => (
-                <div className="certificate-card" key={exp.id}>
-                  <div className="certificate-details">
-                    <h3>{exp.position}</h3>
-                    <p className="certificate-issuer">{exp.company}</p>
-                    <p className="certificate-date">{formatPeriod(exp)}</p>
-                    {exp.description && (
-                      <p className="certificate-takeaway">{exp.description}</p>
-                    )}
-                    {exp.skills && (
-                      <div className="technologies">
-                        {exp.skills.split(',').map((s, i) => (
-                          <span key={i} className="tech-tag">{s.trim()}</span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="certificate-actions">
-                    <button
-                      className="icon-button edit-button"
-                      onClick={() => handleEdit(exp.id)}
-                      aria-label="Edit experience"
-                    >
-                      ✏️
-                    </button>
-                    <button
-                      className="icon-button delete-button"
-                      onClick={() => setConfirmDelete(exp.id)}
-                      aria-label="Delete experience"
-                    >
-                      🗑️
-                    </button>
-                  </div>
-                </div>
+                <Card
+                  key={exp.id}
+                  className="certificate-card"
+                  title={exp.position}
+                  subtitle={exp.company}
+                  date={formatPeriod(exp)}
+                  description={exp.description}
+                  tags={exp.skills}
+                  actions={
+                    <>
+                      <button
+                        className="icon-button edit-button"
+                        onClick={() => handleEdit(exp.id)}
+                        aria-label="Edit experience"
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        className="icon-button delete-button"
+                        onClick={() => setConfirmDelete(exp.id)}
+                        aria-label="Delete experience"
+                      >
+                        🗑️
+                      </button>
+                    </>
+                  }
+                />
               ))}
             </div>
           )}
