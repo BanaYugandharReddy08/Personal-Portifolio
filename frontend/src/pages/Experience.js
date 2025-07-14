@@ -378,9 +378,24 @@ const Experience = () => {
       </div>
             )}
             {isAdmin && isExpAdding && (
-              <div className="certificate-form-container">
-                <h2>{expEditingId ? 'Edit Experience' : 'Add New Experience'}</h2>
-                <form className="certificate-form" onSubmit={handleExpSubmit}>
+              <div
+                className="experience-modal"
+                onClick={() => { setIsExpAdding(false); setExpEditingId(null); }}
+              >
+                <div
+                  className="experience-modal-content"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    type="button"
+                    className="close-button"
+                    onClick={() => { setIsExpAdding(false); setExpEditingId(null); }}
+                  >
+                    ×
+                  </button>
+                  <div className="certificate-form-container">
+                    <h2>{expEditingId ? 'Edit Experience' : 'Add New Experience'}</h2>
+                    <form className="certificate-form" onSubmit={handleExpSubmit}>
                   <div className="form-group">
                     <label htmlFor="position">Position*</label>
                     <input
@@ -494,6 +509,8 @@ const Experience = () => {
                     </button>
                   </div>
                 </form>
+                  </div>
+                </div>
               </div>
             )}
             {experiences.length === 0 ? (
