@@ -309,6 +309,12 @@
   font-weight: 500;
 }
 
+/* Align checkbox labels and inputs horizontally */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+}
+
 .end-date-row {
   grid-column: span 2;
   display: grid;
