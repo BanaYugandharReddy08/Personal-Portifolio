@@ -92,7 +92,7 @@ export const ProblemsProvider = ({ children }) => {
     }
   };
 
-  // Data is loaded on demand from the dashboard pages
+  // Data is loaded on demand
 
   return (
     <ProblemsContext.Provider
