@@ -83,12 +83,12 @@ const Experience = () => {
   }, []);
 
   useEffect(() => {
-    if (activeTab === 'experience' && !experiencesLoaded) {
+    if (activeTab === 'experience' && !experiencesLoaded && experiences.length === 0) {
       loadExperiences();
-    } else if (activeTab === 'projects' && !projectsLoaded) {
+    } else if (activeTab === 'projects' && !projectsLoaded && projects.length === 0) {
       loadProjects();
     }
-  }, [activeTab, experiencesLoaded, projectsLoaded, loadExperiences, loadProjects]);
+  }, [activeTab, experiencesLoaded, projectsLoaded]);
 
   useEffect(() => {
     setCanEmbed(Boolean(navigator.mimeTypes?.['application/pdf']));
