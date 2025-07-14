@@ -16,6 +16,7 @@ public class ExperienceEntity {
     @Column(nullable = false)
     private String company;
 
+    @Column(columnDefinition = "text")
     private String description;
 
     private LocalDate startDate;

@@ -77,6 +77,16 @@ const Experience = () => {
     return start && end ? `${start} - ${end}` : start || end;
   };
 
+  const parseDescription = (desc) => {
+    if (Array.isArray(desc)) return desc;
+    if (typeof desc !== 'string') return desc;
+    const lines = desc.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+    if (lines.length > 1 && lines.every((l) => /^\d+[\.)]/.test(l))) {
+      return lines.map((l) => l.replace(/^\d+[\.)]\s*/, ''));
+    }
+    return desc;
+  };
+
   /* start animations after first paint */
   useEffect(() => {
     requestAnimationFrame(() => setAnimate(true));
@@ -487,17 +497,21 @@ const Experience = () => {
                       <h3>{exp.company}</h3>
                     </div>
 
-                  {Array.isArray(exp.description) ? (
-                    <ul className="experience-description">
-                      {exp.description.map((item, k) => (
-                        <li key={k}>{item}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    exp.description && (
-                      <p className="certificate-takeaway">{exp.description}</p>
-                    )
-                  )}
+                  {(() => {
+                    const desc = parseDescription(exp.description);
+                    if (Array.isArray(desc)) {
+                      return (
+                        <ul className="experience-description">
+                          {desc.map((item, k) => (
+                            <li key={k}>{item}</li>
+                          ))}
+                        </ul>
+                      );
+                    }
+                    return (
+                      desc && <p className="certificate-takeaway">{desc}</p>
+                    );
+                  })()}
 
                   {exp.skills && (
                     <div className="technologies">
