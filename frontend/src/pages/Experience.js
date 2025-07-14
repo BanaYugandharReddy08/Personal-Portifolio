@@ -66,6 +66,21 @@ const Experience = () => {
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
 
+  const MONTH_NAMES = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
   const formatPeriod = (exp) => {
     const format = (d) => d.toLocaleString('default', { month: 'short', year: 'numeric' });
     const start = exp.startDate ? format(new Date(exp.startDate)) : '';
@@ -398,9 +413,8 @@ const Experience = () => {
                       required
                     >
                       <option value="">Month</option>
-                      {[...Array(12).keys()].map((m) => (
-                        <option key={m + 1} value={m + 1}>{m + 1}</option>
-                      ))}
+                      {MONTH_NAMES.map((name, i) => (
+                        <option key={i + 1} value={i + 1}>{name}</option>))}
                     </select>
                   </div>
                   <div className="form-group">
@@ -424,9 +438,8 @@ const Experience = () => {
                         disabled={expFormData.currentlyWorking}
                       >
                         <option value="">Month</option>
-                        {[...Array(12).keys()].map((m) => (
-                          <option key={m + 1} value={m + 1}>{m + 1}</option>
-                        ))}
+                        {MONTH_NAMES.map((name, i) => (
+                        <option key={i + 1} value={i + 1}>{name}</option>))}
                       </select>
                     </div>
                     <div className="form-group">
