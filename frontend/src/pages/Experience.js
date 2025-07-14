@@ -234,7 +234,7 @@ const Experience = () => {
         showNotification('Failed to update experience', 'error');
         return;
       }
-    } else {
+    } else if (exp.position && exp.company && exp.startMonth && exp.startYear) {
       const { success } = await addExperience(exp);
       if (success) {
         showNotification('Experience added successfully');
@@ -242,6 +242,10 @@ const Experience = () => {
         showNotification('Failed to add experience', 'error');
         return;
       }
+    }
+    else {
+      showNotification('Position, Company, Start Month and Start Year are required', 'error');
+      return;
     }
 
     setExpFormData(expInitialForm);
@@ -385,12 +389,13 @@ const Experience = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="startMonth">Start Month</label>
+                    <label htmlFor="startMonth">Start Month*</label>
                     <select
                       id="startMonth"
                       name="startMonth"
                       value={expFormData.startMonth}
                       onChange={handleExpChange}
+                      required
                     >
                       <option value="">Month</option>
                       {[...Array(12).keys()].map((m) => (
@@ -399,16 +404,16 @@ const Experience = () => {
                     </select>
                   </div>
                   <div className="form-group">
-                    <label htmlFor="startYear">Start Year</label>
+                    <label htmlFor="startYear">Start Year*</label>
                     <input
                       id="startYear"
                       name="startYear"
                       type="number"
                       value={expFormData.startYear}
                       onChange={handleExpChange}
+                      required
                     />
                   </div>
-                  <div className="end-date-row">
                     <div className="form-group">
                       <label htmlFor="endMonth">End Month</label>
                       <select
@@ -443,11 +448,10 @@ const Experience = () => {
                         checked={expFormData.currentlyWorking}
                         onChange={handleExpChange}
                       />
-                      <label htmlFor="currentlyWorking">
+                      <label htmlFor="currentlyWorking" className='checkbox-label'>
                         Currently Working
                       </label>
                     </div>
-                  </div>
                   <div className="form-group" style={{ gridColumn: 'span 2' }}>
                     <label htmlFor="skills">Skills (comma separated)</label>
                     <input
