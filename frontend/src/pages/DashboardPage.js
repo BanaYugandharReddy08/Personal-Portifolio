@@ -24,12 +24,6 @@ const DashboardPage = () => {
                 <div className="container">
                   <div className="tabs">
                   <button
-                    className={`tab ${activeTab === 'certificates' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('certificates')}
-                  >
-                    Certificates
-                  </button>
-                  <button
                     className={`tab ${activeTab === 'experience' ? 'active' : ''}`}
                     onClick={() => setActiveTab('experience')}
                   >
@@ -41,25 +35,10 @@ const DashboardPage = () => {
                   >
                     Projects
                   </button>
-                  <button
-                    className={`tab ${activeTab === 'leetcode' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('leetcode')}
-                  >
-                    LeetCode
-                  </button>
-                  <button
-                    className={`tab ${activeTab === 'documents' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('documents')}
-                  >
-                    Documents
-                  </button>
                   </div>
 
-                  {activeTab === 'certificates' && <DashboardCertificates />}
                   {activeTab === 'experience' && <DashboardExperiences />}
                   {activeTab === 'projects' && <DashboardProjects />}
-                  {activeTab === 'leetcode' && <ProblemsSection />}
-                  {activeTab === 'documents' && <DashboardDocuments />}
                 </div>
               </div>
             </DocsProvider>

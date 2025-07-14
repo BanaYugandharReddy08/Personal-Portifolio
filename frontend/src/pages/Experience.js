@@ -303,7 +303,7 @@ const Experience = () => {
 
         {/* ───────── timeline or grid ───────── */}
         {activeTab === 'experience' ? (
-          <div className="experience-timeline">
+          <div className={experiences.length===0?"":"experience-timeline"}>
             {isAdmin && notification && (
               <div className={`notification ${notification.type}`}>{notification.message}</div>
             )}
@@ -320,17 +320,20 @@ const Experience = () => {
               </div>
             )}
             {isAdmin && !isExpAdding && (
-              <button
-                type="button"
-                className="button add-project-btn"
-                onClick={() => {
-                  setIsExpAdding(true);
-                  setExpEditingId(null);
-                  setExpFormData(expInitialForm);
-                }}
-              >
-                Add New Experience
-              </button>
+              <div className="dashboard-header">
+                <h2>Experience</h2>
+                <button
+                  className="button"
+                  onClick={() => {
+                    setIsExpAdding(true);
+                    setExpEditingId(null);
+                    setExpFormData(expInitialForm);
+                  }}
+                  type='button'
+                >
+                  Add New Experience
+                </button>
+      </div>
             )}
             {isAdmin && isExpAdding && (
               <div className="certificate-form-container">
@@ -513,8 +516,9 @@ const Experience = () => {
                         </button>
                       </div>
                     )}
-              ))
-            )}
+                  </div>
+                </div>
+            )))}
           </div>
         ) : activeTab === 'projects' ? (
           <div id="projects">
