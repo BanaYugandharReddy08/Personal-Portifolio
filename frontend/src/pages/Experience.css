@@ -309,6 +309,13 @@
   font-weight: 500;
 }
 
+.end-date-row {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
 .form-actions {
   grid-column: span 2;
   display: flex;

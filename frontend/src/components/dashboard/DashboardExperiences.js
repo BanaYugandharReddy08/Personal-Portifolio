@@ -226,43 +226,45 @@ const DashboardExperiences = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="currentlyWorking">
-                <input
-                  id="currentlyWorking"
-                  name="currentlyWorking"
-                  type="checkbox"
-                  checked={formData.currentlyWorking}
+            <div className="end-date-row">
+              <div className="form-group checkbox-group">
+                <label htmlFor="currentlyWorking">
+                  <input
+                    id="currentlyWorking"
+                    name="currentlyWorking"
+                    type="checkbox"
+                    checked={formData.currentlyWorking}
+                    onChange={handleChange}
+                  />{' '}
+                  Currently Working
+                </label>
+              </div>
+              <div className="form-group">
+                <label htmlFor="endMonth">End Month</label>
+                <select
+                  id="endMonth"
+                  name="endMonth"
+                  value={formData.endMonth}
                   onChange={handleChange}
-                />{' '}
-                Currently Working
-              </label>
-            </div>
-            <div className="form-group">
-              <label htmlFor="endMonth">End Month</label>
-              <select
-                id="endMonth"
-                name="endMonth"
-                value={formData.endMonth}
-                onChange={handleChange}
-                disabled={formData.currentlyWorking}
-              >
-                <option value="">Month</option>
-                {[...Array(12).keys()].map((m) => (
-                  <option key={m + 1} value={m + 1}>{m + 1}</option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group">
-              <label htmlFor="endYear">End Year</label>
-              <input
-                id="endYear"
-                name="endYear"
-                type="number"
-                value={formData.endYear}
-                onChange={handleChange}
-                disabled={formData.currentlyWorking}
-              />
+                  disabled={formData.currentlyWorking}
+                >
+                  <option value="">Month</option>
+                  {[...Array(12).keys()].map((m) => (
+                    <option key={m + 1} value={m + 1}>{m + 1}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="endYear">End Year</label>
+                <input
+                  id="endYear"
+                  name="endYear"
+                  type="number"
+                  value={formData.endYear}
+                  onChange={handleChange}
+                  disabled={formData.currentlyWorking}
+                />
+              </div>
             </div>
             <div className="form-group" style={{ gridColumn: 'span 2' }}>
               <label htmlFor="skills">Skills (comma separated)</label>
