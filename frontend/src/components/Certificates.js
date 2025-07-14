@@ -479,9 +479,10 @@ const Certificates = () => {
                   >
                     <span className="certificate-category">{certificate.category}</span>
                     {isAdmin && (
-                      <div className="module-card-actions">
+                      <div className="module-card-actions" style={{ marginTop: '10px' }}>
                         <button
                           className="button outline"
+                          style={{ marginRight: '10px' }}
                           onClick={(e) => {
                             e.stopPropagation();
                             handleAddModuleClick(certificate.id);
@@ -491,6 +492,7 @@ const Certificates = () => {
                         </button>
                         <button
                           className="button outline"
+                          style={{ marginRight: '10px' }}
                           onClick={(e) => {
                             e.stopPropagation();
                             handleEditModulesClick(certificate.id);

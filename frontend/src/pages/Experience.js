@@ -386,19 +386,6 @@ const Experience = () => {
                       onChange={handleExpChange}
                     />
                   </div>
-                  <div className="end-date-row">
-                    <div className="form-group checkbox-group">
-                      <label htmlFor="currentlyWorking">
-                        <input
-                          id="currentlyWorking"
-                          name="currentlyWorking"
-                          type="checkbox"
-                          checked={expFormData.currentlyWorking}
-                          onChange={handleExpChange}
-                        />{' '}
-                        Currently Working
-                      </label>
-                    </div>
                     <div className="form-group">
                       <label htmlFor="endMonth">End Month</label>
                       <select
@@ -425,7 +412,18 @@ const Experience = () => {
                         disabled={expFormData.currentlyWorking}
                       />
                     </div>
-                  </div>
+                  <div className="form-group checkbox-group">
+                      <label htmlFor="currentlyWorking">
+                        Currently Working
+                      </label>
+                      <input
+                          id="currentlyWorking"
+                          name="currentlyWorking"
+                          type="checkbox"
+                          checked={expFormData.currentlyWorking}
+                          onChange={handleExpChange}
+                        />
+                    </div>
                   <div className="form-group" style={{ gridColumn: 'span 2' }}>
                     <label htmlFor="skills">Skills (comma separated)</label>
                     <input
