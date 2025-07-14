@@ -5,6 +5,7 @@ import { useExperiences } from '../context/ExperiencesContext';
 import { useProjects } from '../context/ProjectsContext';
 import { useAuth } from '../context/AuthContext';
 import './Experience.css';
+import Card from '../components/shared/Card';
 
 const Experience = () => {
   const [activeTab, setActiveTab] = useState('experience');
@@ -644,61 +645,46 @@ const Experience = () => {
                 </div>
               ) : (
                 projects.map((proj, i) => (
-                  <div
+                  <Card
                     key={proj.id}
                     className={`project-card ${proj.featured ? 'featured' : ''} fade-in-up ${
                       animate ? 'run' : ''
                     }`}
                     style={{ animationDelay: `${0.1 * i + 0.2}s` }}
+                    imageUrl={proj.imageUrl}
+                    title={proj.title}
+                    description={`${proj.description.slice(0, 100)}…`}
+                    tags={proj.technologies}
                     onClick={() => setSelectedProject(proj)}
-                  >
-                    <div className="project-image">
-                      <img src={proj.imageUrl} alt={proj.title} />
-                    </div>
-                    <div className="project-content">
-                      <h2>{proj.title}</h2>
-                      <p>{proj.description ? proj.description.slice(0, 100) : ''}…</p>
-
-                    <div className="technologies">
-                      {proj.technologies
-                        .split(',')
-                        .map((t) => t.trim())
-                        .slice(0, 3)
-                        .map((tech, k) => (
-                          <span key={k} className="tech-tag">
-                            {tech}
-                          </span>
-                        ))}
-                      {proj.technologies.split(',').length > 3 && (
-                        <span className="tech-tag">
-                          +{proj.technologies.split(',').length - 3}
-                        </span>
-                      )}
-                    </div>
-
-                    <button className="button outline view-project-btn">
-                      View Details
-                    </button>
-                  </div>
-                      {isAdmin && (
-                        <div className="project-actions">
+                    actions={
+                      isAdmin && (
+                        <>
                           <button
                             className="icon-button edit-button"
-                            onClick={(e) => { e.stopPropagation(); handleEdit(proj.id); }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEdit(proj.id);
+                            }}
                             aria-label="Edit project"
                           >
                             ✏️
                           </button>
                           <button
                             className="icon-button delete-button"
-                            onClick={(e) => { e.stopPropagation(); setConfirmDelete(proj.id); }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setConfirmDelete(proj.id);
+                            }}
                             aria-label="Delete project"
                           >
                             🗑️
                           </button>
-                        </div>
-                      )}
-                    </div>
+                        </>
+                      )
+                    }
+                  >
+                    <button className="button outline view-project-btn">View Details</button>
+                  </Card>
                 ))
               )}
             </div>

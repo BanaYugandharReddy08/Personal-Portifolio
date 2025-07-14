@@ -69,37 +69,6 @@
   margin-bottom: var(--space-12);
 }
 
-.certificate-card {
-  background-color: var(--card);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border);
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-  cursor: pointer;
-}
-
-.certificate-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
-}
-
-.certificate-image {
-  height: 160px;
-  overflow: hidden;
-  background-color: var(--muted);
-}
-
-.certificate-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform var(--transition-normal);
-}
-
-.certificate-card:hover .certificate-image img {
-  transform: scale(1.05);
-}
 
 .certificate-placeholder {
   height: 100%;
