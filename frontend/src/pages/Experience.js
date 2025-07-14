@@ -7,6 +7,21 @@ import { useAuth } from '../context/AuthContext';
 import './Experience.css';
 import Card from '../components/shared/Card';
 
+const MONTH_NAMES = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
 const Experience = () => {
   const [activeTab, setActiveTab] = useState('experience');
   const [selectedProject, setSelectedProject] = useState(null);
@@ -398,8 +413,8 @@ const Experience = () => {
                       required
                     >
                       <option value="">Month</option>
-                      {[...Array(12).keys()].map((m) => (
-                        <option key={m + 1} value={m + 1}>{m + 1}</option>
+                      {MONTH_NAMES.map((name, i) => (
+                        <option key={i + 1} value={i + 1}>{name}</option>
                       ))}
                     </select>
                   </div>
@@ -424,8 +439,8 @@ const Experience = () => {
                         disabled={expFormData.currentlyWorking}
                       >
                         <option value="">Month</option>
-                        {[...Array(12).keys()].map((m) => (
-                          <option key={m + 1} value={m + 1}>{m + 1}</option>
+                        {MONTH_NAMES.map((name, i) => (
+                          <option key={i + 1} value={i + 1}>{name}</option>
                         ))}
                       </select>
                     </div>
