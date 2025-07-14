@@ -586,3 +586,10 @@
 @keyframes fadeModal {
   to { opacity: 1; transform: scale(1); }
 }
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-8);
+}
