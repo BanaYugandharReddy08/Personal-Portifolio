@@ -13,9 +13,9 @@ const renderWithRoute = (ui, { user } = {}) => {
   }
 
   return render(
-    <MemoryRouter initialEntries={["/dashboard"]}>
+    <MemoryRouter initialEntries={["/protected"]}>
       <Routes>
-        <Route path="/dashboard" element={ui} />
+        <Route path="/protected" element={ui} />
         <Route path="/login" element={<div>login page</div>} />
       </Routes>
     </MemoryRouter>

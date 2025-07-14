@@ -113,7 +113,7 @@ export const ProjectsProvider = ({ children }) => {
     }
   };
 
-  // Data is loaded on demand from the dashboard pages
+  // Data is loaded on demand
 
   return (
     <ProjectsContext.Provider

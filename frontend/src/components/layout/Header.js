@@ -92,13 +92,6 @@ const Header = () => {
               
               {user ? (
                 <>
-                  {user.role === 'admin' && (
-                    <li className="nav-item">
-                      <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'active' : ''}>
-                        Dashboard
-                      </NavLink>
-                    </li>
-                  )}
                   <li className="nav-item">
                     <button onClick={handleLogout} className="button outline">
                       Logout

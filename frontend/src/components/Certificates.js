@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useCertificates } from '../context/CertificatesContext';
-import '../pages/DashboardPage.css';
 import '../pages/CertificationsPage.css';
 import Card from './shared/Card';
 

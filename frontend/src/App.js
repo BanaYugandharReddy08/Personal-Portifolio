@@ -14,11 +14,9 @@ import ContactPage from './pages/ContactPage';
 import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
-import DashboardPage from './pages/DashboardPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ResumeAndCoverPage from './pages/ResumeAndCoverPage';
 import { DocsProvider } from './context/DocsContext';
-import ProtectedRoute from './components/auth/ProtectedRoute';
 import { ExperiencesProvider } from './context/ExperiencesContext';
 import { ProjectsProvider } from './context/ProjectsContext';
 import { useAuth } from './context/AuthContext';
@@ -65,15 +63,7 @@ function App() {
             )}
           />
 
-          {/* <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          /> */}
-          <Route path="/dashboard" element={<DashboardPage />} />
+          {/* Dashboard removed */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
