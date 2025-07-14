@@ -15,6 +15,7 @@ const initialState = {
   projects: [],
   loading: false,
   error: null,
+  loaded: false,
 };
 
 function projectsReducer(state, action) {
@@ -22,7 +23,7 @@ function projectsReducer(state, action) {
     case 'FETCH_START':
       return { ...state, loading: true, error: null };
     case 'FETCH_SUCCESS':
-      return { ...state, loading: false, projects: action.payload };
+      return { ...state, loading: false, projects: action.payload, loaded: true };
     case 'FETCH_FAILURE':
       return { ...state, loading: false, error: action.payload };
     case 'ADD_SUCCESS':
@@ -48,6 +49,7 @@ export const ProjectsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(projectsReducer, initialState);
 
   const loadProjects = async () => {
+    if (state.loaded) return;
     dispatch({ type: 'FETCH_START' });
     try {
       const data = await fetchProjects();

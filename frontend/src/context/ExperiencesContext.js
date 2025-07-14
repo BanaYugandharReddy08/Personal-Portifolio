@@ -13,6 +13,7 @@ const initialState = {
   experiences: [],
   loading: false,
   error: null,
+  loaded: false,
 };
 
 function experiencesReducer(state, action) {
@@ -20,7 +21,7 @@ function experiencesReducer(state, action) {
     case 'FETCH_START':
       return { ...state, loading: true, error: null };
     case 'FETCH_SUCCESS':
-      return { ...state, loading: false, experiences: action.payload };
+      return { ...state, loading: false, experiences: action.payload, loaded: true };
     case 'FETCH_FAILURE':
       return { ...state, loading: false, error: action.payload };
     case 'ADD_SUCCESS':
@@ -46,6 +47,7 @@ export const ExperiencesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(experiencesReducer, initialState);
 
   const loadExperiences = async () => {
+    if (state.loaded) return;
     dispatch({ type: 'FETCH_START' });
     try {
       const data = await fetchExperiences();

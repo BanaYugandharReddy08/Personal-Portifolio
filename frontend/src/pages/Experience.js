@@ -49,6 +49,7 @@ const Experience = () => {
     addExperience,
     updateExperienceById,
     deleteExperienceById,
+    loaded: experiencesLoaded,
   } = useExperiences();
   const {
     projects,
@@ -60,6 +61,7 @@ const Experience = () => {
     loadProjects,
     uploadReport,
     fetchReport,
+    loaded: projectsLoaded,
   } = useProjects();
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
@@ -78,8 +80,18 @@ const Experience = () => {
   /* start animations after first paint */
   useEffect(() => {
     requestAnimationFrame(() => setAnimate(true));
-    loadExperiences();
-    loadProjects();
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === 'experience' && !experiencesLoaded) {
+      loadExperiences();
+    } else if (activeTab === 'projects' && !projectsLoaded) {
+      loadProjects();
+    }
+  }, [activeTab, experiencesLoaded, projectsLoaded, loadExperiences, loadProjects]);
+
+  useEffect(() => {
+    setCanEmbed(Boolean(navigator.mimeTypes?.['application/pdf']));
   }, []);
 
   useEffect(() => {
