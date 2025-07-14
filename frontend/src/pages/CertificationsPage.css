@@ -322,3 +322,34 @@
 .course-card a:hover {
   text-decoration: underline;
 }
+
+
+.modules-section {
+  grid-column: span 2;
+  background-color: var(--muted);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+}
+
+.module-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.module-item {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-2);
+}
+
+.module-card-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin:0
+}
+
+.add-module-field {
+  margin-top: var(--space-2);
+}
