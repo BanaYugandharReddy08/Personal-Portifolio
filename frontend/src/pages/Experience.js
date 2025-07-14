@@ -386,43 +386,45 @@ const Experience = () => {
                       onChange={handleExpChange}
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="currentlyWorking">
-                      <input
-                        id="currentlyWorking"
-                        name="currentlyWorking"
-                        type="checkbox"
-                        checked={expFormData.currentlyWorking}
+                  <div className="end-date-row">
+                    <div className="form-group checkbox-group">
+                      <label htmlFor="currentlyWorking">
+                        <input
+                          id="currentlyWorking"
+                          name="currentlyWorking"
+                          type="checkbox"
+                          checked={expFormData.currentlyWorking}
+                          onChange={handleExpChange}
+                        />{' '}
+                        Currently Working
+                      </label>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="endMonth">End Month</label>
+                      <select
+                        id="endMonth"
+                        name="endMonth"
+                        value={expFormData.endMonth}
                         onChange={handleExpChange}
-                      />{' '}
-                      Currently Working
-                    </label>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="endMonth">End Month</label>
-                    <select
-                      id="endMonth"
-                      name="endMonth"
-                      value={expFormData.endMonth}
-                      onChange={handleExpChange}
-                      disabled={expFormData.currentlyWorking}
-                    >
-                      <option value="">Month</option>
-                      {[...Array(12).keys()].map((m) => (
-                        <option key={m + 1} value={m + 1}>{m + 1}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="endYear">End Year</label>
-                    <input
-                      id="endYear"
-                      name="endYear"
-                      type="number"
-                      value={expFormData.endYear}
-                      onChange={handleExpChange}
-                      disabled={expFormData.currentlyWorking}
-                    />
+                        disabled={expFormData.currentlyWorking}
+                      >
+                        <option value="">Month</option>
+                        {[...Array(12).keys()].map((m) => (
+                          <option key={m + 1} value={m + 1}>{m + 1}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="endYear">End Year</label>
+                      <input
+                        id="endYear"
+                        name="endYear"
+                        type="number"
+                        value={expFormData.endYear}
+                        onChange={handleExpChange}
+                        disabled={expFormData.currentlyWorking}
+                      />
+                    </div>
                   </div>
                   <div className="form-group" style={{ gridColumn: 'span 2' }}>
                     <label htmlFor="skills">Skills (comma separated)</label>
