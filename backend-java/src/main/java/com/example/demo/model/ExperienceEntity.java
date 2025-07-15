@@ -16,6 +16,7 @@ public class ExperienceEntity {
     @Column(nullable = false)
     private String company;
 
+    @Lob
     @Column(columnDefinition = "text")
     private String description;
 
