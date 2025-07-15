@@ -309,6 +309,12 @@
   font-weight: 500;
 }
 
+.field-error {
+  color: var(--error-700);
+  font-size: var(--text-sm);
+  margin-top: var(--space-1);
+}
+
 /* Align checkbox labels and inputs horizontally */
 .checkbox-group {
   display: flex;

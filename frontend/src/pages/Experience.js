@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import LeetCodePage from './LeetCodePage';
 // import { motion } from 'framer-motion';
 import { useExperiences } from '../context/ExperiencesContext';
@@ -38,6 +39,9 @@ const Experience = () => {
   };
   const [isExpAdding, setIsExpAdding] = useState(false);
   const [expFormData, setExpFormData] = useState(expInitialForm);
+  const [expErrors, setExpErrors] = useState({});
+  const CURRENT_YEAR = new Date().getFullYear();
+  const MIN_YEAR = 1999;
   const [expEditingId, setExpEditingId] = useState(null);
   const [expConfirmDelete, setExpConfirmDelete] = useState(null);
   const baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
@@ -220,10 +224,50 @@ const Experience = () => {
       ...expFormData,
       [name]: type === 'checkbox' ? checked : value,
     });
+    if (expErrors[name]) {
+      setExpErrors((prev) => ({ ...prev, [name]: '' }));
+    }
   };
 
   const handleExpSubmit = async (e) => {
     e.preventDefault();
+    const errors = {};
+    if (!expFormData.position.trim()) {
+      errors.position = 'Position is required';
+    }
+    if (!expFormData.company.trim()) {
+      errors.company = 'Company is required';
+    }
+    if (!expFormData.startMonth) {
+      errors.startMonth = 'Start month is required';
+    }
+    if (!expFormData.startYear) {
+      errors.startYear = 'Start year is required';
+    } else {
+      const y = Number(expFormData.startYear);
+      if (y < MIN_YEAR || y > CURRENT_YEAR) {
+        errors.startYear = `Year must be between ${MIN_YEAR} and ${CURRENT_YEAR}`;
+      }
+    }
+
+    let endYearValue = expFormData.endYear;
+    if (expFormData.endMonth && !endYearValue) {
+      endYearValue = String(CURRENT_YEAR);
+      setExpFormData((prev) => ({ ...prev, endYear: endYearValue }));
+    }
+    if (endYearValue) {
+      const y = Number(endYearValue);
+      if (y < MIN_YEAR || y > CURRENT_YEAR) {
+        errors.endYear = `Year must be between ${MIN_YEAR} and ${CURRENT_YEAR}`;
+      }
+    }
+
+    setExpErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      toast.error('Please fix the errors before submitting.');
+      return;
+    }
+
     const formatDate = (year, month) => {
       if (!year || !month) return null;
       return `${year}-${String(month).padStart(2, '0')}-01`;
@@ -235,7 +279,7 @@ const Experience = () => {
       startDate: formatDate(expFormData.startYear, expFormData.startMonth),
       endDate: expFormData.currentlyWorking
         ? null
-        : formatDate(expFormData.endYear, expFormData.endMonth),
+        : formatDate(endYearValue, expFormData.endMonth),
       currentlyWorking: expFormData.currentlyWorking,
       skills: expFormData.skills,
       description: expFormData.description,
@@ -249,7 +293,7 @@ const Experience = () => {
         showNotification('Failed to update experience', 'error');
         return;
       }
-    } else if (exp.position && exp.company && exp.startMonth && exp.startYear) {
+    } else {
       const { success } = await addExperience(exp);
       if (success) {
         showNotification('Experience added successfully');
@@ -258,12 +302,9 @@ const Experience = () => {
         return;
       }
     }
-    else {
-      showNotification('Position, Company, Start Month and Start Year are required', 'error');
-      return;
-    }
 
     setExpFormData(expInitialForm);
+    setExpErrors({});
     setExpEditingId(null);
     setIsExpAdding(false);
   };
@@ -370,6 +411,7 @@ const Experience = () => {
                     setIsExpAdding(true);
                     setExpEditingId(null);
                     setExpFormData(expInitialForm);
+                    setExpErrors({});
                   }}
                   type='button'
                 >
@@ -380,7 +422,7 @@ const Experience = () => {
             {isAdmin && isExpAdding && (
               <div
                 className="experience-modal"
-                onClick={() => { setIsExpAdding(false); setExpEditingId(null); }}
+                onClick={() => { setIsExpAdding(false); setExpEditingId(null); setExpErrors({}); }}
               >
                 <div
                   className="experience-modal-content"
@@ -389,7 +431,7 @@ const Experience = () => {
                   <button
                     type="button"
                     className="close-button"
-                    onClick={() => { setIsExpAdding(false); setExpEditingId(null); }}
+                    onClick={() => { setIsExpAdding(false); setExpEditingId(null); setExpErrors({}); }}
                   >
                     ×
                   </button>
@@ -406,6 +448,9 @@ const Experience = () => {
                       onChange={handleExpChange}
                       required
                     />
+                    {expErrors.position && (
+                      <div className="field-error">{expErrors.position}</div>
+                    )}
                   </div>
                   <div className="form-group">
                     <label htmlFor="company">Company*</label>
@@ -417,6 +462,9 @@ const Experience = () => {
                       onChange={handleExpChange}
                       required
                     />
+                    {expErrors.company && (
+                      <div className="field-error">{expErrors.company}</div>
+                    )}
                   </div>
                   <div className="form-group">
                     <label htmlFor="startMonth">Start Month*</label>
@@ -431,9 +479,12 @@ const Experience = () => {
                       {MONTH_NAMES.map((name, i) => (
                         <option key={i + 1} value={i + 1}>{name}</option>))}
                     </select>
+                    {expErrors.startMonth && (
+                      <div className="field-error">{expErrors.startMonth}</div>
+                    )}
                   </div>
                   <div className="form-group">
-                    <label htmlFor="startYear">Start Year*</label>
+                    <label htmlFor="startYear">{`Start Year* (${MIN_YEAR} - ${CURRENT_YEAR})`}</label>
                     <input
                       id="startYear"
                       name="startYear"
@@ -442,6 +493,9 @@ const Experience = () => {
                       onChange={handleExpChange}
                       required
                     />
+                    {expErrors.startYear && (
+                      <div className="field-error">{expErrors.startYear}</div>
+                    )}
                   </div>
                     <div className="form-group">
                       <label htmlFor="endMonth">End Month</label>
@@ -458,7 +512,7 @@ const Experience = () => {
                       </select>
                     </div>
                     <div className="form-group">
-                      <label htmlFor="endYear">End Year</label>
+                      <label htmlFor="endYear">{`End Year (${MIN_YEAR} - ${CURRENT_YEAR})`}</label>
                       <input
                         id="endYear"
                         name="endYear"
@@ -467,6 +521,9 @@ const Experience = () => {
                         onChange={handleExpChange}
                         disabled={expFormData.currentlyWorking}
                       />
+                      {expErrors.endYear && (
+                        <div className="field-error">{expErrors.endYear}</div>
+                      )}
                     </div>
                     <div className="form-group checkbox-group">
                       <input
@@ -501,7 +558,7 @@ const Experience = () => {
                     />
                   </div>
                   <div className="form-actions">
-                    <button type="button" className="button outline" onClick={() => { setIsExpAdding(false); setExpEditingId(null); }}>
+                    <button type="button" className="button outline" onClick={() => { setIsExpAdding(false); setExpEditingId(null); setExpErrors({}); }}>
                       Cancel
                     </button>
                     <button type="submit" className="button">
