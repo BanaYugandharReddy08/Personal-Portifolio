@@ -596,6 +596,10 @@
   animation: fadeModal 0.35s ease-out forwards;
 }
 
+@keyframes fadeModal {
+  to { opacity: 1; transform: scale(1); }
+}
+
 .experience-modal {
   position: fixed;
   top: 0;
@@ -620,17 +624,9 @@
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
+  /* extra space for the sticky close button */
+  padding-top: var(--space-16);
   animation: scaleIn var(--transition-normal);
-  opacity: 0;
-  transform: scale(0.95);
-}
-
-.run.experience-modal-content {
-  animation: fadeModal 0.35s ease-out forwards;
-}
-
-@keyframes fadeModal {
-  to { opacity: 1; transform: scale(1); }
 }
 
 .dashboard-header {
