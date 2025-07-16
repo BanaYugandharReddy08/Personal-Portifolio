@@ -404,7 +404,7 @@ const Experience = () => {
             )}
             {isAdmin && !isExpAdding && (
               <div className="dashboard-header">
-                <h2>Experience</h2>
+                <h2 style={{textAlign:"center"}}>Experience</h2>
                 <button
                   className="button"
                   onClick={() => {
@@ -436,7 +436,7 @@ const Experience = () => {
                     ×
                   </button>
                   <div className="certificate-form-container">
-                    <h2>{expEditingId ? 'Edit Experience' : 'Add New Experience'}</h2>
+                    <h2 style={{textAlign:'center'}}>{expEditingId ? 'Edit Experience' : 'Add New Experience'}</h2>
                     <form className="certificate-form" onSubmit={handleExpSubmit}>
                   <div className="form-group">
                     <label htmlFor="position">Position*</label>
