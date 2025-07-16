@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import defaultPhoto from '../../Photo.jpg';
 import './Header.css';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
@@ -17,9 +19,10 @@ const Header = () => {
     navigate('/login');
   };
 
-  // Close mobile menu when route changes
+  // Close mobile and profile menus when route changes
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setShowProfileMenu(false);
   }, [location]);
 
   // Handle scroll effect for header
@@ -91,21 +94,39 @@ const Header = () => {
               </li>
               
               {user ? (
-                <>
-                  <li className="nav-item">
-                    <button onClick={handleLogout} className="button outline">
-                      Logout
-                    </button>
-                  </li>
-                </>
+                <li className="nav-item profile-menu">
+                  <button
+                    className="profile-button"
+                    onClick={() => setShowProfileMenu(!showProfileMenu)}
+                    aria-label="Open profile menu"
+                  >
+                    <img
+                      src={user.profilePic || defaultPhoto}
+                      alt="Profile"
+                      className="profile-icon"
+                    />
+                  </button>
+                  {showProfileMenu && (
+                    <ul className="profile-dropdown" role="menu">
+                      <li>
+                        <NavLink to="/account" role="menuitem" onClick={() => setShowProfileMenu(false)}>
+                          Account
+                        </NavLink>
+                      </li>
+                      <li>
+                        <button role="menuitem" onClick={handleLogout} className="dropdown-logout">
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  )}
+                </li>
               ) : (
-                <>
-                  <li className="nav-item">
-                    <NavLink to="/login" className="button">
-                      Login
-                    </NavLink>
-                  </li>
-                </>
+                <li className="nav-item">
+                  <NavLink to="/login" className="button">
+                    Login
+                  </NavLink>
+                </li>
               )}
               
               <li className="nav-item theme-toggle">
