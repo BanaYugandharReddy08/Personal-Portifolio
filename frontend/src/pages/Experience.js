@@ -489,6 +489,9 @@ const Experience = () => {
                       id="startYear"
                       name="startYear"
                       type="number"
+                      min={MIN_YEAR}
+                      max={CURRENT_YEAR}
+                      placeholder={"End Year should be between " + MIN_YEAR + " and " + CURRENT_YEAR}
                       value={expFormData.startYear}
                       onChange={handleExpChange}
                       required
@@ -517,6 +520,9 @@ const Experience = () => {
                         id="endYear"
                         name="endYear"
                         type="number"
+                        min={MIN_YEAR}
+                        max={CURRENT_YEAR}
+                        placeholder={"End Year should be between " + MIN_YEAR + " and " + CURRENT_YEAR}
                         value={expFormData.endYear}
                         onChange={handleExpChange}
                         disabled={expFormData.currentlyWorking}
