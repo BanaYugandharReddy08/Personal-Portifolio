@@ -676,9 +676,32 @@ const Experience = () => {
               </button>
             )}
             {isAdmin && (isAdding || isEditing) && (
-              <div className="certificate-form-container">
-                <h2>{isEditing ? 'Edit Project' : 'Add New Project'}</h2>
-                <form className="certificate-form" onSubmit={handleSubmit}>
+              <div
+                className="project-form-modal"
+                onClick={() => {
+                  setIsAdding(false);
+                  setIsEditing(false);
+                  setEditingId(null);
+                }}
+              >
+                <div
+                  className="project-form-modal-content"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    type="button"
+                    className="close-button"
+                    onClick={() => {
+                      setIsAdding(false);
+                      setIsEditing(false);
+                      setEditingId(null);
+                    }}
+                  >
+                    ×
+                  </button>
+                  <div className="certificate-form-container">
+                    <h2>{isEditing ? 'Edit Project' : 'Add New Project'}</h2>
+                    <form className="certificate-form" onSubmit={handleSubmit}>
                   <div className="form-group">
                     <label htmlFor="title">Title*</label>
                     <input
@@ -756,6 +779,8 @@ const Experience = () => {
                   </div>
                 </form>
               </div>
+            </div>
+          </div>
             )}
             <div className="projects-grid">
               {projects.length === 0 ? (
