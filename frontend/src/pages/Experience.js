@@ -7,6 +7,7 @@ import { useProjects } from '../context/ProjectsContext';
 import { useAuth } from '../context/AuthContext';
 import './Experience.css';
 import Card from '../components/shared/Card';
+import Modal from '../components/shared/Modal';
 
 const Experience = () => {
   const [activeTab, setActiveTab] = useState('experience');
@@ -420,24 +421,14 @@ const Experience = () => {
       </div>
             )}
             {isAdmin && isExpAdding && (
-              <div
-                className="experience-modal"
-                onClick={() => { setIsExpAdding(false); setExpEditingId(null); setExpErrors({}); }}
+              <Modal
+                isOpen={isExpAdding}
+                onClose={() => { setIsExpAdding(false); setExpEditingId(null); setExpErrors({}); }}
+                title={expEditingId ? 'Edit Experience' : 'Add New Experience'}
+                contentClassName="experience-modal-content"
               >
-                <div
-                  className="experience-modal-content"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <button
-                    type="button"
-                    className="close-button"
-                    onClick={() => { setIsExpAdding(false); setExpEditingId(null); setExpErrors({}); }}
-                  >
-                    ×
-                  </button>
-                  <div className="certificate-form-container">
-                    <h2>{expEditingId ? 'Edit Experience' : 'Add New Experience'}</h2>
-                    <form className="certificate-form" onSubmit={handleExpSubmit}>
+                <div className="certificate-form-container">
+                  <form className="certificate-form" onSubmit={handleExpSubmit}>
                   <div className="form-group">
                     <label htmlFor="position">Position*</label>
                     <input
@@ -573,8 +564,7 @@ const Experience = () => {
                   </div>
                 </form>
                   </div>
-                </div>
-              </div>
+              </Modal>
             )}
             {experiences.length === 0 ? (
               <div className="empty-state">
@@ -682,32 +672,18 @@ const Experience = () => {
               </button>
             )}
             {isAdmin && (isAdding || isEditing) && (
-              <div
-                className="project-form-modal"
-                onClick={() => {
+              <Modal
+                isOpen={isAdding || isEditing}
+                onClose={() => {
                   setIsAdding(false);
                   setIsEditing(false);
                   setEditingId(null);
                 }}
+                title={isEditing ? 'Edit Project' : 'Add New Project'}
+                contentClassName="project-form-modal-content"
               >
-                <div
-                  className="project-form-modal-content"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <button
-                    type="button"
-                    className="close-button"
-                    onClick={() => {
-                      setIsAdding(false);
-                      setIsEditing(false);
-                      setEditingId(null);
-                    }}
-                  >
-                    ×
-                  </button>
-                  <div className="certificate-form-container">
-                    <h2>{isEditing ? 'Edit Project' : 'Add New Project'}</h2>
-                    <form className="certificate-form" onSubmit={handleSubmit}>
+                <div className="certificate-form-container">
+                  <form className="certificate-form" onSubmit={handleSubmit}>
                   <div className="form-group">
                     <label htmlFor="title">Title*</label>
                     <input
@@ -785,8 +761,7 @@ const Experience = () => {
                   </div>
                 </form>
               </div>
-            </div>
-          </div>
+              </Modal>
             )}
             <div className="projects-grid">
               {projects.length === 0 ? (
@@ -845,30 +820,20 @@ const Experience = () => {
 
         {/* ───────── modal ───────── */}
         {selectedProject && (
-          <div
-            className="project-modal"
-            onClick={() => setSelectedProject(null)}
+          <Modal
+            isOpen={Boolean(selectedProject)}
+            onClose={() => setSelectedProject(null)}
+            contentClassName="project-modal-content fade-in-up run"
+            title={selectedProject.title}
           >
-            <div
-              className="project-modal-content fade-in-up run"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                className="close-button"
-                onClick={() => setSelectedProject(null)}
-              >
-                ×
-              </button>
+            <img
+              className="project-modal-image"
+              src={selectedProject.imageUrl}
+              alt={selectedProject.title}
+            />
 
-              <img
-                className="project-modal-image"
-                src={selectedProject.imageUrl}
-                alt={selectedProject.title}
-              />
-
-              <div className="project-modal-details">
-                <h2>{selectedProject.title}</h2>
-                <p>{selectedProject.description}</p>
+            <div className="project-modal-details">
+              <p>{selectedProject.description}</p>
 
                 <h3>Technologies Used</h3>
                 <div className="technologies">
@@ -908,8 +873,7 @@ const Experience = () => {
                   </div>
                 )}
               </div>
-            </div>
-          </div>
+            </Modal>
         )}
       </div>
     </div>
