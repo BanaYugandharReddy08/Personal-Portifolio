@@ -14,6 +14,7 @@ import ContactPage from './pages/ContactPage';
 import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import AccountPage from './pages/AccountPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ResumeAndCoverPage from './pages/ResumeAndCoverPage';
 import { DocsProvider } from './context/DocsContext';
@@ -54,6 +55,7 @@ function App() {
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/account" element={<AccountPage />} />
           <Route
             path="/resume-and-cover"
             element={(
