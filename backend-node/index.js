@@ -74,6 +74,48 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+app.get('/users/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/users/${id}`);
+    const data = await parseJsonSafe(response);
+    res.status(response.status).json(data);
+  } catch (err) {
+    handleError(res, err);
+  }
+});
+
+app.put('/users/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/users/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body || {})
+    });
+    const data = await parseJsonSafe(response);
+    res.status(response.status).json(data);
+  } catch (err) {
+    handleError(res, err);
+  }
+});
+
+app.post('/users/:id/photo', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/users/${id}/photo`, {
+      method: 'POST',
+      headers: { 'content-type': req.headers['content-type'] },
+      body: req,
+    });
+    res.status(response.status);
+    response.headers.forEach((v, k) => res.setHeader(k, v));
+    response.body.pipe(res);
+  } catch (err) {
+    handleError(res, err);
+  }
+});
+
 
 app.get('/certificates', async (req, res) => {
   try {
