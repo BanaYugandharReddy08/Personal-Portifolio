@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import './LeetCodePage.css';
 import defaultProblems from '../data/leetcodeProblems';
 import ProgressCircle from '../components/leetcode/ProgressCircle';
+import Modal from '../components/shared/Modal';
 import {
   fetchLeetcodeProblems,
   createLeetcodeProblem,
@@ -30,10 +31,7 @@ const ProblemModal = ({ problem, onClose, onEdit }) => {
   }, [problem]);
 
   return (
-    <div className="problem-modal" onClick={onClose}>
-      <div className="problem-modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={onClose}>×</button>
-        <h2>{problem.title}</h2>
+    <Modal isOpen={Boolean(problem)} onClose={onClose} contentClassName="problem-modal-content" title={problem.title}>
         <p className={`difficulty ${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</p>
 
         {problem.statement && <p className="statement">{problem.statement}</p>}
@@ -84,8 +82,7 @@ const ProblemModal = ({ problem, onClose, onEdit }) => {
             )}
           </div>
         )}
-      </div>
-    </div>
+    </Modal>
   );
 };
 
@@ -440,19 +437,13 @@ const LeetCodePage = () => {
       )}
 
         {isAdmin && isFormOpen && (
-          <div className="problem-modal" onClick={() => setIsFormOpen(false)}>
-            <div
-              className="problem-modal-content"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                className="close-button"
-                onClick={() => setIsFormOpen(false)}
-              >
-                ×
-              </button>
-              <h2>{editingId ? 'Edit Problem' : 'Add New Problem'}</h2>
-              <form className="leetcode-form" onSubmit={handleSubmit}>
+          <Modal
+            isOpen={isFormOpen}
+            onClose={() => setIsFormOpen(false)}
+            title={editingId ? 'Edit Problem' : 'Add New Problem'}
+            contentClassName="problem-modal-content"
+          >
+            <form className="leetcode-form" onSubmit={handleSubmit}>
                 {formMessage && (
                   <div className="form-message">{formMessage}</div>
                 )}
@@ -553,8 +544,7 @@ const LeetCodePage = () => {
                   {editingId ? 'Save Changes' : 'Add New Problem'}
                 </button>
               </form>
-            </div>
-          </div>
+            </Modal>
         )}
 
         {selectedProblem && (
