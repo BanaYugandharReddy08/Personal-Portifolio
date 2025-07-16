@@ -70,6 +70,16 @@ cd backend-java
 ./gradlew bootRun
 ```
 
+Uploaded files (documents, project reports and user photos) are stored in
+`backend-java/uploads/`. The `UserController` exposes two endpoints for profile
+images:
+
+- `POST /api/users/{id}/photo` – upload a new profile picture
+- `GET /api/users/{id}/photo` – download the stored profile picture
+
+Ensure this directory exists (it is created automatically on startup) and is
+writeable by the application.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

@@ -116,6 +116,23 @@ app.post('/users/:id/photo', async (req, res) => {
   }
 });
 
+app.get('/users/:id/photo', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/users/${id}/photo`);
+    res.status(response.status);
+    response.headers.forEach((v, k) => res.setHeader(k, v));
+    if (response.status === 200) {
+      response.body.pipe(res);
+    } else {
+      const data = await parseJsonSafe(response);
+      res.json(data);
+    }
+  } catch (err) {
+    handleError(res, err);
+  }
+});
+
 
 app.get('/certificates', async (req, res) => {
   try {

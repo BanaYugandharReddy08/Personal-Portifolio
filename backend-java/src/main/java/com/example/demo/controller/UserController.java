@@ -96,4 +96,31 @@ public class UserController {
             return ResponseEntity.status(500).body(Map.of("error", "Failed to store file"));
         }
     }
+
+    @GetMapping(path = "/{id}/photo")
+    public ResponseEntity<?> fetchPhoto(@PathVariable("id") Long id) {
+        Optional<UserEntity> opt = userRepository.findById(id);
+        if (opt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        String fileName = opt.get().getProfilePicture();
+        if (fileName == null) {
+            return ResponseEntity.notFound().build();
+        }
+        Path filePath = uploadDir.resolve(fileName);
+        if (!Files.exists(filePath)) {
+            return ResponseEntity.notFound().build();
+        }
+        FileSystemResource resource = new FileSystemResource(filePath);
+        String contentType;
+        try {
+            contentType = Files.probeContentType(filePath);
+        } catch (IOException e) {
+            contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+        }
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+                .contentType(MediaType.parseMediaType(contentType != null ? contentType : MediaType.APPLICATION_OCTET_STREAM_VALUE))
+                .body(resource);
+    }
 }
