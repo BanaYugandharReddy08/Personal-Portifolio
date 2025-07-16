@@ -185,7 +185,7 @@ export async function updateProject(id, project) {
   const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(project)
+    body: JSON.stringify({ ...project, id })
   });
   if (!response.ok) {
     throw new Error('Failed to update project');
