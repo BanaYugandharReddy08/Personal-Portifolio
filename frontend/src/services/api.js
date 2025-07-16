@@ -261,3 +261,27 @@ export async function fetchProjectReport(id) {
   const blob = await response.blob();
   return URL.createObjectURL(blob);
 }
+
+export async function uploadUserPhoto(id, file) {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await fetch(`${API_BASE_URL}/users/${id}/photo`, {
+    method: 'POST',
+    body: formData,
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || 'Failed to upload photo');
+  }
+  return data;
+}
+
+export async function fetchUserPhoto(id) {
+  const response = await fetch(`${API_BASE_URL}/users/${id}/photo`);
+  if (!response.ok) {
+    return null;
+  }
+  const blob = await response.blob();
+  return URL.createObjectURL(blob);
+}
