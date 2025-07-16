@@ -285,7 +285,7 @@
   padding: var(--space-6);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border);
-  margin-top: var(--space-8);
+  /* margin-top: var(--space-8); */
 }
 
 .certificate-form-container h2 {
@@ -631,7 +631,7 @@
   overflow-y: auto;
   position: relative;
   /* extra space for the sticky close button */
-  padding-top: var(--space-16);
+  /* padding-top: var(--space-16); */
   animation: scaleIn var(--transition-normal);
 }
 
@@ -659,7 +659,7 @@
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  padding-top: var(--space-16);
+  /* padding-top: var(--space-16); */
   animation: scaleIn var(--transition-normal);
 }
 
