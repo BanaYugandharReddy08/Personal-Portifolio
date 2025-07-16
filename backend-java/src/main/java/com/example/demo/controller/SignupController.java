@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.UserEntity;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.EncryptionService;
+import com.example.demo.service.AnalyticsService;
 
 @RestController
 public class SignupController {
@@ -21,10 +22,12 @@ public class SignupController {
 
     private final UserRepository userRepository;
     private final EncryptionService encryptionService;
+    private final AnalyticsService analyticsService;
 
-    public SignupController(UserRepository userRepository, EncryptionService encryptionService) {
+    public SignupController(UserRepository userRepository, EncryptionService encryptionService, AnalyticsService analyticsService) {
         this.userRepository = userRepository;
         this.encryptionService = encryptionService;
+        this.analyticsService = analyticsService;
     }
 
     @PostMapping("/api/signup")
@@ -45,6 +48,7 @@ public class SignupController {
         entity.setLastLoggedInDate(Instant.now());
         entity.setAdmin(false);
         userRepository.save(entity);
+        analyticsService.recordEvent(AnalyticsService.EVENT_USER_SIGNUP);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("message", "Welcome, " + request.fullName() + "!"));
     }
