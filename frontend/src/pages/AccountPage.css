@@ -1,0 +1,80 @@
+.account-page {
+  padding-top: 120px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.account-info,
+.account-form {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--space-8);
+  background-color: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: var(--space-4);
+}
+
+.account-info h2 {
+  margin-bottom: var(--space-2);
+}
+
+.account-info p {
+  margin-bottom: var(--space-4);
+}
+
+.account-form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: var(--space-4);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--background);
+}
+
+.alert {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+}
+
+.alert-error {
+  background-color: var(--error-50);
+  border: 1px solid var(--error-200);
+  color: var(--error-700);
+}
+
+.button + .button {
+  margin-left: var(--space-3);
+}
+
+@media (max-width: 768px) {
+  .account-info,
+  .account-form {
+    padding: var(--space-6);
+    margin: 0 var(--space-4);
+  }
+}
