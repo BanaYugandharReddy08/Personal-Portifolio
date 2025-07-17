@@ -1,0 +1,40 @@
+.analytics-page {
+  padding-top: 120px;
+  min-height: 100vh;
+  display: flex;
+  gap: 2rem;
+}
+
+.analytics-metrics {
+  flex: 1;
+}
+
+.analytics-filters {
+  width: 260px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.metric-card {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.analytics-filters label {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.analytics-filters select,
+.analytics-filters input {
+  width: 100%;
+  padding: 0.25rem;
+  margin-top: 0.25rem;
+}

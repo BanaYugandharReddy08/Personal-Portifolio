@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Navigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { login as apiLogin } from '../services/api';
+import { login as apiLogin, recordGuestLogin } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import './LoginPage.css';
 
@@ -46,7 +46,13 @@ const LoginPage = () => {
       }
     };
 
-  const handleGuestLogin = () => {
+  const handleGuestLogin = async () => {
+    try {
+      await recordGuestLogin();
+    } catch (err) {
+      // ignore analytics errors
+      console.error(err);
+    }
     login('guest@example.com', 'guest123');
     navigate('/');
   };
