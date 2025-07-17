@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './AboutPage.css';
 import Photo from '../Photo.jpg';
+import { Link } from 'react-router-dom';
 
 const AboutPage = () => {
   const [animate, setAnimate] = useState(false);   // flips CSS keyframes on
@@ -99,12 +100,12 @@ const AboutPage = () => {
               </p>
 
               <div className="cta-buttons">
-                <a href="/contact" className="button">
+                <Link to="/contact" className="button">
                   Get in Touch
-                </a>
-                <a href="/experience" className="button outline">
+                </Link>
+                <Link to="/experience" className="button outline">
                   View My Work
-                </a>
+                </Link>
               </div>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './EducationPage.css';
 
 const EducationPage = () => {
@@ -28,7 +29,7 @@ const EducationPage = () => {
             className={`education-card fade-in-up ${animate ? 'run' : ''}`}
             style={{ animationDelay: '0.2s' }}
           >
-            <div className="education-year">2025</div>
+            <div className="education-year">2024 - 2025</div>
             <div className="education-content">
               <h2>MSc Data Analytics</h2>
               <h3>National College of Ireland</h3>
@@ -75,7 +76,7 @@ const EducationPage = () => {
             className={`education-card fade-in-up ${animate ? 'run' : ''}`}
             style={{ animationDelay: '0.4s' }}
           >
-            <div className="education-year">2021</div>
+            <div className="education-year">2017 - 2021</div>
             <div className="education-content">
               <h2>BSc Computer Science &amp; Engineering</h2>
               <h3>SASTRA University, India</h3>
@@ -129,9 +130,9 @@ const EducationPage = () => {
           </p>
 
           <div className="continuing-education-content">
-            <a href="/certifications" className="button">
+            <Link to="/certifications" className="button">
               View My Certifications
-            </a>
+            </Link>
             <p className="note">
               Full project list, semester certificates, and earlier internships
               available on request.
