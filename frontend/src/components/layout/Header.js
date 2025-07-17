@@ -113,6 +113,13 @@ const Header = () => {
                           Account
                         </NavLink>
                       </li>
+                      {user.role === 'admin' && (
+                        <li>
+                          <NavLink to="/analytics" role="menuitem" onClick={() => setShowProfileMenu(false)}>
+                            Analytics
+                          </NavLink>
+                        </li>
+                      )}
                       <li>
                         <button role="menuitem" onClick={handleLogout} className="dropdown-logout">
                           Logout

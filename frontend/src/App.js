@@ -17,10 +17,12 @@ import SignupPage from './pages/SignupPage';
 import AccountPage from './pages/AccountPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ResumeAndCoverPage from './pages/ResumeAndCoverPage';
+import AnalyticsPage from './pages/AnalyticsPage';
 import { DocsProvider } from './context/DocsContext';
 import { ExperiencesProvider } from './context/ExperiencesContext';
 import { ProjectsProvider } from './context/ProjectsContext';
 import { useAuth } from './context/AuthContext';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 function App() {
   const location = useLocation();
@@ -56,6 +58,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/account" element={<AccountPage />} />
+          <Route path="/analytics" element={<ProtectedRoute><AnalyticsPage/></ProtectedRoute>} />
           <Route
             path="/resume-and-cover"
             element={(

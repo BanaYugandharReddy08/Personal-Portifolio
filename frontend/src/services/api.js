@@ -285,3 +285,26 @@ export async function fetchUserPhoto(id) {
   const blob = await response.blob();
   return URL.createObjectURL(blob);
 }
+
+export async function fetchAnalytics(params = {}) {
+  const url = new URL(`${API_BASE_URL}/analytics`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      url.searchParams.append(key, value);
+    }
+  });
+  const response = await fetch(url.toString());
+  if (!response.ok) {
+    throw new Error('Failed to fetch analytics');
+  }
+  return response.json();
+}
+
+export async function recordGuestLogin() {
+  const response = await fetch(`${API_BASE_URL}/guest-login`, { method: 'POST' });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || 'Failed to record guest login');
+  }
+  return data;
+}
