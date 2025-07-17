@@ -100,6 +100,8 @@ class DocumentControllerTest {
                         "attachment; filename=" + fileName))
                 .andExpect(content().string("content"));
 
+        verify(analyticsService).recordEvent(AnalyticsService.EVENT_CV_DOWNLOAD);
+
         Files.deleteIfExists(filePath);
     }
 }

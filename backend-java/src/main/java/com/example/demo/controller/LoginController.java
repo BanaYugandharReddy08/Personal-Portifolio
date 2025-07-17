@@ -21,6 +21,9 @@ public class LoginController {
 
     record LoginRequest(String email, String password) {}
 
+    private static final String GUEST_EMAIL = "guest@example.com";
+    private static final String GUEST_PASSWORD = "guest123";
+
 
     private final UserRepository userRepository;
     private final EncryptionService encryptionService;
@@ -47,8 +50,8 @@ public class LoginController {
         if (!decryptedPassword.equals(request.password())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
         }
-        if ("guest@example.com".equals(request.email()) && "guest123".equals(request.password())) {
-            analyticsService.recordEvent(EventType.GUEST_LOGIN);
+        if (GUEST_EMAIL.equalsIgnoreCase(request.email()) && GUEST_PASSWORD.equals(request.password())) {
+            analyticsService.recordEvent(AnalyticsService.EVENT_GUEST_LOGIN);
         }
         Instant previousLogin = user.getLastLoggedInDate();
         user.setLastLoggedInDate(Instant.now());

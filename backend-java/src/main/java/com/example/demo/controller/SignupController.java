@@ -50,6 +50,7 @@ public class SignupController {
         entity.setAdmin(false);
         userRepository.save(entity);
         analyticsService.recordEvent(EventType.USER_SIGNUP);
+        analyticsService.recordEvent(AnalyticsService.EVENT_USER_SIGNUP);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("message", "Welcome, " + request.fullName() + "!"));
     }

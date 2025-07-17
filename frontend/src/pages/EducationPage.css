@@ -57,7 +57,7 @@
 }
 
 .education-year {
-  font-size: var(--text-2xl);
+  font-size: var(--text-lg);
   font-weight: 700;
   color: var(--primary);
   padding-top: var(--space-2);
@@ -200,3 +200,7 @@
 
 .fade-in-up { opacity: 0; }
 .run.fade-in-up { animation: fadeUp 0.5s ease-out forwards; }
+
+section {
+  padding: 0 !important;
+}

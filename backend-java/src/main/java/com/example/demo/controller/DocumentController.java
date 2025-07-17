@@ -84,8 +84,11 @@ public class DocumentController {
             contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
         }
         if ("resume".equalsIgnoreCase(type)) {
-            analyticsService.recordEvent(EventType.CV_DOWNLOAD);
+            analyticsService.recordEvent(EventType.COVERLETTER_DOWNLOAD);
+            analyticsService.recordEvent(AnalyticsService.EVENT_CV_DOWNLOAD);
+            
         } else {
+            analyticsService.recordEvent(AnalyticsService.EVENT_COVERLETTER_DOWNLOAD);
             analyticsService.recordEvent(EventType.COVERLETTER_DOWNLOAD);
         }
         return ResponseEntity.ok()

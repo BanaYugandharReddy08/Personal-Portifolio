@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.AnalyticsEventEntity.EventType;
 import com.example.demo.service.AnalyticsService;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,14 +23,10 @@ public class AnalyticsController {
     }
 
     @GetMapping("")
-    public Map<String, Long> getAnalytics(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant start,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant end) {
-        return Map.of(
-                "guestLogins", analyticsService.countEvents(EventType.GUEST_LOGIN, start, end),
-                "signups", analyticsService.countEvents(EventType.USER_SIGNUP, start, end),
-                "cvDownloads", analyticsService.countEvents(EventType.CV_DOWNLOAD, start, end),
-                "coverletterDownloads", analyticsService.countEvents(EventType.COVERLETTER_DOWNLOAD, start, end)
-        );
+    public ResponseEntity<?> getAnalytics(@RequestParam(required = false) String start,
+                                          @RequestParam(required = false) String end) {
+        Instant startInstant = start != null ? Instant.parse(start) : null;
+        Instant endInstant = end != null ? Instant.parse(end) : null;
+        return ResponseEntity.ok(analyticsService.getCounts(startInstant, endInstant));
     }
 }
