@@ -84,12 +84,9 @@ public class DocumentController {
             contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
         }
         if ("resume".equalsIgnoreCase(type)) {
-            analyticsService.recordEvent(EventType.COVERLETTER_DOWNLOAD);
             analyticsService.recordEvent(AnalyticsService.EVENT_CV_DOWNLOAD);
-            
         } else {
             analyticsService.recordEvent(AnalyticsService.EVENT_COVERLETTER_DOWNLOAD);
-            analyticsService.recordEvent(EventType.COVERLETTER_DOWNLOAD);
         }
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + entity.getFileName())
