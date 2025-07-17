@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.UserEntity;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.EncryptionService;
+import com.example.demo.service.AnalyticsService;
+import com.example.demo.model.AnalyticsEventEntity.EventType;
 
 @RestController
 public class LoginController {
@@ -22,10 +24,12 @@ public class LoginController {
 
     private final UserRepository userRepository;
     private final EncryptionService encryptionService;
+    private final AnalyticsService analyticsService;
 
-    public LoginController(UserRepository userRepository, EncryptionService encryptionService) {
+    public LoginController(UserRepository userRepository, EncryptionService encryptionService, AnalyticsService analyticsService) {
         this.userRepository = userRepository;
         this.encryptionService = encryptionService;
+        this.analyticsService = analyticsService;
     }
 
     @PostMapping("/api/login")
@@ -42,6 +46,9 @@ public class LoginController {
         String decryptedPassword = encryptionService.decrypt(user.getPassword());
         if (!decryptedPassword.equals(request.password())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
+        }
+        if ("guest@example.com".equals(request.email()) && "guest123".equals(request.password())) {
+            analyticsService.recordEvent(EventType.GUEST_LOGIN);
         }
         Instant previousLogin = user.getLastLoggedInDate();
         user.setLastLoggedInDate(Instant.now());

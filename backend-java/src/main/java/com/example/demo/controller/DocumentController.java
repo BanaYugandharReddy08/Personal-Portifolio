@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.DocumentEntity;
 import com.example.demo.repository.DocumentRepository;
+import com.example.demo.service.AnalyticsService;
+import com.example.demo.model.AnalyticsEventEntity.EventType;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,10 +21,12 @@ import java.util.Map;
 public class DocumentController {
 
     private final DocumentRepository documentRepository;
+    private final AnalyticsService analyticsService;
     private final Path uploadDir = Paths.get("uploads");
 
-    public DocumentController(DocumentRepository documentRepository) throws IOException {
+    public DocumentController(DocumentRepository documentRepository, AnalyticsService analyticsService) throws IOException {
         this.documentRepository = documentRepository;
+        this.analyticsService = analyticsService;
         Files.createDirectories(uploadDir);
     }
 
@@ -78,6 +82,11 @@ public class DocumentController {
             contentType = Files.probeContentType(filePath);
         } catch (IOException e) {
             contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+        }
+        if ("resume".equalsIgnoreCase(type)) {
+            analyticsService.recordEvent(EventType.CV_DOWNLOAD);
+        } else {
+            analyticsService.recordEvent(EventType.COVERLETTER_DOWNLOAD);
         }
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + entity.getFileName())

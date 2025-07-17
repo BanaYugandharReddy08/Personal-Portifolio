@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.DocumentEntity;
 import com.example.demo.repository.DocumentRepository;
+import com.example.demo.service.AnalyticsService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ class DocumentControllerTest {
 
     @MockBean
     private DocumentRepository documentRepository;
+
+    @MockBean
+    private AnalyticsService analyticsService;
 
     @Test
     void getAllDocumentsReturnsList() throws Exception {
