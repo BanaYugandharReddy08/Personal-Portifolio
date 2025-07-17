@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.DocumentEntity;
 import com.example.demo.repository.DocumentRepository;
 import com.example.demo.service.AnalyticsService;
+import com.example.demo.model.AnalyticsEventEntity.EventType;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -83,9 +84,12 @@ public class DocumentController {
             contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
         }
         if ("resume".equalsIgnoreCase(type)) {
+            analyticsService.recordEvent(EventType.COVERLETTER_DOWNLOAD);
             analyticsService.recordEvent(AnalyticsService.EVENT_CV_DOWNLOAD);
+            
         } else {
             analyticsService.recordEvent(AnalyticsService.EVENT_COVERLETTER_DOWNLOAD);
+            analyticsService.recordEvent(EventType.COVERLETTER_DOWNLOAD);
         }
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + entity.getFileName())

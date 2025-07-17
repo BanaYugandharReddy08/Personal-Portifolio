@@ -6,15 +6,39 @@ import java.time.Instant;
 @Entity
 @Table(name = "analytics_events")
 public class AnalyticsEventEntity {
+
+    public enum EventType {
+        GUEST_LOGIN,
+        USER_SIGNUP,
+        CV_DOWNLOAD,
+        COVERLETTER_DOWNLOAD
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String eventType;
+    private EventType eventType;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private Instant timestamp;
+
+    public AnalyticsEventEntity() {
+    }
+
+    public AnalyticsEventEntity(EventType eventType, Instant timestamp) {
+        this.eventType = eventType;
+        this.timestamp = timestamp;
+    }
+
+    @PrePersist
+    private void onCreate() {
+        if (timestamp == null) {
+            timestamp = Instant.now();
+        }
+    }
 
     public Long getId() {
         return id;
@@ -24,11 +48,11 @@ public class AnalyticsEventEntity {
         this.id = id;
     }
 
-    public String getEventType() {
+    public EventType getEventType() {
         return eventType;
     }
 
-    public void setEventType(String eventType) {
+    public void setEventType(EventType eventType) {
         this.eventType = eventType;
     }
 

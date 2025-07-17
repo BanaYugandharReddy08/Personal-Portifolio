@@ -14,6 +14,7 @@ import com.example.demo.model.UserEntity;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.EncryptionService;
 import com.example.demo.service.AnalyticsService;
+import com.example.demo.model.AnalyticsEventEntity.EventType;
 
 @RestController
 public class LoginController {

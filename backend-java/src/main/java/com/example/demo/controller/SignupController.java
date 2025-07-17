@@ -14,6 +14,7 @@ import com.example.demo.model.UserEntity;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.EncryptionService;
 import com.example.demo.service.AnalyticsService;
+import com.example.demo.model.AnalyticsEventEntity.EventType;
 
 @RestController
 public class SignupController {
@@ -48,6 +49,7 @@ public class SignupController {
         entity.setLastLoggedInDate(Instant.now());
         entity.setAdmin(false);
         userRepository.save(entity);
+        analyticsService.recordEvent(EventType.USER_SIGNUP);
         analyticsService.recordEvent(AnalyticsService.EVENT_USER_SIGNUP);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("message", "Welcome, " + request.fullName() + "!"));
