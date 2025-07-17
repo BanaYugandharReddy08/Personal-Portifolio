@@ -61,6 +61,26 @@ npm install
 npm start
 ```
 
+### Analytics
+
+The Node backend exposes an `/analytics` route that returns counts for various
+events such as guest logins, sign ups and document downloads. You can limit the
+results by providing optional `start` and `end` query parameters with ISO 8601
+timestamps.
+
+Example request:
+
+```sh
+curl "http://localhost:3001/analytics?start=2024-01-01T00:00:00Z&end=2024-01-31T23:59:59Z"
+```
+
+Posting to `/guest-login` records a guest login event without authenticating a
+user:
+
+```sh
+curl -X POST http://localhost:3001/guest-login
+```
+
 ## Java Backend
 
 `backend-java/` holds a simple Spring Boot project exposing its API under `/api`. It now implements `/api/login` which validates email and password for the Node layer. Use the Gradle wrapper to run it:
