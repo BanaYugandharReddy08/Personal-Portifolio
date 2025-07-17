@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.model.AnalyticsEventEntity.EventType;
 import com.example.demo.service.AnalyticsService;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,6 +14,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AnalyticsController.class)
@@ -56,5 +56,13 @@ class AnalyticsControllerTest {
         verify(analyticsService).countEvents(EventType.USER_SIGNUP, start, end);
         verify(analyticsService).countEvents(EventType.CV_DOWNLOAD, start, end);
         verify(analyticsService).countEvents(EventType.COVERLETTER_DOWNLOAD, start, end);
+    }
+
+    @Test
+    void recordGuestLoginCallsService() throws Exception {
+        mockMvc.perform(post("/api/analytics/guest-login"))
+                .andExpect(status().isOk());
+
+        verify(analyticsService).recordEvent(AnalyticsService.EVENT_GUEST_LOGIN);
     }
 }

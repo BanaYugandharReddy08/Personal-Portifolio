@@ -4,6 +4,7 @@ import com.example.demo.model.AnalyticsEventEntity.EventType;
 import com.example.demo.service.AnalyticsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,5 +36,11 @@ public class AnalyticsController {
         );
 
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/guest-login")
+    public ResponseEntity<?> recordGuestLogin() {
+        analyticsService.recordEvent(AnalyticsService.EVENT_GUEST_LOGIN);
+        return ResponseEntity.ok(Map.of("status", "recorded"));
     }
 }
