@@ -391,6 +391,36 @@ app.delete('/leetcode/:id', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Node backend listening on port ${PORT}`);
+app.get('/analytics', async (req, res) => {
+  const { start, end } = req.query;
+  try {
+    const url = new URL(`${JAVA_BASE_URL}/api/analytics`);
+    if (start) url.searchParams.append('start', start);
+    if (end) url.searchParams.append('end', end);
+    const response = await fetch(url.toString());
+    const data = await parseJsonSafe(response);
+    res.status(response.status).json(data);
+  } catch (err) {
+    handleError(res, err);
+  }
 });
+
+app.post('/guest-login', async (req, res) => {
+  try {
+    const response = await fetch(`${JAVA_BASE_URL}/api/analytics/guest-login`, {
+      method: 'POST'
+    });
+    const data = await parseJsonSafe(response);
+    res.status(response.status).json(data);
+  } catch (err) {
+    handleError(res, err);
+  }
+});
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Node backend listening on port ${PORT}`);
+  });
+}
+
+module.exports = app;
