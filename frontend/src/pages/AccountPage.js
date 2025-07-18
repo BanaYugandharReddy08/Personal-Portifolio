@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FaRobot } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import './AccountPage.css';
 
@@ -64,8 +65,15 @@ const AccountPage = () => {
       <div className="container">
         {!edit ? (
           <div className="account-info">
-            {profilePic && (
-              <img src={profilePic} alt="Profile" className="profile-image" />
+            {profilePic ? (
+              <img
+                src={profilePic}
+                alt="Profile"
+                className="profile-image"
+                data-testid="profile-image"
+              />
+            ) : (
+              <FaRobot className="profile-image" data-testid="profile-image" />
             )}
             <h2>{user.name}</h2>
             <p>{user.email}</p>

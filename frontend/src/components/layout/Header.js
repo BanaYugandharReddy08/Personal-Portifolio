@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { FaRobot } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import './Header.css';
@@ -99,12 +100,15 @@ const Header = () => {
                     onClick={() => setShowProfileMenu(!showProfileMenu)}
                     aria-label="Open profile menu"
                   >
-                    {user.profilePic && (
+                    {user.profilePic ? (
                       <img
                         src={user.profilePic}
                         alt="Profile"
                         className="profile-icon"
+                        data-testid="profile-icon"
                       />
+                    ) : (
+                      <FaRobot className="profile-icon" data-testid="profile-icon" />
                     )}
                   </button>
                   {showProfileMenu && (
