@@ -2,11 +2,12 @@
   background-color: var(--card);
   color: var(--card-foreground);
   border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  box-shadow: var(--shadow-md);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
   text-align: center;
   flex: 1;
-  min-width: 120px;
+  min-width: 150px;
 }
 
 .metric-label {
@@ -16,7 +17,7 @@
 }
 
 .metric-value {
-  font-size: var(--text-3xl);
+  font-size: var(--text-2xl);
   font-weight: 700;
   display: flex;
   justify-content: center;
@@ -25,5 +26,5 @@
 }
 
 .trend-icon {
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
 }
