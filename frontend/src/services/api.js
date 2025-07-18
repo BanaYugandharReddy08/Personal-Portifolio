@@ -297,7 +297,13 @@ export async function fetchAnalytics(params = {}) {
   if (!response.ok) {
     throw new Error('Failed to fetch analytics');
   }
-  return response.json();
+  const raw = await response.json();
+  return {
+    GUEST_LOGIN: raw.GUEST_LOGIN ?? raw.guestLogins ?? 0,
+    USER_SIGNUP: raw.USER_SIGNUP ?? raw.signups ?? 0,
+    CV_DOWNLOAD: raw.CV_DOWNLOAD ?? raw.cvDownloads ?? 0,
+    COVERLETTER_DOWNLOAD: raw.COVERLETTER_DOWNLOAD ?? raw.coverletterDownloads ?? 0,
+  };
 }
 
 export async function recordGuestLogin() {
