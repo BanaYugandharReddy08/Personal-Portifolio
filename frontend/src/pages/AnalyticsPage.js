@@ -109,9 +109,6 @@ const AnalyticsPage = () => {
                 prevData ? data.COVERLETTER_DOWNLOAD - prevData.COVERLETTER_DOWNLOAD : 0
               }
             />
-            {/* Additional cards with fixed values */}
-            <DashboardCard label="Total Views" value={12} change={0} />
-            <DashboardCard label="Returning Users" value={2} change={0} />
           </div>
         )}
       </div>

@@ -545,7 +545,6 @@ const Certificates = () => {
                       <div className="module-card-actions" style={{ marginTop: '10px' }}>
                         <button
                           className="button outline"
-                          style={{ marginRight: '10px' }}
                           onClick={(e) => {
                             e.stopPropagation();
                             handleAddModuleClick(certificate.id);
