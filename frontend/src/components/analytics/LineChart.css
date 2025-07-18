@@ -1,5 +1,14 @@
 .line-chart {
   width: 100%;
-  height: 160px;
+  height: 200px;
   color: var(--primary);
+}
+
+.chart-grid-line {
+  stroke: var(--border);
+  stroke-width: 0.5;
+}
+
+.chart-marker {
+  fill: var(--primary);
 }
