@@ -50,8 +50,9 @@ const AnalyticsPage = () => {
 
   return (
     <div className="analytics-page">
-      <h1>Analytics</h1>
-      <div className="analytics-grid">
+      <div className="container">
+        <h1>Analytics</h1>
+        <div className="analytics-grid">
         <div className="filter-controls">
           <label htmlFor="range">Time Range</label>
           <select
@@ -115,7 +116,8 @@ const AnalyticsPage = () => {
         )}
       </div>
     </div>
+  </div>
   );
-}; 
+};
 
 export default AnalyticsPage;
