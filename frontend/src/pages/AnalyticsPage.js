@@ -23,15 +23,50 @@ const AnalyticsPage = () => {
   const [prevData, setPrevData] = useState(null);
   const [chartData, setChartData] = useState([]);
 
-  const generateChartData = (len) =>
-    Array.from({ length: len }, (_, i) => (i % 5) + 1);
+  const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ];
 
-  const loadData = async (params, len) => {
+  const generateChartData = (selectedRange) => {
+    const rand = (i) => (i % 5) + 1;
+    switch (selectedRange) {
+      case 'today':
+        return Array.from({ length: 12 }, (_, i) => ({
+          label: `${i * 2}h`,
+          value: rand(i)
+        }));
+      case 'week':
+        return weekdays.map((d, i) => ({ label: d, value: rand(i) }));
+      case 'month':
+        return Array.from({ length: 4 }, (_, i) => ({
+          label: `W${i + 1}`,
+          value: rand(i)
+        }));
+      case 'year':
+        return months.map((m, i) => ({ label: m, value: rand(i) }));
+      default:
+        return months.map((m, i) => ({ label: m, value: rand(i) }));
+    }
+  };
+
+  const loadData = async (params) => {
     try {
       const result = await fetchAnalytics(params);
       setPrevData(data);
       setData(result);
-      setChartData(generateChartData(len));
+      setChartData(generateChartData(range));
     } catch (err) {
       console.error(err);
     }
@@ -39,22 +74,18 @@ const AnalyticsPage = () => {
 
   useEffect(() => {
     let params = {};
-    let len = 10;
     if (range !== 'custom' && range !== 'all') {
       const days = rangeToDays[range];
       if (days) {
         const end = new Date();
         const start = new Date(end.getTime() - days * 24 * 60 * 60 * 1000);
         params = { start: start.toISOString(), end: end.toISOString() };
-        len = range === 'today' ? 12 : range === 'week' ? 7 : range === 'month' ? 4 : 12;
       }
     } else if (range === 'custom') {
       if (startDate) params.start = new Date(startDate).toISOString();
       if (endDate) params.end = new Date(endDate).toISOString();
-    } else {
-      len = 12;
     }
-    loadData(params, len);
+    loadData(params);
   }, [range, startDate, endDate]);
 
   return (
