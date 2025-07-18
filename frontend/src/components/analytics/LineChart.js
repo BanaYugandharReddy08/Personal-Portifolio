@@ -4,20 +4,29 @@ import './LineChart.css';
 const LineChart = ({ data = [] }) => {
   if (!data.length) return null;
 
-  const max = Math.max(...data);
+  const max = Math.max(...data.map((d) => d.value));
 
   const points = data
-    .map((val, i) => {
+    .map((d, i) => {
       const x = (i / (data.length - 1)) * 100;
-      const y = 100 - (val / max) * 100;
+      const y = 100 - (d.value / max) * 100;
       return `${x},${y}`;
     })
     .join(' ');
 
-  const markers = data.map((val, i) => {
+  const markers = data.map((d, i) => {
     const x = (i / (data.length - 1)) * 100;
-    const y = 100 - (val / max) * 100;
+    const y = 100 - (d.value / max) * 100;
     return <circle key={i} cx={x} cy={y} r="1.5" className="chart-marker" />;
+  });
+
+  const labels = data.map((d, i) => {
+    const x = (i / (data.length - 1)) * 100;
+    return (
+      <text key={i} x={x} y={105} textAnchor="middle" className="chart-label">
+        {d.label}
+      </text>
+    );
   });
 
   const gridLines = Array.from({ length: 5 }).map((_, i) => {
@@ -37,7 +46,7 @@ const LineChart = ({ data = [] }) => {
   return (
     <svg
       className="line-chart"
-      viewBox="0 0 100 100"
+      viewBox="0 0 100 110"
       preserveAspectRatio="none"
     >
       {gridLines}
@@ -49,6 +58,7 @@ const LineChart = ({ data = [] }) => {
         strokeLinecap="round"
       />
       {markers}
+      {labels}
     </svg>
   );
 };
