@@ -23,8 +23,8 @@ public class AnalyticsController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getAnalytics(@RequestParam(required = false) String start,
-                                          @RequestParam(required = false) String end) {
+    public ResponseEntity<?> getAnalytics(@RequestParam(value = "start", required = false) String start,
+                                          @RequestParam(value = "end", required = false) String end) {
         Instant startInstant = start != null ? Instant.parse(start) : null;
         Instant endInstant = end != null ? Instant.parse(end) : null;
 
