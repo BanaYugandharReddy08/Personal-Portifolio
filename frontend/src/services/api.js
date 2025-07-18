@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://personal-portifolio-l39g.onrender.com';
 
 export async function login(email, password) {
   const response = await fetch(`${API_BASE_URL}/login`, {
