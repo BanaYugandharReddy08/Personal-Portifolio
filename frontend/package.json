@@ -1,6 +1,6 @@
 {
   "name": "yugandhar-portfolio",
-  "homepage": "https://personal-portfolio-frontend-42ob.onrender.com/",
+  "homepage": "https://personal-portfolio-frontend-42ob.onrender.com/login",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
