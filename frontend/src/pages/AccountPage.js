@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import Photo from '../Photo.jpg';
 import './AccountPage.css';
 
 const AccountPage = () => {
@@ -10,7 +9,7 @@ const AccountPage = () => {
   const [email, setEmail] = useState(user?.email || '');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [profilePic, setProfilePic] = useState(Photo);
+  const [profilePic, setProfilePic] = useState(user?.profilePic || null);
   const [error, setError] = useState('');
 
   const validatePassword = (pw) => {
@@ -43,7 +42,8 @@ const AccountPage = () => {
       id: user.id,
       email,
       fullName,
-      admin: user.role === 'admin'
+      admin: user.role === 'admin',
+      profilePicture: profilePic,
     });
     setEdit(false);
   };
@@ -64,7 +64,9 @@ const AccountPage = () => {
       <div className="container">
         {!edit ? (
           <div className="account-info">
-            <img src={profilePic} alt="Profile" className="profile-image" />
+            {profilePic && (
+              <img src={profilePic} alt="Profile" className="profile-image" />
+            )}
             <h2>{user.name}</h2>
             <p>{user.email}</p>
             <button className="button" onClick={() => setEdit(true)}>
@@ -137,3 +139,4 @@ const AccountPage = () => {
 };
 
 export default AccountPage;
+
