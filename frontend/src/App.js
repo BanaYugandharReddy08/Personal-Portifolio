@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -39,7 +39,7 @@ function App() {
       {!hideLayout && <Header />}
       <main>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={user ? <HomePage /> : <Navigate to="/login" replace />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/education" element={<EducationPage />} />
           <Route path="/certifications" element={<CertificationsPage />} />
