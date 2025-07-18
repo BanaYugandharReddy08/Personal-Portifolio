@@ -29,6 +29,7 @@ describe('Header and Footer', () => {
 
     const profileButton = screen.getByRole('button', { name: /open profile menu/i });
     expect(profileButton).toBeInTheDocument();
+    expect(screen.getByTestId('profile-icon')).toBeInTheDocument();
 
     await userEvent.click(profileButton);
     expect(screen.getByRole('menu')).toBeInTheDocument();
