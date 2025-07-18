@@ -51,7 +51,7 @@ describe('AnalyticsPage', () => {
     renderWithRoute({ role: 'admin', email: 'a', name: 'Admin' });
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
     expect(screen.getByText('Guest Logins')).toBeInTheDocument();
-    fireEvent.change(screen.getByLabelText(/time range/i), { target: { value: 'day' } });
+    fireEvent.change(screen.getByLabelText(/time range/i), { target: { value: 'today' } });
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
     const url = fetch.mock.calls[1][0];
     expect(url).toContain('start=');
