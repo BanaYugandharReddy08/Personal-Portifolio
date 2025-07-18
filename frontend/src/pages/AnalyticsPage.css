@@ -27,6 +27,16 @@
   text-align: center;
 }
 
+.metric-card h2 {
+  font-size: var(--text-xl);
+  margin-bottom: 0.5rem;
+}
+
+.metric-card p {
+  font-size: var(--text-3xl);
+  font-weight: bold;
+}
+
 .analytics-filters label {
   display: block;
   margin-top: 0.5rem;
