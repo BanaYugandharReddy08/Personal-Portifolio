@@ -1,50 +1,31 @@
 .analytics-page {
   padding-top: 120px;
   min-height: 100vh;
+  color: var(--foreground);
+}
+
+.metrics-row {
   display: flex;
-  gap: 2rem;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
 }
 
-.analytics-metrics {
-  flex: 1;
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
-.analytics-filters {
-  width: 260px;
+.chart-wrapper {
+  background-color: var(--card);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
-.metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.metric-card {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 1rem;
-  text-align: center;
-}
-
-.metric-card h2 {
-  font-size: var(--text-xl);
-  margin-bottom: 0.5rem;
-}
-
-.metric-card p {
-  font-size: var(--text-3xl);
-  font-weight: bold;
-}
-
-.analytics-filters label {
-  display: block;
-  margin-top: 0.5rem;
-}
-
-.analytics-filters select,
-.analytics-filters input {
-  width: 100%;
-  padding: 0.25rem;
-  margin-top: 0.25rem;
+.custom-dates label {
+  margin-right: var(--space-2);
 }
