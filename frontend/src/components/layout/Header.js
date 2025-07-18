@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
-import defaultPhoto from '../../Photo.jpg';
 import './Header.css';
 
 const Header = () => {
@@ -100,11 +99,13 @@ const Header = () => {
                     onClick={() => setShowProfileMenu(!showProfileMenu)}
                     aria-label="Open profile menu"
                   >
-                    <img
-                      src={user.profilePic || defaultPhoto}
-                      alt="Profile"
-                      className="profile-icon"
-                    />
+                    {user.profilePic && (
+                      <img
+                        src={user.profilePic}
+                        alt="Profile"
+                        className="profile-icon"
+                      />
+                    )}
                   </button>
                   {showProfileMenu && (
                     <ul className="profile-dropdown" role="menu">

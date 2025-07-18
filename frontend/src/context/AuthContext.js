@@ -16,7 +16,8 @@ export const AuthProvider = ({ children }) => {
       id: apiUser.id ? apiUser.id.toString() : Date.now().toString(),
       email: apiUser.email,
       name: apiUser.fullName,
-      role: apiUser.admin ? 'admin' : 'user'
+      role: apiUser.admin ? 'admin' : 'user',
+      profilePic: apiUser.profilePicture || null
     });
   };
 

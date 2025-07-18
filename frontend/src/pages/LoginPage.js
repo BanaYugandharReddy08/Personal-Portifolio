@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Navigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { login as apiLogin, recordGuestLogin } from '../services/api';
+import { login as apiLogin, recordGuestLogin, fetchUserPhoto } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import './LoginPage.css';
 
@@ -33,7 +33,8 @@ const LoginPage = () => {
 
       try {
         const data = await apiLogin(email, password);
-        setAuthenticatedUser(data);
+        const photo = await fetchUserPhoto(data.id);
+        setAuthenticatedUser({ ...data, profilePicture: photo });
         const username = data.fullName || email.split('@')[0];
         let message = `Welcome, ${username}!`;
         if (data.lastLogin) {
